@@ -66,7 +66,8 @@ const PrivacyPolicy = () => {
           <section className="border-b border-gray-200 pb-6">
             <h2 className="text-xl sm:text-2xl font-semibold text-green-700 mb-3">5. Your Rights</h2>
             <p className="text-gray-600 leading-relaxed text-sm sm:text-base">
-              You have the right to access, correct, or delete your personal information. You may also opt-out of marketing communications at any time.
+              You have the right to access, correct, or delete your personal informatio
+              n. You may also opt-out of marketing communications at any time.
             </p>
             <ul className="mt-3 ml-6 space-y-2 text-gray-600 text-sm sm:text-base list-disc">
               <li>Access your personal data</li>
