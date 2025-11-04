@@ -2,6 +2,7 @@
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Aboutus from '../components/Aboutus';
+// About Page Componentgit
 
 const AboutPage = () => {
   return (

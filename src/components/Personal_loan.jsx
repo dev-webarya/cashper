@@ -604,54 +604,56 @@ const Personal_loan = () => {
         style={{
           backgroundImage: "url('https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?w=1600&q=80')",
           backgroundSize: "cover",
-          backgroundPosition: "center center"
+          backgroundPosition: "center center",
+          backgroundAttachment: "scroll",
+          backgroundRepeat: "no-repeat"
         }}
       >
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-green-900/95 via-green-800/90 to-green-700/85"></div>
         {/* Content */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 sm:pt-32 lg:pt-36 pb-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-3 xs:px-4 sm:px-5 md:px-6 lg:px-8 pt-24 xs:pt-26 sm:pt-28 md:pt-32 lg:pt-36 pb-6 xs:pb-7 sm:pb-8 md:pb-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 xs:gap-6 sm:gap-7 md:gap-8 items-center">
             {/* Left Side - Text Content */}
             <div className="text-center lg:text-left order-1 lg:order-1">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-3 leading-tight drop-shadow-2xl">
+              <h1 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl font-extrabold text-white mb-2 xs:mb-3 leading-tight drop-shadow-2xl px-2">
                 Personal Loan Made Easy
-                <span className="block text-yellow-300 mt-2 text-xl sm:text-2xl md:text-3xl lg:text-4xl">₹50K to ₹25 Lakhs at 10.5% Interest</span>
+                <span className="block text-yellow-300 mt-1.5 xs:mt-2 text-lg xs:text-xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl">₹50K to ₹25 Lakhs at 10.5% Interest</span>
               </h1>
               
-              <p className="text-sm sm:text-base lg:text-lg text-white/95 mb-4 sm:mb-5 leading-relaxed font-medium drop-shadow-lg px-2 sm:px-0">
+              <p className="text-xs xs:text-sm sm:text-base md:text-base lg:text-lg text-white/95 mb-3 xs:mb-4 sm:mb-5 leading-relaxed font-medium drop-shadow-lg px-2 xs:px-3 sm:px-0">
                 Instant approval • No collateral required • Minimal documentation • Flexible tenure • Quick disbursal
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start px-4 sm:px-0">
+              <div className="flex flex-col sm:flex-row gap-2.5 xs:gap-3 justify-center lg:justify-start px-3 xs:px-4 sm:px-0">
                 <a 
                   href="#calculator"
                   onClick={(e) => handleSmoothScroll(e, 'calculator')}
-                  className="bg-white/20 backdrop-blur-md border-2 border-white/40 text-white hover:bg-white/30 font-semibold px-4 sm:px-6 py-2.5 sm:py-3 rounded-full shadow-xl transition-all duration-300 text-sm sm:text-base transform hover:scale-105 active:scale-95 inline-flex items-center justify-center gap-2"
+                  className="bg-white/20 backdrop-blur-md border-2 border-white/40 text-white hover:bg-white/30 font-semibold px-4 xs:px-5 sm:px-6 md:px-7 py-2 xs:py-2.5 sm:py-3 rounded-full shadow-xl transition-all duration-300 text-xs xs:text-sm sm:text-base transform hover:scale-105 active:scale-95 inline-flex items-center justify-center gap-1.5 xs:gap-2 touch-manipulation"
                 >
-                  <Calculator className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <Calculator className="w-4 h-4 xs:w-4 xs:h-4 sm:w-5 sm:h-5" />
                   Calculate EMI
                 </a>
                 
                 <a 
                   href="#apply-form"
                   onClick={(e) => handleSmoothScroll(e, 'apply-form')}
-                  className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 font-bold px-4 sm:px-6 py-2.5 sm:py-3 rounded-full shadow-xl transition-all duration-300 text-sm sm:text-base transform hover:scale-105 active:scale-95 inline-flex items-center justify-center gap-2"
+                  className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 font-bold px-4 xs:px-5 sm:px-6 md:px-7 py-2 xs:py-2.5 sm:py-3 rounded-full shadow-xl transition-all duration-300 text-xs xs:text-sm sm:text-base transform hover:scale-105 active:scale-95 inline-flex items-center justify-center gap-1.5 xs:gap-2 touch-manipulation"
                 >
-                  <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <CheckCircle className="w-4 h-4 xs:w-4 xs:h-4 sm:w-5 sm:h-5" />
                   Apply Now
                 </a>
               </div>
             </div>
 
             {/* Right Side - Get In Touch Form */}
-            <div className="bg-white rounded-2xl shadow-2xl p-4 sm:p-6 order-2 lg:order-2 mx-4 sm:mx-0">
-              <div className="text-center mb-3 sm:mb-4">
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-1">GET IN TOUCH</h3>
-                <p className="text-xs sm:text-sm text-gray-600">We'll get back to you shortly</p>
+            <div className="bg-white rounded-xl xs:rounded-2xl shadow-2xl p-3 xs:p-4 sm:p-5 md:p-6 order-2 lg:order-2 mx-3 xs:mx-4 sm:mx-0">
+              <div className="text-center mb-2 xs:mb-3 sm:mb-4">
+                <h3 className="text-base xs:text-lg sm:text-xl font-bold text-gray-900 mb-0.5 xs:mb-1">GET IN TOUCH</h3>
+                <p className="text-xs xs:text-xs sm:text-sm text-gray-600">We'll get back to you shortly</p>
               </div>
 
-              <form className="space-y-2 sm:space-y-3" onSubmit={(e) => {
+              <form className="space-y-1.5 xs:space-y-2 sm:space-y-3" onSubmit={(e) => {
                 e.preventDefault();
                 const formData = new FormData(e.target);
                 const data = {
@@ -670,7 +672,7 @@ const Personal_loan = () => {
                     name="fullName"
                     placeholder="Full Name"
                     required
-                    className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border border-gray-300 rounded-lg focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:outline-none transition-colors"
+                    className="w-full px-2.5 xs:px-3 sm:px-4 py-1.5 xs:py-2 sm:py-2.5 text-xs xs:text-sm sm:text-base border border-gray-300 rounded-lg focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:outline-none transition-colors"
                   />
                 </div>
 
@@ -680,7 +682,7 @@ const Personal_loan = () => {
                     name="email"
                     placeholder="Email Address"
                     required
-                    className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border border-gray-300 rounded-lg focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:outline-none transition-colors"
+                    className="w-full px-2.5 xs:px-3 sm:px-4 py-1.5 xs:py-2 sm:py-2.5 text-xs xs:text-sm sm:text-base border border-gray-300 rounded-lg focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:outline-none transition-colors"
                   />
                 </div>
 
@@ -691,7 +693,7 @@ const Personal_loan = () => {
                     placeholder="Phone Number"
                     pattern="[0-9]{10}"
                     required
-                    className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border border-gray-300 rounded-lg focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:outline-none transition-colors"
+                    className="w-full px-2.5 xs:px-3 sm:px-4 py-1.5 xs:py-2 sm:py-2.5 text-xs xs:text-sm sm:text-base border border-gray-300 rounded-lg focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:outline-none transition-colors"
                   />
                 </div>
 
@@ -703,13 +705,13 @@ const Personal_loan = () => {
                     min="50000"
                     max="2500000"
                     required
-                    className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border border-gray-300 rounded-lg focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:outline-none transition-colors"
+                    className="w-full px-2.5 xs:px-3 sm:px-4 py-1.5 xs:py-2 sm:py-2.5 text-xs xs:text-sm sm:text-base border border-gray-300 rounded-lg focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:outline-none transition-colors"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold py-2 sm:py-2.5 text-sm sm:text-base rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                  className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 active:from-green-800 active:to-green-900 text-white font-bold py-2 xs:py-2.5 sm:py-2.5 md:py-3 text-xs xs:text-sm sm:text-base rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 touch-manipulation transform active:scale-95"
                 >
                   SUBMIT
                 </button>
@@ -1130,19 +1132,7 @@ const Personal_loan = () => {
                   );
                 })}
               </div>
-              
-              {/* Apply Now Button */}
-              <div className="mt-8 text-center">
-                <a 
-                  href="#apply-form"
-                  onClick={(e) => handleSmoothScroll(e, 'apply-form')}
-                  className="inline-flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold px-8 py-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
-                >
-                  <CheckCircle className="w-5 h-5" />
-                  Apply Now
-                  <ArrowRight className="w-5 h-5" />
-                </a>
-              </div>
+            
             </div>
           </div>
         </div>
@@ -1967,141 +1957,141 @@ const Personal_loan = () => {
       </section>
 
       {/* Bank Logos Auto Slider Section */}
-      <section className="py-8 max-w-7xl mx-auto lg:py-12 bg-gradient-to-b from-white to-gray-50 overflow-hidden">
-        <div className=" px-4 sm:px-6 lg:px-8 mb-8">
+      <section className="w-full py-6 xs:py-8 sm:py-10 md:py-12 lg:py-14 xl:py-16 bg-gradient-to-b from-white to-gray-50 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-3 xs:px-4 sm:px-5 md:px-6 lg:px-8 mb-5 xs:mb-6 sm:mb-7 md:mb-8 lg:mb-10">
           <div className="text-center">
-            <div className="inline-flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-full mb-4">
-              <Building2 className="w-5 h-5 text-blue-700" />
-              <span className="text-blue-700 font-semibold text-sm sm:text-base">Trusted Banking Partners</span>
+            <div className="inline-flex items-center gap-1.5 xs:gap-2 sm:gap-2 bg-blue-100 px-3 xs:px-4 sm:px-4 py-1.5 xs:py-2 sm:py-2 rounded-full mb-3 xs:mb-3 sm:mb-4">
+              <Building2 className="w-4 h-4 xs:w-5 xs:h-5 sm:w-5 sm:h-5 text-blue-700" />
+              <span className="text-blue-700 font-semibold text-xs xs:text-sm sm:text-sm md:text-base">Trusted Banking Partners</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 px-4">
+            <h2 className="text-lg xs:text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 mb-2 xs:mb-2.5 sm:mb-3 md:mb-4 px-3 xs:px-4 sm:px-5 md:px-6">
               India's Premier Banks for Personal Loans
             </h2>
-            <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto px-4">
+            <p className="text-xs xs:text-sm sm:text-base md:text-lg lg:text-lg text-gray-600 max-w-3xl mx-auto px-3 xs:px-4 sm:px-5 md:px-6 leading-relaxed">
               Get instant personal loans with attractive interest rates from top-rated banks across India
             </p>
           </div>
         </div>
 
         {/* First Row - Left to Right Auto Scroll */}
-        <div className="relative mb-6 sm:mb-8 lg:mb-10">
-          <div className="flex gap-8 sm:gap-12 lg:gap-16 animate-scroll-left">
+        <div className="relative mb-4 xs:mb-5 sm:mb-6 md:mb-8 lg:mb-10 px-2 xs:px-3 sm:px-0">
+          <div className="flex gap-4 xs:gap-6 sm:gap-8 md:gap-10 lg:gap-12 xl:gap-16 animate-scroll-left">
             {/* First set of logos */}
-            <div className="flex gap-8 sm:gap-12 lg:gap-16 min-w-max">
+            <div className="flex gap-4 xs:gap-6 sm:gap-8 md:gap-10 lg:gap-12 xl:gap-16 min-w-max">
               <img 
                 src="/logos/sbi.png" 
                 alt="State Bank of India" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-10 xs:h-12 sm:h-14 md:h-16 lg:h-18 xl:h-20 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/image.png" 
                 alt="HDFC Bank" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-10 xs:h-12 sm:h-14 md:h-16 lg:h-18 xl:h-20 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/image copy.png" 
                 alt="ICICI Bank" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-10 xs:h-12 sm:h-14 md:h-16 lg:h-18 xl:h-20 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/image copy 2.png" 
                 alt="Axis Bank" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-10 xs:h-12 sm:h-14 md:h-16 lg:h-18 xl:h-20 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/image copy 3.png" 
                 alt="Punjab National Bank" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-10 xs:h-12 sm:h-14 md:h-16 lg:h-18 xl:h-20 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/bob.png" 
                 alt="Bank of Baroda" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-10 xs:h-12 sm:h-14 md:h-16 lg:h-18 xl:h-20 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
             </div>
             {/* Duplicate set for seamless loop */}
-            <div className="flex gap-8 sm:gap-12 lg:gap-16 min-w-max">
+            <div className="flex gap-4 xs:gap-6 sm:gap-8 md:gap-10 lg:gap-12 xl:gap-16 min-w-max">
               <img 
                 src="/logos/sbi.png" 
                 alt="State Bank of India" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-10 xs:h-12 sm:h-14 md:h-16 lg:h-18 xl:h-20 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/image.png" 
                 alt="HDFC Bank" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-10 xs:h-12 sm:h-14 md:h-16 lg:h-18 xl:h-20 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/image copy.png" 
                 alt="ICICI Bank" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-10 xs:h-12 sm:h-14 md:h-16 lg:h-18 xl:h-20 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/image copy 2.png" 
                 alt="Axis Bank" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-10 xs:h-12 sm:h-14 md:h-16 lg:h-18 xl:h-20 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/image copy 3.png" 
                 alt="Punjab National Bank" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-10 xs:h-12 sm:h-14 md:h-16 lg:h-18 xl:h-20 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/bob.png" 
                 alt="Bank of Baroda" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-10 xs:h-12 sm:h-14 md:h-16 lg:h-18 xl:h-20 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
             </div>
           </div>
         </div>
 
         {/* Second Row - Right to Left Auto Scroll */}
-        <div className="relative">
-          <div className="flex gap-8 sm:gap-12 lg:gap-16 animate-scroll-right">
+        <div className="relative px-2 xs:px-3 sm:px-0">
+          <div className="flex gap-4 xs:gap-6 sm:gap-8 md:gap-10 lg:gap-12 xl:gap-16 animate-scroll-right">
             {/* First set of logos */}
-            <div className="flex gap-8 sm:gap-12 lg:gap-16 min-w-max">
+            <div className="flex gap-4 xs:gap-6 sm:gap-8 md:gap-10 lg:gap-12 xl:gap-16 min-w-max">
               <img 
                 src="/logos/image copy 4.png" 
                 alt="Canara Bank" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-10 xs:h-12 sm:h-14 md:h-16 lg:h-18 xl:h-20 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/image copy 5.png" 
                 alt="Union Bank of India" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-10 xs:h-12 sm:h-14 md:h-16 lg:h-18 xl:h-20 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/image copy 6.png" 
                 alt="Kotak Mahindra Bank" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-10 xs:h-12 sm:h-14 md:h-16 lg:h-18 xl:h-20 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/image copy 7.png" 
                 alt="IDFC FIRST Bank" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-10 xs:h-12 sm:h-14 md:h-16 lg:h-18 xl:h-20 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
             </div>
             {/* Duplicate set for seamless loop */}
-            <div className="flex gap-8 sm:gap-12 lg:gap-16 min-w-max">
+            <div className="flex gap-4 xs:gap-6 sm:gap-8 md:gap-10 lg:gap-12 xl:gap-16 min-w-max">
               <img 
                 src="/logos/image copy 4.png" 
                 alt="Canara Bank" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-10 xs:h-12 sm:h-14 md:h-16 lg:h-18 xl:h-20 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/image copy 5.png" 
                 alt="Union Bank of India" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-10 xs:h-12 sm:h-14 md:h-16 lg:h-18 xl:h-20 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/image copy 6.png" 
                 alt="Kotak Mahindra Bank" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-10 xs:h-12 sm:h-14 md:h-16 lg:h-18 xl:h-20 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/image copy 7.png" 
                 alt="IDFC FIRST Bank" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-10 xs:h-12 sm:h-14 md:h-16 lg:h-18 xl:h-20 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
             </div>
           </div>

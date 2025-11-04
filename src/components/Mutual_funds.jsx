@@ -35,6 +35,17 @@ import Footer from './Footer';
 const Mutual_funds = () => {
   const navigate = useNavigate();
   
+  // Handle navigation to contact page with scroll to hero section
+  const handleContactNavigation = () => {
+    navigate('/contact');
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }, 100);
+  };
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -399,7 +410,9 @@ const Mutual_funds = () => {
           style={{
             backgroundImage: "url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1920&q=80')",
             backgroundSize: "cover",
-            backgroundPosition: "center",
+            backgroundPosition: "center center",
+            backgroundAttachment: "scroll",
+            backgroundRepeat: "no-repeat",
           }}
         >
           {/* Overlay */}
@@ -585,7 +598,7 @@ const Mutual_funds = () => {
             </div>
             <div className="mt-8 md:mt-12 text-center">
               <button 
-                onClick={() => navigate('/contact')}
+                onClick={handleContactNavigation}
                 className="bg-green-700 hover:bg-green-800 text-white px-6 sm:px-8 md:px-10 py-3 sm:py-3.5 md:py-4 rounded-full font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 text-sm sm:text-base md:text-lg">
                 Get Expert Advice Now
               </button>
@@ -1419,7 +1432,7 @@ const Mutual_funds = () => {
                 Start Investing
               </button>
               <button 
-                onClick={() => navigate('/contact')}
+                onClick={handleContactNavigation}
                 className="border-2 border-white text-white px-6 sm:px-8 md:px-10 py-2.5 sm:py-3 md:py-4 rounded-full font-semibold hover:bg-white hover:text-green-700 transition-all duration-300 text-sm sm:text-base md:text-lg">
                 Talk to Expert
               </button>

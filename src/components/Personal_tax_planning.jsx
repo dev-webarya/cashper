@@ -326,46 +326,48 @@ const Personal_tax_planning = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white overflow-x-hidden">
       <Navbar />
       
       {/* Hero Section */}
-      <section className="relative pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-6 sm:pb-8 md:pb-10 lg:pb-12 min-h-[500px] sm:min-h-[550px] md:min-h-[580px] lg:h-[600px] bg-cover bg-center bg-no-repeat text-white flex items-center"
+      <section className="relative pt-20 xs:pt-22 sm:pt-24 md:pt-28 lg:pt-32 xl:pt-36 pb-6 xs:pb-7 sm:pb-8 md:pb-10 lg:pb-12 min-h-[450px] xs:min-h-[500px] sm:min-h-[550px] md:min-h-[580px] lg:min-h-[600px] bg-cover bg-center bg-no-repeat text-white flex items-center overflow-hidden"
         style={{
           backgroundImage: "url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1600&q=80')",
           backgroundSize: 'cover',
-          backgroundPosition: 'center'
+          backgroundPosition: 'center center',
+          backgroundAttachment: 'scroll',
+          backgroundRepeat: 'no-repeat'
         }}>
         <div className="absolute inset-0 bg-gradient-to-r from-green-700/70 to-blue-800/60"></div>
-        <div className="relative z-10 max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 w-full">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8 lg:gap-10 items-center">
-            <div className="space-y-3 sm:space-y-4 md:space-y-5 text-center md:text-left">
-              <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight">
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-3 xs:px-4 sm:px-5 md:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 xs:gap-5 sm:gap-6 md:gap-8 lg:gap-10 items-center">
+            <div className="space-y-3 xs:space-y-3.5 sm:space-y-4 md:space-y-5 text-center md:text-left">
+              <h1 className="text-lg xs:text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight px-2 xs:px-0">
                 Personal Tax Planning Services - Maximize Your Tax Savings
               </h1>
-              <p className="text-xs sm:text-sm md:text-base lg:text-lg text-blue-100">
+              <p className="text-xs xs:text-xs sm:text-sm md:text-base lg:text-lg text-blue-100 px-2 xs:px-0 leading-relaxed">
                 Expert personal tax planning to minimize your individual tax liability. Our certified tax advisors help salaried individuals and professionals optimize their tax savings through smart strategies and legal deductions.
               </p>
-              <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-3 justify-center md:justify-start pt-2">
+              <div className="flex flex-col sm:flex-row flex-wrap gap-2 xs:gap-2.5 sm:gap-3 justify-center md:justify-start pt-1 xs:pt-2 px-2 xs:px-0">
                 <button 
                   onClick={() => document.getElementById('apply-form').scrollIntoView({ behavior: 'smooth' })}
-                  className="bg-white text-green-700 px-4 sm:px-5 md:px-6 lg:px-7 py-2 sm:py-2.5 md:py-3 rounded-xl font-semibold hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 text-xs sm:text-sm md:text-base">
+                  className="bg-white text-green-700 px-4 xs:px-5 sm:px-5 md:px-6 lg:px-7 py-2 xs:py-2.5 sm:py-2.5 md:py-3 rounded-lg xs:rounded-xl font-semibold hover:bg-gray-100 active:bg-gray-200 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 active:scale-95 text-xs xs:text-xs sm:text-sm md:text-base touch-manipulation">
                   Get Personal Tax Advice
                 </button>
                 <Link 
                   to="/contact"
-                  className="border-2 border-white text-white px-4 sm:px-5 md:px-6 lg:px-7 py-2 sm:py-2.5 md:py-3 rounded-xl font-semibold hover:bg-white hover:text-green-700 transition-all duration-300 text-xs sm:text-sm md:text-base text-center">
+                  className="border-2 border-white text-white px-4 xs:px-5 sm:px-5 md:px-6 lg:px-7 py-2 xs:py-2.5 sm:py-2.5 md:py-3 rounded-lg xs:rounded-xl font-semibold hover:bg-white hover:text-green-700 active:bg-gray-100 transition-all duration-300 text-xs xs:text-xs sm:text-sm md:text-base text-center touch-manipulation active:scale-95">
                   Plan My Taxes
                 </Link>
               </div>
             </div>
             
             {/* Contact Form */}
-            <div id="apply-form" className="bg-white rounded-xl shadow-2xl p-3 sm:p-4 md:p-5 mt-6 md:mt-0">
-              <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-800 mb-3 sm:mb-4 text-center">
+            <div id="apply-form" className="bg-white rounded-lg xs:rounded-xl shadow-2xl p-3 xs:p-3.5 sm:p-4 md:p-5 mt-5 xs:mt-6 md:mt-0 mx-2 xs:mx-0">
+              <h3 className="text-sm xs:text-base sm:text-lg md:text-xl font-bold text-gray-800 mb-2 xs:mb-3 sm:mb-4 text-center">
                 BOOK FREE TAX CONSULTATION
               </h3>
-              <form onSubmit={handleSubmit} className="space-y-2 sm:space-y-3">
+              <form onSubmit={handleSubmit} className="space-y-1.5 xs:space-y-2 sm:space-y-3">
                 <input
                   type="text"
                   name="name"
@@ -421,7 +423,7 @@ const Personal_tax_planning = () => {
                 </select>
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-green-600 to-green-700 text-white px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg font-semibold hover:from-green-700 hover:to-green-800 transition-all duration-300 shadow-lg text-xs sm:text-sm"
+                  className="w-full bg-gradient-to-r from-green-600 to-green-700 text-white px-3 xs:px-3.5 sm:px-4 py-2 xs:py-2.5 sm:py-2.5 md:py-3 rounded-lg font-semibold hover:from-green-700 hover:to-green-800 active:from-green-800 active:to-green-900 transition-all duration-300 shadow-lg hover:shadow-xl text-xs xs:text-xs sm:text-sm md:text-base touch-manipulation transform active:scale-95"
                 >
                   SCHEDULE CONSULTATION
                 </button>
@@ -1027,7 +1029,7 @@ const Personal_tax_planning = () => {
       </section>
 
       {/* Apply Now Form Section */}
-      <section className="py-8 sm:py-10 md:py-12 bg-white">
+      <section id="calculator" className="py-8 sm:py-10 md:py-12 bg-white">
         <div className="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
           <div className="text-center mb-8 sm:mb-10">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-3 sm:mb-4 px-2">

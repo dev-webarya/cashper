@@ -25,6 +25,7 @@ const Personal_loan = lazy(() => import('./components/Personal_loan'));
 const Business_loan = lazy(() => import('./components/Business_loan'));
 const Car_Loan = lazy(() => import('./components/Car_Loan'));
 const Dashboard = lazy(() => import('./components/dashbord/Dashboard'));
+const AdminPanel = lazy(() => import('./components/Admin pannel/AdminPanel'));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -56,6 +57,9 @@ function App() {
             
             {/* Dashboard Route */}
             <Route path="/dashboard" element={<Dashboard />} />
+            
+            {/* Admin Panel Route */}
+            <Route path="/admin" element={<AdminPanel />} />
             
             <Route path="/consultation" element={<ContactPage />} />
             {/* Insurance Routes */}

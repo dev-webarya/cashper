@@ -39,6 +39,17 @@ import Footer from './Footer';
 const Health_Insurence = () => {
   const navigate = useNavigate();
   
+  // Handle navigation to contact page with scroll to hero section
+  const handleContactNavigation = () => {
+    navigate('/contact');
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }, 100);
+  };
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -217,7 +228,9 @@ const Health_Insurence = () => {
           style={{
             backgroundImage: "url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1600&q=80')",
             backgroundSize: 'cover',
-            backgroundPosition: 'center'
+            backgroundPosition: 'center center',
+            backgroundAttachment: 'scroll',
+            backgroundRepeat: 'no-repeat'
           }}>
           <div className="absolute inset-0 bg-gradient-to-r from-green-700/60 to-green-900/50"></div>
           <div className="relative z-10 max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 w-full">
@@ -446,7 +459,7 @@ const Health_Insurence = () => {
             </p>
             <div className="text-center mt-6 md:mt-8">
               <button 
-                onClick={() => navigate('/contact')}
+                onClick={handleContactNavigation}
                 className="bg-white text-green-700 hover:bg-gray-100 font-bold px-8 md:px-12 py-3 md:py-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 text-base md:text-lg">
                 Get Expert Advice Now
               </button>

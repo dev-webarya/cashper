@@ -42,6 +42,18 @@ import {
 
 const Aboutus = () => {
   const navigate = useNavigate();
+  
+  // Handle navigation to contact page with scroll to hero section
+  const handleContactNavigation = () => {
+    navigate('/contact');
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }, 100);
+  };
+  
   const [isVisible, setIsVisible] = useState(false);
   const [activeSection, setActiveSection] = useState('mission');
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
@@ -495,10 +507,16 @@ const Aboutus = () => {
       ref={aboutRef}
     >
       {/* Hero Section - Fully Responsive */}
-      <section className="relative h-[320px] xs:h-[350px] sm:h-[500px] md:h-[550px] lg:h-[550px] xl:h-[600px] flex items-center justify-center overflow-hidden pt-16 xs:pt-20 sm:pt-0">
+      <section className="relative h-[320px] xs:h-[350px] sm:h-[500px] md:h-[550px] lg:h-[550px] xl:h-[600px] flex items-center justify-center overflow-hidden pt-16 xs:pt-20 md:pt-30 lg:pt-30 xl:pt-30 sm:pt-0">
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: "url('/business-people-meeting (1).jpg')" }}
+          style={{ 
+            backgroundImage: "url('/business-people-meeting (1).jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center center",
+            backgroundAttachment: "scroll",
+            backgroundRepeat: "no-repeat"
+          }}
         ></div>
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900/70 via-green-900/60 to-emerald-900/70"></div>
         <div className="relative z-10 text-center px-3 xs:px-4 sm:px-5 md:px-6 lg:px-8 max-w-5xl mx-auto w-full mt-0 sm:mt-0">
@@ -839,7 +857,7 @@ const Aboutus = () => {
                 href="/contact"
                 onClick={(e) => {
                   e.preventDefault();
-                  navigate('/contact');
+                  handleContactNavigation();
                 }}
                 className="flex-1 sm:flex-initial bg-white text-green-700 font-bold px-6 xs:px-7 sm:px-8 md:px-10 lg:px-12 py-3.5 xs:py-4 sm:py-4.5 md:py-5 lg:py-6 rounded-xl sm:rounded-2xl shadow-2xl hover:shadow-green-200 transition-all duration-300 hover:-translate-y-2 hover:scale-105 flex items-center justify-center gap-2 xs:gap-2.5 sm:gap-3 text-sm xs:text-base sm:text-lg md:text-xl lg:text-2xl cursor-pointer group active:scale-95"
               >

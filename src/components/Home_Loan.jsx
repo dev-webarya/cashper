@@ -593,7 +593,9 @@ const Home_Loan = () => {
         style={{
           backgroundImage: "url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1600&q=80')",
           backgroundSize: "cover",
-          backgroundPosition: "center center"
+          backgroundPosition: "center center",
+          backgroundAttachment: "scroll",
+          backgroundRepeat: "no-repeat"
         }}
       >
         {/* Gradient Overlay */}
@@ -788,61 +790,61 @@ const Home_Loan = () => {
         </div>
       </section>
       {/* Features Section with Images */}
-      <section className="py-6 lg:py-8 bg-gradient-to-b from-white to-gray-50">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+      <section className="py-6 sm:py-8 lg:py-10 bg-gradient-to-b from-white to-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-6 sm:mb-8 lg:mb-10">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 px-2">
               Why Choose Our Home Loans?
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto px-4">
               Experience hassle-free home financing with our customer-centric approach
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-8">
             {features.map((feature, index) => (
               <div 
                 key={index}
-                className="group bg-white p-6 sm:p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-green-300 transform hover:-translate-y-2 relative overflow-hidden"
+                className="group bg-white p-4 sm:p-6 md:p-7 lg:p-8 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-green-300 transform hover:-translate-y-2 relative overflow-hidden"
               >
                 {/* Background Pattern */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-50 to-transparent rounded-bl-full opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                <div className="absolute top-0 right-0 w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-br from-green-50 to-transparent rounded-bl-full opacity-50 group-hover:opacity-100 transition-opacity"></div>
                 
                 <div className="relative z-10">
-                  <div className="bg-gradient-to-br from-green-600 to-green-700 text-white w-16 h-16 rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                    {feature.icon}
+                  <div className="bg-gradient-to-br from-green-600 to-green-700 text-white w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-5 md:mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    {React.cloneElement(feature.icon, { className: "w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" })}
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-green-700 transition-colors">
+                  <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-2 sm:mb-3 group-hover:text-green-700 transition-colors">
                     {feature.title}
                   </h3>
-                  <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                  <p className="text-sm sm:text-base text-gray-600 leading-relaxed">{feature.description}</p>
                 </div>
               </div>
             ))}
           </div>
 
           {/* Trust Indicators with Icons */}
-          <div className="mt-16 bg-gradient-to-r from-green-600 to-green-700 rounded-3xl p-8 sm:p-12 shadow-2xl">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center text-white">
+          <div className="mt-8 sm:mt-12 md:mt-14 lg:mt-16 bg-gradient-to-r from-green-600 to-green-700 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 lg:p-12 shadow-2xl">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 text-center text-white">
               <div>
-                <ThumbsUp className="w-12 h-12 mx-auto mb-4" />
-                <div className="text-3xl sm:text-4xl font-bold mb-2">98%</div>
-                <div className="text-green-100">Customer Satisfaction</div>
+                <ThumbsUp className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 mx-auto mb-2 sm:mb-3 md:mb-4" />
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 sm:mb-2">98%</div>
+                <div className="text-xs sm:text-sm md:text-base text-green-100">Customer Satisfaction</div>
               </div>
               <div>
-                <TrendingUp className="w-12 h-12 mx-auto mb-4" />
-                <div className="text-3xl sm:text-4xl font-bold mb-2">1L+</div>
-                <div className="text-green-100">Home Loans Disbursed</div>
+                <TrendingUp className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 mx-auto mb-2 sm:mb-3 md:mb-4" />
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 sm:mb-2">1L+</div>
+                <div className="text-xs sm:text-sm md:text-base text-green-100">Home Loans Disbursed</div>
               </div>
               <div>
-                <BadgeCheck className="w-12 h-12 mx-auto mb-4" />
-                <div className="text-3xl sm:text-4xl font-bold mb-2">20+</div>
-                <div className="text-green-100">Years Experience</div>
+                <BadgeCheck className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 mx-auto mb-2 sm:mb-3 md:mb-4" />
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 sm:mb-2">20+</div>
+                <div className="text-xs sm:text-sm md:text-base text-green-100">Years Experience</div>
               </div>
               <div>
-                <Shield className="w-12 h-12 mx-auto mb-4" />
-                <div className="text-3xl sm:text-4xl font-bold mb-2">100%</div>
-                <div className="text-green-100">Secure Process</div>
+                <Shield className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 mx-auto mb-2 sm:mb-3 md:mb-4" />
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 sm:mb-2">100%</div>
+                <div className="text-xs sm:text-sm md:text-base text-green-100">Secure Process</div>
               </div>
             </div>
           </div>
@@ -850,17 +852,17 @@ const Home_Loan = () => {
       </section>
 
       {/* Advanced EMI Calculator Section with Visualization */}
-      <section id="calculator" className="py-10 lg:py-12 bg-gradient-to-br from-white via-green-50 to-blue-50">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 bg-green-100 px-4 py-2 rounded-full mb-4">
-              <Calculator className="w-5 h-5 text-green-700" />
-              <span className="text-green-700 font-semibold">EMI Calculator</span>
+      <section id="calculator" className="py-6 sm:py-8 md:py-10 lg:py-12 bg-gradient-to-br from-white via-green-50 to-blue-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-6 sm:mb-8">
+            <div className="inline-flex items-center gap-2 bg-green-100 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full mb-3 sm:mb-4">
+              <Calculator className="w-4 h-4 sm:w-5 sm:h-5 text-green-700" />
+              <span className="text-green-700 font-semibold text-xs sm:text-sm md:text-base">EMI Calculator</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 px-2">
               Calculate Your Monthly EMI
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto px-4">
               Plan your finances better with our advanced loan calculator
             </p>
           </div>
@@ -1111,97 +1113,85 @@ const Home_Loan = () => {
                   );
                 })}
               </div>
-              
-              {/* Apply Now Button */}
-              <div className="mt-8 text-center">
-                <a 
-                  href="#apply-form"
-                  onClick={(e) => handleSmoothScroll(e, 'apply-form')}
-                  className="inline-flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold px-8 py-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
-                >
-                  <CheckCircle className="w-5 h-5" />
-                  Apply Now
-                  <ArrowRight className="w-5 h-5" />
-                </a>
-              </div>
+             
             </div>
           </div>
         </div>
       </section>
 
       {/* Loan Process Timeline */}
-      <section className="py-6 lg:py-8 bg-white">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-full mb-4">
-              <TrendingUp className="w-5 h-5 text-blue-700" />
-              <span className="text-blue-700 font-semibold text-sm">Simple Process</span>
+      <section className="py-6 sm:py-8 lg:py-10 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-6 sm:mb-8 lg:mb-10">
+            <div className="inline-flex items-center gap-2 bg-blue-100 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full mb-3 sm:mb-4">
+              <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-blue-700" />
+              <span className="text-blue-700 font-semibold text-xs sm:text-sm">Simple Process</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 px-2">
               Get Your Loan in 4 Easy Steps
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto px-4">
               Our streamlined process ensures quick approval and disbursal
             </p>
           </div>
 
           <div className="relative">
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 relative">
               {/* Step 1 */}
               <div className="text-center group">
-                <div className="relative inline-block mb-6">
-                  <div className="w-24 h-24 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-transform duration-300 relative z-10">
-                    <FileText className="w-12 h-12 text-white" />
+                <div className="relative inline-block mb-4 sm:mb-6">
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-transform duration-300 relative z-10">
+                    <FileText className="w-10 h-10 sm:w-12 sm:h-12 text-white" />
                   </div>
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                  <div className="absolute -top-2 -right-2 w-7 h-7 sm:w-8 sm:h-8 bg-green-600 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm shadow-lg">
                     1
                   </div>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Fill Application</h3>
-                <p className="text-gray-600">Complete our simple online form with your details</p>
+                <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-2 sm:mb-3 px-2">Fill Application</h3>
+                <p className="text-sm sm:text-base text-gray-600 px-2">Complete our simple online form with your details</p>
               </div>
 
               {/* Step 2 */}
               <div className="text-center group">
-                <div className="relative inline-block mb-6">
-                  <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-transform duration-300 relative z-10">
-                    <Upload className="w-12 h-12 text-white" />
+                <div className="relative inline-block mb-4 sm:mb-6">
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-transform duration-300 relative z-10">
+                    <Upload className="w-10 h-10 sm:w-12 sm:h-12 text-white" />
                   </div>
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                  <div className="absolute -top-2 -right-2 w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm shadow-lg">
                     2
                   </div>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Submit Documents</h3>
-                <p className="text-gray-600">Upload required documents securely online</p>
+                <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-2 sm:mb-3 px-2">Submit Documents</h3>
+                <p className="text-sm sm:text-base text-gray-600 px-2">Upload required documents securely online</p>
               </div>
 
               {/* Step 3 */}
               <div className="text-center group">
-                <div className="relative inline-block mb-6">
-                  <div className="w-24 h-24 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-transform duration-300 relative z-10">
-                    <BadgeCheck className="w-12 h-12 text-white" />
+                <div className="relative inline-block mb-4 sm:mb-6">
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-transform duration-300 relative z-10">
+                    <BadgeCheck className="w-10 h-10 sm:w-12 sm:h-12 text-white" />
                   </div>
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                  <div className="absolute -top-2 -right-2 w-7 h-7 sm:w-8 sm:h-8 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm shadow-lg">
                     3
                   </div>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Get Approved</h3>
-                <p className="text-gray-600">Receive instant approval within 24-48 hours</p>
+                <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-2 sm:mb-3 px-2">Get Approved</h3>
+                <p className="text-sm sm:text-base text-gray-600 px-2">Receive instant approval within 24-48 hours</p>
               </div>
 
               {/* Step 4 */}
               <div className="text-center group">
-                <div className="relative inline-block mb-6">
-                  <div className="w-24 h-24 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-transform duration-300 relative z-10">
-                    <IndianRupee className="w-12 h-12 text-white" />
+                <div className="relative inline-block mb-4 sm:mb-6">
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-transform duration-300 relative z-10">
+                    <IndianRupee className="w-10 h-10 sm:w-12 sm:h-12 text-white" />
                   </div>
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-orange-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                  <div className="absolute -top-2 -right-2 w-7 h-7 sm:w-8 sm:h-8 bg-orange-600 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm shadow-lg">
                     4
                   </div>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Receive Funds</h3>
-                <p className="text-gray-600">Money transferred directly to your bank account</p>
+                <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-2 sm:mb-3 px-2">Receive Funds</h3>
+                <p className="text-sm sm:text-base text-gray-600 px-2">Money transferred directly to your bank account</p>
               </div>
             </div>
           </div>
@@ -1209,109 +1199,109 @@ const Home_Loan = () => {
       </section>
 
       {/* Eligibility & Benefits Section - Enhanced */}
-      <section className="py-6 lg:py-8 bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-6">
+      <section className="py-6 sm:py-8 lg:py-10 bg-gradient-to-b from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 lg:gap-8">
             {/* Eligibility Criteria */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-gray-100 hover:shadow-3xl transition-shadow duration-300">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="bg-gradient-to-br from-green-600 to-green-700 text-white p-4 rounded-2xl shadow-lg">
-                  <CheckCircle className="w-7 h-7" />
+            <div className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8 shadow-2xl border border-gray-100 hover:shadow-3xl transition-shadow duration-300">
+              <div className="flex items-center gap-3 mb-5 sm:mb-6">
+                <div className="bg-gradient-to-br from-green-600 to-green-700 text-white p-3 sm:p-4 rounded-xl sm:rounded-2xl shadow-lg flex-shrink-0">
+                  <CheckCircle className="w-6 h-6 sm:w-7 sm:h-7" />
                 </div>
                 <div>
-                  <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                  <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
                     Eligibility Criteria
                   </h2>
-                  <p className="text-gray-600 text-sm mt-1">Check if you qualify</p>
+                  <p className="text-gray-600 text-xs sm:text-sm mt-1">Check if you qualify</p>
                 </div>
               </div>
               
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {eligibility.map((item, index) => (
                   <div 
                     key={index}
-                    className="group bg-gradient-to-r from-green-50 to-white p-5 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-green-100 hover:border-green-300"
+                    className="group bg-gradient-to-r from-green-50 to-white p-3 sm:p-4 md:p-5 rounded-lg sm:rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-green-100 hover:border-green-300"
                   >
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-green-100 group-hover:bg-green-200 rounded-lg flex items-center justify-center transition-colors">
-                          {index === 0 && <Users className="w-5 h-5 text-green-700" />}
-                          {index === 1 && <Briefcase className="w-5 h-5 text-green-700" />}
-                          {index === 2 && <IndianRupee className="w-5 h-5 text-green-700" />}
-                          {index === 3 && <TrendingUp className="w-5 h-5 text-green-700" />}
-                          {index === 4 && <Clock className="w-5 h-5 text-green-700" />}
-                          {index === 5 && <Shield className="w-5 h-5 text-green-700" />}
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-3">
+                      <div className="flex items-center gap-2 sm:gap-3">
+                        <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-green-100 group-hover:bg-green-200 rounded-lg flex items-center justify-center transition-colors flex-shrink-0">
+                          {index === 0 && <Users className="w-4 h-4 sm:w-5 sm:h-5 text-green-700" />}
+                          {index === 1 && <Briefcase className="w-4 h-4 sm:w-5 sm:h-5 text-green-700" />}
+                          {index === 2 && <IndianRupee className="w-4 h-4 sm:w-5 sm:h-5 text-green-700" />}
+                          {index === 3 && <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-green-700" />}
+                          {index === 4 && <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-green-700" />}
+                          {index === 5 && <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-green-700" />}
                         </div>
-                        <span className="font-bold text-gray-700">{item.label}</span>
+                        <span className="font-bold text-gray-700 text-sm sm:text-base">{item.label}</span>
                       </div>
-                      <span className="text-green-700 font-bold text-lg">{item.value}</span>
+                      <span className="text-green-700 font-bold text-base sm:text-lg ml-10 sm:ml-0">{item.value}</span>
                     </div>
                   </div>
                 ))}
               </div>
 
-              <div className="mt-8 p-5 bg-gradient-to-r from-green-100 to-blue-100 rounded-2xl border border-green-200">
-                <div className="flex items-start gap-3">
-                  <AlertCircle className="w-5 h-5 text-green-700 flex-shrink-0 mt-0.5" />
-                  <p className="text-sm text-gray-800">
+              <div className="mt-6 sm:mt-8 p-4 sm:p-5 bg-gradient-to-r from-green-100 to-blue-100 rounded-xl sm:rounded-2xl border border-green-200">
+                <div className="flex items-start gap-2 sm:gap-3">
+                  <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-700 flex-shrink-0 mt-0.5" />
+                  <p className="text-xs sm:text-sm text-gray-800">
                     <strong className="text-green-800">Note:</strong> Meeting these criteria increases your chances of approval. 
                     Final eligibility is subject to credit assessment and verification.
                   </p>
                 </div>
               </div>
 
-              <div className="mt-6">
+              <div className="mt-5 sm:mt-6">
                 <a 
                   href="#apply-form"
                   onClick={(e) => handleSmoothScroll(e, 'apply-form')}
-                  className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 inline-flex items-center justify-center gap-2"
+                  className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold py-3 sm:py-4 px-4 sm:px-6 rounded-lg sm:rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 inline-flex items-center justify-center gap-2 text-sm sm:text-base"
                 >
                   Check Eligibility
-                  <ArrowRight className="w-5 h-5" />
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                 </a>
               </div>
             </div>
 
             {/* Benefits */}
-            <div className="bg-gradient-to-br from-green-600 via-green-700 to-green-800 rounded-3xl p-6 sm:p-8 lg:p-10 shadow-2xl text-white relative overflow-hidden">
+            <div className="bg-gradient-to-br from-green-600 via-green-700 to-green-800 rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8 lg:p-10 shadow-2xl text-white relative overflow-hidden">
               <div className="relative z-10">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="bg-white/20 backdrop-blur-sm p-4 rounded-2xl">
-                    <Award className="w-7 h-7" />
+                <div className="flex items-center gap-3 mb-5 sm:mb-6">
+                  <div className="bg-white/20 backdrop-blur-sm p-3 sm:p-4 rounded-xl sm:rounded-2xl flex-shrink-0">
+                    <Award className="w-6 h-6 sm:w-7 sm:h-7" />
                   </div>
                   <div>
-                    <h2 className="text-2xl sm:text-3xl font-bold">
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold">
                       Key Benefits
                     </h2>
-                    <p className="text-green-100 text-sm mt-1">Why choose us</p>
+                    <p className="text-green-100 text-xs sm:text-sm mt-1">Why choose us</p>
                   </div>
                 </div>
                 
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                   {benefits.map((benefit, index) => (
                     <div 
                       key={index}
-                      className="flex items-start gap-3 p-4 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300 group"
+                      className="flex items-start gap-2 sm:gap-3 p-3 sm:p-4 bg-white/10 backdrop-blur-sm rounded-lg sm:rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300 group"
                     >
                       <div className="flex-shrink-0">
-                        <div className="w-8 h-8 bg-green-500 group-hover:bg-green-400 rounded-lg flex items-center justify-center transition-colors">
-                          <CheckCircle className="w-5 h-5 text-white" />
+                        <div className="w-7 h-7 sm:w-8 sm:h-8 bg-green-500 group-hover:bg-green-400 rounded-lg flex items-center justify-center transition-colors">
+                          <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                         </div>
                       </div>
-                      <span className="text-green-50 leading-relaxed">{benefit}</span>
+                      <span className="text-green-50 leading-relaxed text-sm sm:text-base">{benefit}</span>
                     </div>
                   ))}
                 </div>
 
-                <div className="mt-8 p-5 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20">
-                  <div className="flex items-center gap-4 mb-4">
-                    <Star className="w-8 h-8 text-yellow-300" />
+                <div className="mt-6 sm:mt-8 p-4 sm:p-5 bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/20">
+                  <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+                    <Star className="w-7 h-7 sm:w-8 sm:h-8 text-yellow-300 flex-shrink-0" />
                     <div>
-                      <div className="text-2xl font-bold">4.8/5</div>
-                      <div className="text-green-100 text-sm">Customer Rating</div>
+                      <div className="text-xl sm:text-2xl font-bold">4.8/5</div>
+                      <div className="text-green-100 text-xs sm:text-sm">Customer Rating</div>
                     </div>
                   </div>
-                  <p className="text-sm text-green-100">
+                  <p className="text-xs sm:text-sm text-green-100">
                     Rated by 10,000+ satisfied customers across India
                   </p>
                 </div>
@@ -1908,31 +1898,31 @@ const Home_Loan = () => {
       </section>
       
       {/* Loan Purposes Section */}
-      <section className="py-6 lg:py-8 bg-gradient-to-b from-gray-50 to-white">
+      <section className="py-6 sm:py-8 lg:py-10 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 bg-green-100 px-4 py-2 rounded-full mb-4">
-              <Target className="w-5 h-5 text-green-700" />
-              <span className="text-green-700 font-semibold">Flexible Purpose</span>
+          <div className="text-center mb-6 sm:mb-8">
+            <div className="inline-flex items-center gap-2 bg-green-100 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full mb-3 sm:mb-4">
+              <Target className="w-4 h-4 sm:w-5 sm:h-5 text-green-700" />
+              <span className="text-green-700 font-semibold text-xs sm:text-sm md:text-base">Flexible Purpose</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 px-2">
               Use Your Home Loan for Multiple Purposes
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto px-4">
               Our home loans can be used for various residential property needs
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
             {loanPurposes.map((purpose, index) => (
               <div 
                 key={index}
-                className="bg-white rounded-xl p-4 sm:p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 text-center group border border-gray-100 hover:border-green-300"
+                className="bg-white rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 lg:p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 text-center group border border-gray-100 hover:border-green-300"
               >
-                <div className={`w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 bg-gradient-to-br ${purpose.color} rounded-full flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                  {React.cloneElement(purpose.icon, { className: "w-6 h-6 sm:w-8 sm:h-8" })}
+                <div className={`w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 mx-auto mb-2 sm:mb-3 md:mb-4 bg-gradient-to-br ${purpose.color} rounded-full flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                  {React.cloneElement(purpose.icon, { className: "w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8" })}
                 </div>
-                <h3 className="text-xs sm:text-sm md:text-base font-bold text-gray-900 group-hover:text-green-700 transition-colors">
+                <h3 className="text-xs sm:text-sm md:text-base font-bold text-gray-900 group-hover:text-green-700 transition-colors px-1">
                   {purpose.title}
                 </h3>
               </div>
@@ -1942,79 +1932,81 @@ const Home_Loan = () => {
       </section>
 
       {/* Bank Logos Auto Slider Section */}
-      <section className="py-8 lg:py-12 max-w-7xl mx-auto bg-gradient-to-b from-white to-gray-50 overflow-hidden">
-        <div className=" px-4 sm:px-6 lg:px-8 mb-8">
-          <div className="text-center">
-            <div className="inline-flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-full mb-4">
-              <Building2 className="w-5 h-5 text-blue-700" />
-              <span className="text-blue-700 font-semibold text-sm sm:text-base">Trusted Banking Partners</span>
+      <section className="py-6 sm:py-8 md:py-10 lg:py-12 bg-gradient-to-b from-white to-gray-50 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6 sm:mb-8 md:mb-10">
+            <div className="text-center">
+              <div className="inline-flex items-center gap-2 bg-blue-100 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full mb-3 sm:mb-4">
+                <Building2 className="w-4 h-4 sm:w-5 sm:h-5 text-blue-700" />
+                <span className="text-blue-700 font-semibold text-xs sm:text-sm md:text-base">Trusted Banking Partners</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 mb-2 sm:mb-3 md:mb-4 px-2">
+                Leading Banks for Your Home Loan
+              </h2>
+              <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-3xl mx-auto px-4">
+                Partner with India's most trusted banks to get the best home loan rates and flexible repayment options
+              </p>
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 px-4">
-              Leading Banks for Your Home Loan
-            </h2>
-            <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto px-4">
-              Partner with India's most trusted banks to get the best home loan rates and flexible repayment options
-            </p>
           </div>
         </div>
 
         {/* First Row - Left to Right Auto Scroll */}
-        <div className="relative mb-6 sm:mb-8 lg:mb-10">
-          <div className="flex gap-8 sm:gap-12 lg:gap-16 animate-scroll-left">
+        <div className="relative mb-4 sm:mb-6 md:mb-8 lg:mb-10">
+          <div className="flex gap-4 sm:gap-6 md:gap-8 lg:gap-12 xl:gap-16 animate-scroll-left">
             {/* First set of logos */}
-            <div className="flex gap-8 sm:gap-12 lg:gap-16 min-w-max">
+            <div className="flex gap-4 sm:gap-6 md:gap-8 lg:gap-12 xl:gap-16 min-w-max">
               <img 
                 src="/logos/sbi.png" 
                 alt="State Bank of India" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-12 sm:h-14 md:h-16 lg:h-20 xl:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/image.png" 
                 alt="HDFC Bank" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-12 sm:h-14 md:h-16 lg:h-20 xl:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/image copy.png" 
                 alt="ICICI Bank" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-12 sm:h-14 md:h-16 lg:h-20 xl:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/image copy 2.png" 
                 alt="Axis Bank" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-12 sm:h-14 md:h-16 lg:h-20 xl:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/image copy 3.png" 
                 alt="Punjab National Bank" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-12 sm:h-14 md:h-16 lg:h-20 xl:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
             </div>
             {/* Duplicate set for seamless loop */}
-            <div className="flex gap-8 sm:gap-12 lg:gap-16 min-w-max">
+            <div className="flex gap-4 sm:gap-6 md:gap-8 lg:gap-12 xl:gap-16 min-w-max">
               <img 
                 src="/logos/sbi.png" 
                 alt="State Bank of India" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-12 sm:h-14 md:h-16 lg:h-20 xl:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/image.png" 
                 alt="HDFC Bank" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-12 sm:h-14 md:h-16 lg:h-20 xl:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/image copy.png" 
                 alt="ICICI Bank" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-12 sm:h-14 md:h-16 lg:h-20 xl:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/image copy 2.png" 
                 alt="Axis Bank" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-12 sm:h-14 md:h-16 lg:h-20 xl:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/image copy 3.png" 
                 alt="Punjab National Bank" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-12 sm:h-14 md:h-16 lg:h-20 xl:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
             </div>
           </div>
@@ -2022,61 +2014,61 @@ const Home_Loan = () => {
 
         {/* Second Row - Right to Left Auto Scroll */}
         <div className="relative">
-          <div className="flex gap-8 sm:gap-12 lg:gap-16 animate-scroll-right">
+          <div className="flex gap-4 sm:gap-6 md:gap-8 lg:gap-12 xl:gap-16 animate-scroll-right">
             {/* First set of logos */}
-            <div className="flex gap-8 sm:gap-12 lg:gap-16 min-w-max">
+            <div className="flex gap-4 sm:gap-6 md:gap-8 lg:gap-12 xl:gap-16 min-w-max">
               <img 
                 src="/logos/bob.png" 
                 alt="Bank of Baroda" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-12 sm:h-14 md:h-16 lg:h-20 xl:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/image copy 4.png" 
                 alt="Canara Bank" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-12 sm:h-14 md:h-16 lg:h-20 xl:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/image copy 5.png" 
                 alt="Union Bank of India" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-12 sm:h-14 md:h-16 lg:h-20 xl:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/image copy 6.png" 
                 alt="Kotak Mahindra Bank" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-12 sm:h-14 md:h-16 lg:h-20 xl:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/image copy 7.png" 
                 alt="IDFC FIRST Bank" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-12 sm:h-14 md:h-16 lg:h-20 xl:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
             </div>
             {/* Duplicate set for seamless loop */}
-            <div className="flex gap-8 sm:gap-12 lg:gap-16 min-w-max">
+            <div className="flex gap-4 sm:gap-6 md:gap-8 lg:gap-12 xl:gap-16 min-w-max">
               <img 
                 src="/logos/bob.png" 
                 alt="Bank of Baroda" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-12 sm:h-14 md:h-16 lg:h-20 xl:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/image copy 4.png" 
                 alt="Canara Bank" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-12 sm:h-14 md:h-16 lg:h-20 xl:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/image copy 5.png" 
                 alt="Union Bank of India" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-12 sm:h-14 md:h-16 lg:h-20 xl:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/image copy 6.png" 
                 alt="Kotak Mahindra Bank" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-12 sm:h-14 md:h-16 lg:h-20 xl:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
               <img 
                 src="/logos/image copy 7.png" 
                 alt="IDFC FIRST Bank" 
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                className="h-12 sm:h-14 md:h-16 lg:h-20 xl:h-24 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
               />
             </div>
           </div>
@@ -2210,37 +2202,37 @@ const Home_Loan = () => {
         </div>
       </section>
        {/* FAQ Section */}
-      <section className="py-6 lg:py-8 bg-white">
+      <section className="py-6 sm:py-8 lg:py-10 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+          <div className="text-center mb-6 sm:mb-8">
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 px-2">
               Frequently Asked Questions
             </h2>
-            <p className="text-lg text-gray-600">
+            <p className="text-sm sm:text-base lg:text-lg text-gray-600 px-4">
               Get answers to common questions about home loans
             </p>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {faqs.map((faq, index) => (
               <div 
                 key={index}
-                className="bg-gradient-to-br from-green-50 to-white rounded-2xl shadow-lg overflow-hidden border border-green-100"
+                className="bg-gradient-to-br from-green-50 to-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden border border-green-100"
               >
                 <button
                   onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                  className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-green-50 transition-colors"
+                  className="w-full px-4 sm:px-5 md:px-6 py-4 sm:py-5 flex items-center justify-between text-left hover:bg-green-50 transition-colors"
                 >
-                  <span className="text-lg font-bold text-gray-900 pr-4">{faq.question}</span>
+                  <span className="text-sm sm:text-base md:text-lg font-bold text-gray-900 pr-3 sm:pr-4">{faq.question}</span>
                   {openFaq === index ? (
-                    <ChevronUp className="w-6 h-6 text-green-600 flex-shrink-0" />
+                    <ChevronUp className="w-5 h-5 sm:w-6 sm:h-6 text-green-600 flex-shrink-0" />
                   ) : (
-                    <ChevronDown className="w-6 h-6 text-green-600 flex-shrink-0" />
+                    <ChevronDown className="w-5 h-5 sm:w-6 sm:h-6 text-green-600 flex-shrink-0" />
                   )}
                 </button>
                 
                 {openFaq === index && (
-                  <div className="px-6 pb-5 text-gray-600 leading-relaxed">
+                  <div className="px-4 sm:px-5 md:px-6 pb-4 sm:pb-5 text-sm sm:text-base text-gray-600 leading-relaxed">
                     {faq.answer}
                   </div>
                 )}

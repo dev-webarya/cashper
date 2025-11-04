@@ -350,52 +350,54 @@ const Business_Tax_planning = () => {
     }
   ];
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white overflow-x-hidden">
       <Navbar />
       {/* Hero Section */}
-      <section className="relative pt-24 sm:pt-28 md:pt-32 lg:pt-36 pb-8 sm:pb-10 md:pb-12 min-h-[500px] sm:min-h-[550px] md:min-h-[600px] bg-cover bg-center bg-no-repeat text-white flex items-center"
+      <section className="relative pt-20 xs:pt-22 sm:pt-24 md:pt-28 lg:pt-32 xl:pt-36 pb-6 xs:pb-7 sm:pb-8 md:pb-10 lg:pb-12 min-h-[450px] xs:min-h-[500px] sm:min-h-[550px] md:min-h-[600px] lg:min-h-[650px] bg-cover bg-center bg-no-repeat text-white flex items-center overflow-hidden"
         style={{
           backgroundImage: "url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1600&q=80')",
           backgroundSize: 'cover',
-          backgroundPosition: 'center'
+          backgroundPosition: 'center center',
+          backgroundAttachment: 'scroll',
+          backgroundRepeat: 'no-repeat'
         }}>
-        <div className="absolute inset-0 bg-black/40 sm:bg-black/50"></div>
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-8 w-full">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-center">
-            <div className="space-y-4 text-center md:text-left">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+        <div className="absolute inset-0 bg-black/40 xs:bg-black/45 sm:bg-black/50"></div>
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-3 xs:px-4 sm:px-5 md:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 xs:gap-6 sm:gap-7 md:gap-8 lg:gap-10 items-center">
+            <div className="space-y-3 xs:space-y-4 text-center md:text-left">
+              <h1 className="text-xl xs:text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight px-2 xs:px-0">
                 Business Tax Planning & Corporate Tax Strategy
               </h1>
-              <p className="text-sm sm:text-base md:text-lg text-blue-100">
+              <p className="text-xs xs:text-sm sm:text-base md:text-base lg:text-lg text-blue-100 px-2 xs:px-0 leading-relaxed">
                 Expert business tax planning to reduce corporate tax liability by 15-30%. Our certified tax consultants help businesses of all sizes optimize taxes through strategic planning, maximize legitimate deductions, and ensure full compliance with tax regulations.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center md:justify-start pt-2">
+              <div className="flex flex-col sm:flex-row gap-2.5 xs:gap-3 sm:gap-4 justify-center md:justify-start pt-1 xs:pt-2 px-2 xs:px-0">
                 <button 
                   onClick={() => document.getElementById('business-contact-form').scrollIntoView({ behavior: 'smooth' })}
-                  className="bg-green-700 hover:bg-green-800 text-white font-semibold px-6 sm:px-8 md:px-10 py-3 sm:py-3.5 md:py-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 text-sm sm:text-base md:text-lg text-center transform hover:scale-105 active:scale-95">
+                  className="bg-green-700 hover:bg-green-800 active:bg-green-900 text-white font-semibold px-5 xs:px-6 sm:px-7 md:px-8 lg:px-10 py-2.5 xs:py-3 sm:py-3.5 md:py-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 text-xs xs:text-sm sm:text-base md:text-lg text-center transform hover:scale-105 active:scale-95 touch-manipulation">
                   Get Business Tax Strategy
                 </button>
                 <Link 
                   to="/contact"
-                  className="bg-white/10 backdrop-blur-sm border-2 border-white/20 hover:bg-white/20 text-white font-semibold px-6 sm:px-8 md:px-10 py-3 sm:py-3.5 md:py-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 text-sm sm:text-base md:text-lg text-center transform hover:scale-105 active:scale-95">
+                  className="bg-white/10 backdrop-blur-sm border-2 border-white/20 hover:bg-white/20 active:bg-white/30 text-white font-semibold px-5 xs:px-6 sm:px-7 md:px-8 lg:px-10 py-2.5 xs:py-3 sm:py-3.5 md:py-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 text-xs xs:text-sm sm:text-base md:text-lg text-center transform hover:scale-105 active:scale-95 touch-manipulation">
                   Reduce Corporate Tax
                 </Link>
               </div>
             </div>
             
             {/* Business Contact Form */}
-            <div id="business-contact-form" className="bg-white rounded-xl shadow-2xl p-4 sm:p-5 md:p-6 mt-6 md:mt-0">
-              <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-4 text-center">
+            <div id="business-contact-form" className="bg-white rounded-lg xs:rounded-xl shadow-2xl p-3 xs:p-4 sm:p-5 md:p-6 mt-5 xs:mt-6 md:mt-0 mx-2 xs:mx-0">
+              <h3 className="text-base xs:text-lg sm:text-xl font-bold text-gray-800 mb-3 xs:mb-4 text-center">
                 FREE BUSINESS TAX CONSULTATION
               </h3>
-              <form onSubmit={handleSubmit} className="space-y-3">
+              <form onSubmit={handleSubmit} className="space-y-2 xs:space-y-2.5 sm:space-y-3">
                 <input
                   type="text"
                   name="businessName"
                   placeholder="Business Name"
                   value={formData.businessName}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none text-gray-800 text-sm"
+                  className="w-full px-2.5 xs:px-3 sm:px-3 py-1.5 xs:py-2 sm:py-2 rounded-lg border border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none text-gray-800 text-xs xs:text-sm sm:text-sm"
                   required
                 />
                 <input
@@ -404,7 +406,7 @@ const Business_Tax_planning = () => {
                   placeholder="Owner/Director Name"
                   value={formData.ownerName}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none text-gray-800 text-sm"
+                  className="w-full px-2.5 xs:px-3 sm:px-3 py-1.5 xs:py-2 sm:py-2 rounded-lg border border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none text-gray-800 text-xs xs:text-sm sm:text-sm"
                   required
                 />
                 <input
@@ -413,7 +415,7 @@ const Business_Tax_planning = () => {
                   placeholder="Business Email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none text-gray-800 text-sm"
+                  className="w-full px-2.5 xs:px-3 sm:px-3 py-1.5 xs:py-2 sm:py-2 rounded-lg border border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none text-gray-800 text-xs xs:text-sm sm:text-sm"
                   required
                 />
                 <input
@@ -422,14 +424,14 @@ const Business_Tax_planning = () => {
                   placeholder="Contact Number"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none text-gray-800 text-sm"
+                  className="w-full px-2.5 xs:px-3 sm:px-3 py-1.5 xs:py-2 sm:py-2 rounded-lg border border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none text-gray-800 text-xs xs:text-sm sm:text-sm"
                   required
                 />
                 <select
                   name="businessType"
                   value={formData.businessType}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none text-gray-800 text-sm"
+                  className="w-full px-2.5 xs:px-3 sm:px-3 py-1.5 xs:py-2 sm:py-2 rounded-lg border border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none text-gray-800 text-xs xs:text-sm sm:text-sm"
                   required
                 >
                   <option value="">Business Type</option>
@@ -444,7 +446,7 @@ const Business_Tax_planning = () => {
                   name="annualTurnover"
                   value={formData.annualTurnover}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none text-gray-800 text-sm"
+                  className="w-full px-2.5 xs:px-3 sm:px-3 py-1.5 xs:py-2 sm:py-2 rounded-lg border border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none text-gray-800 text-xs xs:text-sm sm:text-sm"
                   required
                 >
                   <option value="">Annual Turnover</option>
@@ -1072,7 +1074,7 @@ const Business_Tax_planning = () => {
       </section>
 
       {/* Business Tax Calculator Section */}
-      <section className="py-10 sm:py-12 md:py-16 bg-gradient-to-b from-green-50 to-blue-50">
+      <section id="calculator" className="py-10 sm:py-12 md:py-16 bg-gradient-to-b from-green-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8 sm:mb-10">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3">

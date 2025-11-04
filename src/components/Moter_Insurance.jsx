@@ -27,6 +27,17 @@ import Footer from './Footer';
 const Moter_Insurance = () => {
   const navigate = useNavigate();
   
+  // Handle navigation to contact page with scroll to hero section
+  const handleContactNavigation = () => {
+    navigate('/contact');
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }, 100);
+  };
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -326,7 +337,9 @@ const Moter_Insurance = () => {
         style={{
           backgroundImage: "url('https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=1600&q=80')",
           backgroundSize: 'cover',
-          backgroundPosition: 'center'
+          backgroundPosition: 'center center',
+          backgroundAttachment: 'scroll',
+          backgroundRepeat: 'no-repeat'
         }}>
         <div className="absolute inset-0 bg-gradient-to-r from-green-700/60 to-blue-800/50"></div>
         <div className="relative z-10 max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 w-full">
@@ -1406,7 +1419,7 @@ const Moter_Insurance = () => {
               Get Instant Quote
             </button>
             <button 
-              onClick={() => navigate('/contact')}
+              onClick={handleContactNavigation}
               className="border-2 border-white text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl font-semibold hover:bg-white hover:text-green-700 transition-all duration-300 text-sm sm:text-base">
               Talk to Expert
             </button>

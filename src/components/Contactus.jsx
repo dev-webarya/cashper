@@ -165,7 +165,13 @@ This message was sent from the Cashper.ai Contact Form.
       {/* Hero Section - Fully Responsive with Tailwind CSS */}
       <div 
         className="relative w-full min-h-[320px] xs:min-h-[350px] sm:min-h-[380px] md:min-h-[420px] lg:min-h-[480px] xl:min-h-[520px] 2xl:min-h-[560px] overflow-hidden bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/image copy 7.png')" }}
+        style={{ 
+          backgroundImage: "url('/image copy 7.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center center",
+          backgroundAttachment: "scroll",
+          backgroundRepeat: "no-repeat"
+        }}
       >
         
 
@@ -381,10 +387,10 @@ This message was sent from the Cashper.ai Contact Form.
                   {
                     icon: FaPhone,
                     title: "Phone Support",
-                    details: "6200755759<br/>7393080847\n",
+                    details: "6200755759  , 7393080847\n",
                     gradient: "from-green-500 to-emerald-500",
                     bg: "bg-green-50/80",
-                    link: "tel:6200755759<br/>7393080847",
+                    link: "tel:6200755759 ,7393080847",
                     clickable: true,
                   },
                   {

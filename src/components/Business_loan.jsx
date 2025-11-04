@@ -579,54 +579,56 @@ const Business_loan = () => {
         style={{
           backgroundImage: "url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1600&q=80')",
           backgroundSize: "cover",
-          backgroundPosition: "center center"
+          backgroundPosition: "center center",
+          backgroundAttachment: "scroll",
+          backgroundRepeat: "no-repeat"
         }}
       >
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-green-900/95 via-green-800/90 to-green-700/85"></div>
         {/* Content */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 sm:pt-32 lg:pt-36 pb-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-3 xs:px-4 sm:px-5 md:px-6 lg:px-8 pt-24 xs:pt-26 sm:pt-28 md:pt-32 lg:pt-36 pb-6 xs:pb-7 sm:pb-8 md:pb-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 xs:gap-6 sm:gap-7 md:gap-8 items-center">
             {/* Left Side - Text Content */}
             <div className="text-center lg:text-left order-1 lg:order-1">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-3 leading-tight drop-shadow-2xl">
+              <h1 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl font-extrabold text-white mb-2 xs:mb-3 leading-tight drop-shadow-2xl px-2">
                 Business Loan for Growth
-                <span className="block text-yellow-300 mt-2 text-xl sm:text-2xl md:text-3xl lg:text-4xl">₹1 Lakh to ₹50 Crore at 11% Interest</span>
+                <span className="block text-yellow-300 mt-1.5 xs:mt-2 text-lg xs:text-xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl">₹1 Lakh to ₹50 Crore at 11% Interest</span>
               </h1>
               
-              <p className="text-sm sm:text-base lg:text-lg text-white/95 mb-4 sm:mb-5 leading-relaxed font-medium drop-shadow-lg px-2 sm:px-0">
+              <p className="text-xs xs:text-sm sm:text-base md:text-base lg:text-lg text-white/95 mb-3 xs:mb-4 sm:mb-5 leading-relaxed font-medium drop-shadow-lg px-2 xs:px-3 sm:px-0">
                 Quick approval • Flexible tenure • Working capital • Equipment financing • Business expansion
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start px-4 sm:px-0">
+              <div className="flex flex-col sm:flex-row gap-2.5 xs:gap-3 justify-center lg:justify-start px-3 xs:px-4 sm:px-0">
                 <a 
                   href="#calculator" 
                   onClick={(e) => handleSmoothScroll(e, 'calculator')}
-                  className="bg-white/20 backdrop-blur-md border-2 border-white/40 text-white hover:bg-white/30 font-semibold px-4 sm:px-6 py-2.5 sm:py-3 rounded-full shadow-xl transition-all duration-300 text-sm sm:text-base transform hover:scale-105 active:scale-95 inline-flex items-center justify-center gap-2"
+                  className="bg-white/20 backdrop-blur-md border-2 border-white/40 text-white hover:bg-white/30 font-semibold px-4 xs:px-5 sm:px-6 md:px-7 py-2 xs:py-2.5 sm:py-3 rounded-full shadow-xl transition-all duration-300 text-xs xs:text-sm sm:text-base transform hover:scale-105 active:scale-95 inline-flex items-center justify-center gap-1.5 xs:gap-2 touch-manipulation"
                 >
-                  <Calculator className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <Calculator className="w-4 h-4 xs:w-4 xs:h-4 sm:w-5 sm:h-5" />
                   Calculate EMI
                 </a>
                 
                 <a 
                   href="#apply-form" 
                   onClick={(e) => handleSmoothScroll(e, 'apply-form')}
-                  className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 font-bold px-4 sm:px-6 py-2.5 sm:py-3 rounded-full shadow-xl transition-all duration-300 text-sm sm:text-base transform hover:scale-105 active:scale-95 inline-flex items-center justify-center gap-2"
+                  className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 font-bold px-4 xs:px-5 sm:px-6 md:px-7 py-2 xs:py-2.5 sm:py-3 rounded-full shadow-xl transition-all duration-300 text-xs xs:text-sm sm:text-base transform hover:scale-105 active:scale-95 inline-flex items-center justify-center gap-1.5 xs:gap-2 touch-manipulation"
                 >
-                  <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <CheckCircle className="w-4 h-4 xs:w-4 xs:h-4 sm:w-5 sm:h-5" />
                   Apply Now
                 </a>
               </div>
             </div>
 
             {/* Right Side - Get In Touch Form */}
-            <div className="bg-white rounded-2xl shadow-2xl p-4 sm:p-6 order-2 lg:order-2 mx-4 sm:mx-0">
-              <div className="text-center mb-3 sm:mb-4">
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-1">GET IN TOUCH</h3>
-                <p className="text-xs sm:text-sm text-gray-600">We'll get back to you shortly</p>
+            <div className="bg-white rounded-xl xs:rounded-2xl shadow-2xl p-3 xs:p-4 sm:p-5 md:p-6 order-2 lg:order-2 mx-3 xs:mx-4 sm:mx-0">
+              <div className="text-center mb-2 xs:mb-3 sm:mb-4">
+                <h3 className="text-base xs:text-lg sm:text-xl font-bold text-gray-900 mb-0.5 xs:mb-1">GET IN TOUCH</h3>
+                <p className="text-xs xs:text-xs sm:text-sm text-gray-600">We'll get back to you shortly</p>
               </div>
 
-              <form className="space-y-2 sm:space-y-3" onSubmit={(e) => {
+              <form className="space-y-1.5 xs:space-y-2 sm:space-y-3" onSubmit={(e) => {
                 e.preventDefault();
                 const formData = new FormData(e.target);
                 const data = {
@@ -645,7 +647,7 @@ const Business_loan = () => {
                     name="fullName"
                     placeholder="Full Name"
                     required
-                    className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border border-gray-300 rounded-lg focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:outline-none transition-colors"
+                    className="w-full px-2.5 xs:px-3 sm:px-4 py-1.5 xs:py-2 sm:py-2.5 text-xs xs:text-sm sm:text-base border border-gray-300 rounded-lg focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:outline-none transition-colors"
                   />
                 </div>
 
@@ -655,7 +657,7 @@ const Business_loan = () => {
                     name="email"
                     placeholder="Email Address"
                     required
-                    className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border border-gray-300 rounded-lg focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:outline-none transition-colors"
+                    className="w-full px-2.5 xs:px-3 sm:px-4 py-1.5 xs:py-2 sm:py-2.5 text-xs xs:text-sm sm:text-base border border-gray-300 rounded-lg focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:outline-none transition-colors"
                   />
                 </div>
 
@@ -666,7 +668,7 @@ const Business_loan = () => {
                     placeholder="Phone Number"
                     pattern="[0-9]{10}"
                     required
-                    className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border border-gray-300 rounded-lg focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:outline-none transition-colors"
+                    className="w-full px-2.5 xs:px-3 sm:px-4 py-1.5 xs:py-2 sm:py-2.5 text-xs xs:text-sm sm:text-base border border-gray-300 rounded-lg focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:outline-none transition-colors"
                   />
                 </div>
 
@@ -678,13 +680,13 @@ const Business_loan = () => {
                     min="100000"
                     max="10000000"
                     required
-                    className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border border-gray-300 rounded-lg focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:outline-none transition-colors"
+                    className="w-full px-2.5 xs:px-3 sm:px-4 py-1.5 xs:py-2 sm:py-2.5 text-xs xs:text-sm sm:text-base border border-gray-300 rounded-lg focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:outline-none transition-colors"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold py-2 sm:py-2.5 text-sm sm:text-base rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                  className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 active:from-green-800 active:to-green-900 text-white font-bold py-2 xs:py-2.5 sm:py-2.5 md:py-3 text-xs xs:text-sm sm:text-base rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 touch-manipulation transform active:scale-95"
                 >
                   SUBMIT
                 </button>
@@ -695,68 +697,68 @@ const Business_loan = () => {
       </section>
 
       {/* About Business Loan Section */}
-      <section className="py-6 lg:py-8 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-center">
+      <section className="w-full py-8 xs:py-10 sm:py-12 md:py-14 lg:py-16 bg-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-3 xs:px-4 sm:px-5 md:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 xs:gap-6 sm:gap-7 md:gap-8 lg:gap-10 items-center">
             {/* Left Side - Text Content */}
             <div className="order-2 lg:order-1">             
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
+              <h2 className="text-xl xs:text-2xl sm:text-3xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 xs:mb-3 sm:mb-4 px-2 xs:px-0">
                 What is a Business Loan?
               </h2>
               
-              <p className="text-sm sm:text-base text-gray-600 mb-2 sm:mb-3 leading-relaxed">
+              <p className="text-xs xs:text-sm sm:text-base md:text-base text-gray-600 mb-2 xs:mb-2.5 sm:mb-3 leading-relaxed px-2 xs:px-0">
                 A <strong>business loan</strong> is a financing solution designed to help businesses meet their working capital needs, expand operations, purchase equipment, or invest in growth opportunities. These loans typically range from <strong>₹1 Lakh to ₹50 Crores</strong> and can be repaid over a period of <strong>1 to 7 years</strong>.
               </p>
               
-              <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-5 leading-relaxed">
+              <p className="text-xs xs:text-sm sm:text-base md:text-base text-gray-600 mb-3 xs:mb-4 sm:mb-5 leading-relaxed px-2 xs:px-0">
                 Business loans offer <strong>competitive interest rates (starting from 11%)</strong>, flexible repayment options, and both secured and unsecured financing. They help you scale your business without diluting equity, with customized solutions based on your business requirements.
               </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 mb-4 sm:mb-5">
-                <div className="flex items-start gap-2 sm:gap-3 bg-green-50 p-2.5 sm:p-3 rounded-xl">
-                  <div className="bg-green-600 text-white p-1.5 sm:p-2 rounded-lg mt-1 flex-shrink-0">
-                    <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 xs:gap-2.5 sm:gap-3 md:gap-3.5 mb-3 xs:mb-4 sm:mb-5 px-2 xs:px-0">
+                <div className="flex items-start gap-2 xs:gap-2.5 sm:gap-3 bg-green-50 p-2 xs:p-2.5 sm:p-3 rounded-lg xs:rounded-xl">
+                  <div className="bg-green-600 text-white p-1.5 xs:p-1.5 sm:p-2 rounded-lg mt-0.5 xs:mt-1 flex-shrink-0">
+                    <Clock className="w-4 h-4 xs:w-4 xs:h-4 sm:w-5 sm:h-5" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-gray-900 mb-0.5 sm:mb-1 text-sm sm:text-base">Quick Processing</h4>
-                    <p className="text-xs sm:text-sm text-gray-600">Approval within 3-7 working days</p>
+                    <h4 className="font-bold text-gray-900 mb-0.5 xs:mb-0.5 sm:mb-1 text-xs xs:text-sm sm:text-base">Quick Processing</h4>
+                    <p className="text-xs xs:text-xs sm:text-sm text-gray-600">Approval within 3-7 working days</p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-2 sm:gap-3 bg-green-50 p-2.5 sm:p-3 rounded-xl">
-                  <div className="bg-green-600 text-white p-1.5 sm:p-2 rounded-lg mt-1 flex-shrink-0">
-                    <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
+                <div className="flex items-start gap-2 xs:gap-2.5 sm:gap-3 bg-green-50 p-2 xs:p-2.5 sm:p-3 rounded-lg xs:rounded-xl">
+                  <div className="bg-green-600 text-white p-1.5 xs:p-1.5 sm:p-2 rounded-lg mt-0.5 xs:mt-1 flex-shrink-0">
+                    <FileText className="w-4 h-4 xs:w-4 xs:h-4 sm:w-5 sm:h-5" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-gray-900 mb-0.5 sm:mb-1 text-sm sm:text-base">Flexible Options</h4>
-                    <p className="text-xs sm:text-sm text-gray-600">Secured & unsecured available</p>
+                    <h4 className="font-bold text-gray-900 mb-0.5 xs:mb-0.5 sm:mb-1 text-xs xs:text-sm sm:text-base">Flexible Options</h4>
+                    <p className="text-xs xs:text-xs sm:text-sm text-gray-600">Secured & unsecured available</p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-2 sm:gap-3 bg-green-50 p-2.5 sm:p-3 rounded-xl">
-                  <div className="bg-green-600 text-white p-1.5 sm:p-2 rounded-lg mt-1 flex-shrink-0">
-                    <Shield className="w-4 h-4 sm:w-5 sm:h-5" />
+                <div className="flex items-start gap-2 xs:gap-2.5 sm:gap-3 bg-green-50 p-2 xs:p-2.5 sm:p-3 rounded-lg xs:rounded-xl">
+                  <div className="bg-green-600 text-white p-1.5 xs:p-1.5 sm:p-2 rounded-lg mt-0.5 xs:mt-1 flex-shrink-0">
+                    <Shield className="w-4 h-4 xs:w-4 xs:h-4 sm:w-5 sm:h-5" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-gray-900 mb-0.5 sm:mb-1 text-sm sm:text-base">High Loan Amount</h4>
-                    <p className="text-xs sm:text-sm text-gray-600">Up to ₹50 Crores funding</p>
+                    <h4 className="font-bold text-gray-900 mb-0.5 xs:mb-0.5 sm:mb-1 text-xs xs:text-sm sm:text-base">High Loan Amount</h4>
+                    <p className="text-xs xs:text-xs sm:text-sm text-gray-600">Up to ₹50 Crores funding</p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-2 sm:gap-3 bg-green-50 p-2.5 sm:p-3 rounded-xl">
-                  <div className="bg-green-600 text-white p-1.5 sm:p-2 rounded-lg mt-1 flex-shrink-0">
-                    <Zap className="w-4 h-4 sm:w-5 sm:h-5" />
+                <div className="flex items-start gap-2 xs:gap-2.5 sm:gap-3 bg-green-50 p-2 xs:p-2.5 sm:p-3 rounded-lg xs:rounded-xl">
+                  <div className="bg-green-600 text-white p-1.5 xs:p-1.5 sm:p-2 rounded-lg mt-0.5 xs:mt-1 flex-shrink-0">
+                    <Zap className="w-4 h-4 xs:w-4 xs:h-4 sm:w-5 sm:h-5" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-gray-900 mb-0.5 sm:mb-1 text-sm sm:text-base">Growth Support</h4>
-                    <p className="text-xs sm:text-sm text-gray-600">Dedicated relationship manager</p>
+                    <h4 className="font-bold text-gray-900 mb-0.5 xs:mb-0.5 sm:mb-1 text-xs xs:text-sm sm:text-base">Growth Support</h4>
+                    <p className="text-xs xs:text-xs sm:text-sm text-gray-600">Dedicated relationship manager</p>
                   </div>
                 </div>
               </div>
             </div>
             {/* Right Side - Image */}
-            <div className="relative order-1 lg:order-2 px-4 sm:px-0">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+            <div className="relative order-1 lg:order-2 px-3 xs:px-4 sm:px-0">
+              <div className="relative rounded-xl xs:rounded-2xl overflow-hidden shadow-2xl">
                 <img 
                   src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80" 
                   alt="Business Loan - Fuel Your Business Growth" 
@@ -766,14 +768,14 @@ const Business_loan = () => {
               </div>
 
               {/* Floating Card */}
-              <div className="absolute -bottom-3 sm:-bottom-4 -left-2 sm:-left-4 bg-white rounded-xl shadow-2xl p-3 sm:p-4 max-w-[160px] sm:max-w-[200px]">
-                <div className="flex items-center gap-2 sm:gap-3">
-                  <div className="bg-green-100 p-1.5 sm:p-2 rounded-xl flex-shrink-0">
-                    <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
+              <div className="absolute -bottom-2 xs:-bottom-3 sm:-bottom-4 -left-1 xs:-left-2 sm:-left-4 bg-white rounded-lg xs:rounded-xl shadow-2xl p-2 xs:p-3 sm:p-4 max-w-[140px] xs:max-w-[160px] sm:max-w-[200px]">
+                <div className="flex items-center gap-1.5 xs:gap-2 sm:gap-3">
+                  <div className="bg-green-100 p-1 xs:p-1.5 sm:p-2 rounded-lg xs:rounded-xl flex-shrink-0">
+                    <CheckCircle className="w-4 h-4 xs:w-5 xs:h-5 sm:w-6 sm:h-6 text-green-600" />
                   </div>
                   <div>
-                    <div className="text-lg sm:text-xl font-bold text-gray-900">1,00,000+</div>
-                    <div className="text-xs text-gray-600">Business Loans Approved</div>
+                    <div className="text-base xs:text-lg sm:text-xl font-bold text-gray-900">1,00,000+</div>
+                    <div className="text-xs xs:text-xs sm:text-xs text-gray-600 leading-tight">Business Loans Approved</div>
                   </div>
                 </div>
               </div>
@@ -782,13 +784,13 @@ const Business_loan = () => {
         </div>
       </section>
       {/* Features Section with Images */}
-      <section className="py-6 lg:py-8 bg-gradient-to-b from-white to-gray-50">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+      <section className="w-full py-8 xs:py-10 sm:py-12 md:py-14 lg:py-16 bg-gradient-to-b from-white to-gray-50 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-3 xs:px-4 sm:px-5 md:px-6 lg:px-8">
+          <div className="text-center mb-6 xs:mb-7 sm:mb-8 md:mb-10 px-2">
+            <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-2 xs:mb-3 sm:mb-4">
               Why Choose Our Business Loans?
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-sm xs:text-base sm:text-lg md:text-lg text-gray-600 max-w-2xl mx-auto px-2">
               Empower your business growth with our comprehensive financing solutions
             </p>
           </div>
@@ -1105,97 +1107,85 @@ const Business_loan = () => {
                   );
                 })}
               </div>
-              
-              {/* Apply Now Button */}
-              <div className="mt-8 text-center">
-                <a 
-                  href="#apply-form"
-                  onClick={(e) => handleSmoothScroll(e, 'apply-form')}
-                  className="inline-flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold px-8 py-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
-                >
-                  <CheckCircle className="w-5 h-5" />
-                  Apply Now
-                  <ArrowRight className="w-5 h-5" />
-                </a>
-              </div>
+            
             </div>
           </div>
         </div>
       </section>
 
       {/* Loan Process Timeline */}
-      <section className="py-6 lg:py-8 bg-white">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-full mb-4">
-              <TrendingUp className="w-5 h-5 text-blue-700" />
-              <span className="text-blue-700 font-semibold text-sm">Simple Process</span>
+      <section className="w-full py-8 xs:py-10 sm:py-12 md:py-14 lg:py-16 xl:py-20 bg-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-3 xs:px-4 sm:px-5 md:px-6 lg:px-8">
+          <div className="text-center mb-8 xs:mb-10 sm:mb-12 md:mb-14 lg:mb-16">
+            <div className="inline-flex items-center gap-1.5 xs:gap-2 bg-blue-100 px-3 xs:px-4 py-1.5 xs:py-2 rounded-full mb-3 xs:mb-4">
+              <TrendingUp className="w-4 h-4 xs:w-5 xs:h-5 text-blue-700" />
+              <span className="text-blue-700 font-semibold text-xs xs:text-sm">Simple Process</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+            <h2 className="text-2xl xs:text-3xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl font-bold text-gray-900 mb-3 xs:mb-4 px-2">
               Get Your Loan in 4 Easy Steps
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-sm xs:text-base sm:text-lg md:text-lg text-gray-600 max-w-2xl mx-auto px-4">
               Our streamlined process ensures quick approval and disbursal
             </p>
           </div>
 
           <div className="relative">
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+            <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xs:gap-7 sm:gap-8 md:gap-10 lg:gap-8 relative">
               {/* Step 1 */}
               <div className="text-center group">
-                <div className="relative inline-block mb-6">
-                  <div className="w-24 h-24 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-transform duration-300 relative z-10">
-                    <FileText className="w-12 h-12 text-white" />
+                <div className="relative inline-block mb-4 xs:mb-5 sm:mb-6">
+                  <div className="w-20 h-20 xs:w-22 xs:h-22 sm:w-24 sm:h-24 md:w-26 md:h-26 lg:w-24 lg:h-24 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-transform duration-300 relative z-10">
+                    <FileText className="w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 md:w-13 md:h-13 lg:w-12 lg:h-12 text-white" />
                   </div>
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                  <div className="absolute -top-1.5 -right-1.5 xs:-top-2 xs:-right-2 w-7 h-7 xs:w-8 xs:h-8 bg-green-600 rounded-full flex items-center justify-center text-white font-bold text-xs xs:text-sm shadow-lg">
                     1
                   </div>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Fill Application</h3>
-                <p className="text-gray-600">Complete our simple online form with your details</p>
+                <h3 className="text-lg xs:text-xl sm:text-xl md:text-2xl lg:text-xl font-bold text-gray-900 mb-2 xs:mb-3 px-2">Fill Application</h3>
+                <p className="text-sm xs:text-base sm:text-base text-gray-600 px-3">Complete our simple online form with your details</p>
               </div>
 
               {/* Step 2 */}
               <div className="text-center group">
-                <div className="relative inline-block mb-6">
-                  <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-transform duration-300 relative z-10">
-                    <Upload className="w-12 h-12 text-white" />
+                <div className="relative inline-block mb-4 xs:mb-5 sm:mb-6">
+                  <div className="w-20 h-20 xs:w-22 xs:h-22 sm:w-24 sm:h-24 md:w-26 md:h-26 lg:w-24 lg:h-24 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-transform duration-300 relative z-10">
+                    <Upload className="w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 md:w-13 md:h-13 lg:w-12 lg:h-12 text-white" />
                   </div>
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                  <div className="absolute -top-1.5 -right-1.5 xs:-top-2 xs:-right-2 w-7 h-7 xs:w-8 xs:h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xs xs:text-sm shadow-lg">
                     2
                   </div>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Submit Documents</h3>
-                <p className="text-gray-600">Upload required documents securely online</p>
+                <h3 className="text-lg xs:text-xl sm:text-xl md:text-2xl lg:text-xl font-bold text-gray-900 mb-2 xs:mb-3 px-2">Submit Documents</h3>
+                <p className="text-sm xs:text-base sm:text-base text-gray-600 px-3">Upload required documents securely online</p>
               </div>
 
               {/* Step 3 */}
               <div className="text-center group">
-                <div className="relative inline-block mb-6">
-                  <div className="w-24 h-24 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-transform duration-300 relative z-10">
-                    <BadgeCheck className="w-12 h-12 text-white" />
+                <div className="relative inline-block mb-4 xs:mb-5 sm:mb-6">
+                  <div className="w-20 h-20 xs:w-22 xs:h-22 sm:w-24 sm:h-24 md:w-26 md:h-26 lg:w-24 lg:h-24 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-transform duration-300 relative z-10">
+                    <BadgeCheck className="w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 md:w-13 md:h-13 lg:w-12 lg:h-12 text-white" />
                   </div>
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                  <div className="absolute -top-1.5 -right-1.5 xs:-top-2 xs:-right-2 w-7 h-7 xs:w-8 xs:h-8 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xs xs:text-sm shadow-lg">
                     3
                   </div>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Get Approved</h3>
-                <p className="text-gray-600">Receive instant approval within 24-48 hours</p>
+                <h3 className="text-lg xs:text-xl sm:text-xl md:text-2xl lg:text-xl font-bold text-gray-900 mb-2 xs:mb-3 px-2">Get Approved</h3>
+                <p className="text-sm xs:text-base sm:text-base text-gray-600 px-3">Receive instant approval within 24-48 hours</p>
               </div>
 
               {/* Step 4 */}
               <div className="text-center group">
-                <div className="relative inline-block mb-6">
-                  <div className="w-24 h-24 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-transform duration-300 relative z-10">
-                    <IndianRupee className="w-12 h-12 text-white" />
+                <div className="relative inline-block mb-4 xs:mb-5 sm:mb-6">
+                  <div className="w-20 h-20 xs:w-22 xs:h-22 sm:w-24 sm:h-24 md:w-26 md:h-26 lg:w-24 lg:h-24 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-transform duration-300 relative z-10">
+                    <IndianRupee className="w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 md:w-13 md:h-13 lg:w-12 lg:h-12 text-white" />
                   </div>
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-orange-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                  <div className="absolute -top-1.5 -right-1.5 xs:-top-2 xs:-right-2 w-7 h-7 xs:w-8 xs:h-8 bg-orange-600 rounded-full flex items-center justify-center text-white font-bold text-xs xs:text-sm shadow-lg">
                     4
                   </div>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Receive Funds</h3>
-                <p className="text-gray-600">Money transferred directly to your bank account</p>
+                <h3 className="text-lg xs:text-xl sm:text-xl md:text-2xl lg:text-xl font-bold text-gray-900 mb-2 xs:mb-3 px-2">Receive Funds</h3>
+                <p className="text-sm xs:text-base sm:text-base text-gray-600 px-3">Money transferred directly to your bank account</p>
               </div>
             </div>
           </div>
@@ -1203,65 +1193,65 @@ const Business_loan = () => {
       </section>
 
       {/* Eligibility & Benefits Section - Enhanced */}
-      <section className="py-6 lg:py-8 bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-6">
+      <section className="w-full py-8 xs:py-10 sm:py-12 md:py-14 lg:py-16 bg-gradient-to-b from-gray-50 to-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-3 xs:px-4 sm:px-5 md:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 xs:gap-6 sm:gap-7 md:gap-8">
             {/* Eligibility Criteria */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-gray-100 hover:shadow-3xl transition-shadow duration-300">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="bg-gradient-to-br from-green-600 to-green-700 text-white p-4 rounded-2xl shadow-lg">
-                  <CheckCircle className="w-7 h-7" />
+            <div className="bg-white rounded-xl xs:rounded-2xl sm:rounded-3xl p-4 xs:p-5 sm:p-6 md:p-7 lg:p-8 shadow-2xl border border-gray-100 hover:shadow-3xl transition-shadow duration-300">
+              <div className="flex items-center gap-2 xs:gap-2.5 sm:gap-3 mb-4 xs:mb-5 sm:mb-6">
+                <div className="bg-gradient-to-br from-green-600 to-green-700 text-white p-2.5 xs:p-3 sm:p-4 rounded-xl xs:rounded-2xl shadow-lg flex-shrink-0">
+                  <CheckCircle className="w-5 h-5 xs:w-6 xs:h-6 sm:w-7 sm:h-7" />
                 </div>
                 <div>
-                  <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                  <h2 className="text-lg xs:text-xl sm:text-2xl md:text-2xl lg:text-3xl font-bold text-gray-900">
                     Eligibility Criteria
                   </h2>
-                  <p className="text-gray-600 text-sm mt-1">Check if you qualify</p>
+                  <p className="text-gray-600 text-xs xs:text-xs sm:text-sm mt-0.5 xs:mt-1">Check if you qualify</p>
                 </div>
               </div>
               
-              <div className="space-y-4">
+              <div className="space-y-2.5 xs:space-y-3 sm:space-y-4">
                 {eligibility.map((item, index) => (
                   <div 
                     key={index}
-                    className="group bg-gradient-to-r from-green-50 to-white p-5 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-green-100 hover:border-green-300"
+                    className="group bg-gradient-to-r from-green-50 to-white p-3 xs:p-4 sm:p-5 rounded-lg xs:rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-green-100 hover:border-green-300"
                   >
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-green-100 group-hover:bg-green-200 rounded-lg flex items-center justify-center transition-colors">
-                          {index === 0 && <Users className="w-5 h-5 text-green-700" />}
-                          {index === 1 && <Briefcase className="w-5 h-5 text-green-700" />}
-                          {index === 2 && <IndianRupee className="w-5 h-5 text-green-700" />}
-                          {index === 3 && <TrendingUp className="w-5 h-5 text-green-700" />}
-                          {index === 4 && <Clock className="w-5 h-5 text-green-700" />}
-                          {index === 5 && <Shield className="w-5 h-5 text-green-700" />}
+                    <div className="flex justify-between items-center gap-2 xs:gap-3">
+                      <div className="flex items-center gap-2 xs:gap-2.5 sm:gap-3 flex-1 min-w-0">
+                        <div className="w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 bg-green-100 group-hover:bg-green-200 rounded-lg flex items-center justify-center transition-colors flex-shrink-0">
+                          {index === 0 && <Users className="w-4 h-4 xs:w-4.5 xs:h-4.5 sm:w-5 sm:h-5 text-green-700" />}
+                          {index === 1 && <Briefcase className="w-4 h-4 xs:w-4.5 xs:h-4.5 sm:w-5 sm:h-5 text-green-700" />}
+                          {index === 2 && <IndianRupee className="w-4 h-4 xs:w-4.5 xs:h-4.5 sm:w-5 sm:h-5 text-green-700" />}
+                          {index === 3 && <TrendingUp className="w-4 h-4 xs:w-4.5 xs:h-4.5 sm:w-5 sm:h-5 text-green-700" />}
+                          {index === 4 && <Clock className="w-4 h-4 xs:w-4.5 xs:h-4.5 sm:w-5 sm:h-5 text-green-700" />}
+                          {index === 5 && <Shield className="w-4 h-4 xs:w-4.5 xs:h-4.5 sm:w-5 sm:h-5 text-green-700" />}
                         </div>
-                        <span className="font-bold text-gray-700">{item.label}</span>
+                        <span className="font-bold text-gray-700 text-xs xs:text-sm sm:text-base truncate">{item.label}</span>
                       </div>
-                      <span className="text-green-700 font-bold text-lg">{item.value}</span>
+                      <span className="text-green-700 font-bold text-xs xs:text-sm sm:text-base md:text-lg flex-shrink-0">{item.value}</span>
                     </div>
                   </div>
                 ))}
               </div>
 
-              <div className="mt-8 p-5 bg-gradient-to-r from-green-100 to-blue-100 rounded-2xl border border-green-200">
-                <div className="flex items-start gap-3">
-                  <AlertCircle className="w-5 h-5 text-green-700 flex-shrink-0 mt-0.5" />
-                  <p className="text-sm text-gray-800">
+              <div className="mt-5 xs:mt-6 sm:mt-7 md:mt-8 p-3 xs:p-4 sm:p-5 bg-gradient-to-r from-green-100 to-blue-100 rounded-xl xs:rounded-2xl border border-green-200">
+                <div className="flex items-start gap-2 xs:gap-2.5 sm:gap-3">
+                  <AlertCircle className="w-4 h-4 xs:w-5 xs:h-5 text-green-700 flex-shrink-0 mt-0.5" />
+                  <p className="text-xs xs:text-sm sm:text-sm text-gray-800 leading-relaxed">
                     <strong className="text-green-800">Note:</strong> Meeting these criteria increases your chances of approval. 
                     Final eligibility is subject to credit assessment and verification.
                   </p>
                 </div>
               </div>
 
-              <div className="mt-6">
+              <div className="mt-4 xs:mt-5 sm:mt-6">
                 <a 
                   href="#apply-form"
                   onClick={(e) => handleSmoothScroll(e, 'apply-form')}
-                  className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 inline-flex items-center justify-center gap-2"
+                  className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 active:from-green-800 active:to-green-900 text-white font-bold py-3 xs:py-3.5 sm:py-4 px-4 xs:px-5 sm:px-6 rounded-lg xs:rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 inline-flex items-center justify-center gap-1.5 xs:gap-2 text-sm xs:text-base sm:text-base touch-manipulation transform active:scale-95"
                 >
                   Check Eligibility
-                  <ArrowRight className="w-5 h-5" />
+                  <ArrowRight className="w-4 h-4 xs:w-5 xs:h-5" />
                 </a>
               </div>
             </div>

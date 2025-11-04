@@ -610,7 +610,9 @@ const Short_Term_Loan = () => {
         style={{
           backgroundImage: "url('https://images.unsplash.com/photo-1579621970795-87facc2f976d?w=1600&q=80')",
           backgroundSize: "cover",
-          backgroundPosition: "center center"
+          backgroundPosition: "center center",
+          backgroundAttachment: "scroll",
+          backgroundRepeat: "no-repeat"
         }}
       >
         {/* Gradient Overlay */}

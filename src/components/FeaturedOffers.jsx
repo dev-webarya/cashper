@@ -206,13 +206,13 @@ const FeaturedOffers = () => {
     ? offers 
     : offers.filter(offer => offer.type === selectedCategory);
   return (
-    <section id="popular-products" className="py-12 sm:py-14 md:py-16 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-8 sm:mb-10 md:mb-12">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
+    <section id="popular-products" className="w-full py-10 xs:py-12 sm:py-14 md:py-16 lg:py-20 bg-white overflow-hidden">
+      <div className="max-w-7xl mx-auto px-3 xs:px-4 sm:px-6 md:px-8">
+        <div className="text-center mb-8 xs:mb-9 sm:mb-10 md:mb-12">
+          <h2 className="text-2xl xs:text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 xs:mb-4 sm:mb-5 leading-tight">
             Popular Financial Products
           </h2>
-          <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto mb-6 sm:mb-8 px-4">
+          <p className="text-sm xs:text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-6 xs:mb-7 sm:mb-8 px-2 leading-relaxed">
             Choose from our most popular financial products with exclusive benefits, 
             competitive rates, and instant approval. Each product is designed to meet 
             your specific financial goals.
@@ -243,11 +243,11 @@ const FeaturedOffers = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
+        <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 xs:gap-5 sm:gap-5 md:gap-6 lg:gap-7">
           {filteredOffers.map((offer) => (
             <div
               key={offer.id}
-              className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100"
+              className="bg-white rounded-lg xs:rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100"
             >
               <div className="p-4 sm:p-5 md:p-6">
                 <div className="flex items-center justify-between mb-3 sm:mb-4">

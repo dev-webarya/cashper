@@ -1,10 +1,56 @@
-import React, { useState } from 'react';
-import { X } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { X, Download } from 'lucide-react';
+
+// Import calculator components from home pages
+import Personal_loan from '../Personal_loan';
+import Home_Loan from '../Home_Loan';
+import Business_loan from '../Business_loan';
+import Mutual_funds from '../Mutual_funds';
+import SIP from '../SIP';
+import Personal_tax_planning from '../Personal_tax_planning';
+import Business_Tax_planning from '../Business_Tax_planning';
 
 const TaxPlanning = () => {
   const [showTaxCalculator, setShowTaxCalculator] = useState(false);
   const [showConsultation, setShowConsultation] = useState(false);
-  const [selectedCalculator, setSelectedCalculator] = useState('income-tax'); // Calculator type
+  const [selectedCalculator, setSelectedCalculator] = useState('personal-loan'); // Calculator type
+  const calculatorContainerRef = useRef(null);
+  const [showTaxPlanningModal, setShowTaxPlanningModal] = useState(false);
+  const [showTaxPlanningForm, setShowTaxPlanningForm] = useState(false);
+  const [selectedTaxPlanningType, setSelectedTaxPlanningType] = useState('');
+  const taxPlanningFormRef = useRef(null);
+  
+  // Extract calculator section after component renders
+  useEffect(() => {
+    if (showTaxCalculator && calculatorContainerRef.current) {
+      setTimeout(() => {
+        const calculatorSection = calculatorContainerRef.current.querySelector('#calculator');
+        if (calculatorSection) {
+          // Scroll calculator section into view
+          calculatorSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+    }
+  }, [showTaxCalculator, selectedCalculator]);
+
+  // Scroll to tax planning form when opened
+  useEffect(() => {
+    if (showTaxPlanningForm && taxPlanningFormRef.current) {
+      setTimeout(() => {
+        // Scroll to the form container directly
+        taxPlanningFormRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        
+        // Then try to find and scroll to the specific form section
+        const formId = selectedTaxPlanningType === 'business' ? '#business-contact-form' : '#apply-form';
+        const applyForm = taxPlanningFormRef.current.querySelector(formId);
+        if (applyForm) {
+          setTimeout(() => {
+            applyForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 200);
+        }
+      }, 300);
+    }
+  }, [showTaxPlanningForm, selectedTaxPlanningType]);
   
   // Tax Calculator State
   const [grossIncome, setGrossIncome] = useState(1200000);
@@ -40,13 +86,15 @@ const TaxPlanning = () => {
   const [salaryExpenses, setSalaryExpenses] = useState(500000);
   const [rdExpenses, setRdExpenses] = useState(50000);
 
-  // Calculator Options
+  // Calculator Options - Loans, Investments, and Tax Planning only
   const calculatorTypes = [
-    { id: 'income-tax', name: 'Income Tax Calculator' },
-    { id: 'emi', name: 'EMI Calculator' },
-    { id: 'sip', name: 'SIP Calculator' },
-    { id: 'mutual-fund', name: 'Mutual Fund Calculator' },
-    { id: 'business-tax', name: 'Business Tax Savings Calculator' }
+    { id: 'personal-loan', name: 'Personal Loan', component: Personal_loan },
+    { id: 'home-loan', name: 'Home Loan', component: Home_Loan },
+    { id: 'business-loan', name: 'Business Loan', component: Business_loan },
+    { id: 'mutual-funds', name: 'Mutual Funds', component: Mutual_funds },
+    { id: 'sip', name: 'SIP', component: SIP },
+    { id: 'personal-tax', name: 'Personal Tax Planning', component: Personal_tax_planning },
+    { id: 'business-tax', name: 'Business Tax Strategy', component: Business_Tax_planning }
   ];
 
   // Calculate EMI
@@ -256,12 +304,20 @@ const TaxPlanning = () => {
           <h1 className="text-2xl lg:text-3xl font-bold text-gray-800">Tax Planning</h1>
           <p className="text-gray-600 mt-1">Optimize your tax savings with smart planning</p>
         </div>
-        <button 
-          onClick={() => setShowConsultation(true)}
-          className="bg-gradient-to-r from-green-600 via-green-700 to-green-800 hover:from-green-700 hover:to-green-800 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-        >
-          Schedule Consultation
-        </button>
+        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+          <button 
+            onClick={() => setShowTaxPlanningModal(true)}
+            className="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+          >
+            + New Tax Planning
+          </button>
+          <button 
+            onClick={() => setShowConsultation(true)}
+            className="bg-gradient-to-r from-green-600 via-green-700 to-green-800 hover:from-green-700 hover:to-green-800 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+          >
+            Schedule Consultation
+          </button>
+        </div>
       </div>
 
       {/* Current Year Summary */}
@@ -323,62 +379,101 @@ const TaxPlanning = () => {
         </div>
       </div>
 
-      {/* Tax Deductions Overview - Vertical Bars */}
-      <div className="bg-white rounded-xl shadow-lg p-4 xs:p-5 sm:p-6">
-        <h2 className="text-xl font-bold text-gray-800 mb-6">Tax Deductions Utilized</h2>
-        
-        {/* Vertical Bar Chart Container */}
-        <div className="relative bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 xs:p-5 sm:p-6">
-          {/* Chart Area */}
-          <div className="flex items-end justify-center gap-6 xs:gap-8 sm:gap-10 px-4" style={{ height: '320px' }}>
-            {taxDeductions.map((deduction, index) => (
-              <div key={index} className="flex flex-col items-center group">
-                {/* Bar Container */}
-                <div className="flex justify-center mb-3 relative" style={{ height: '280px', width: '50px' }}>
-                  {/* Vertical Bar */}
-                  <div className="relative flex flex-col justify-end w-[35px] group/bar">
-                    <div 
-                      className={`w-full bg-gradient-to-t ${
-                        deduction.percentage === 100 
-                          ? 'from-green-600 to-green-400' 
-                          : 'from-blue-600 to-blue-400'
-                      } rounded-t-lg transition-all duration-700 ease-out hover:${
-                        deduction.percentage === 100 
-                          ? 'from-green-700 to-green-500' 
-                          : 'from-blue-700 to-blue-500'
-                      } shadow-lg relative overflow-hidden`}
-                      style={{ height: `${deduction.percentage}%` }}
-                    >
-                      {/* Shine effect */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-                      
-                      {/* Percentage Label */}
-                      <div className="absolute top-2 left-1/2 transform -translate-x-1/2 text-white font-bold text-xs xs:text-sm">
-                        {deduction.percentage}%
-                      </div>
-                      
-                      {/* Value on hover */}
-                      <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 opacity-0 group-hover/bar:opacity-100 transition-opacity bg-gray-800 text-white px-2 xs:px-3 py-1 xs:py-1.5 rounded-lg text-xs xs:text-sm font-bold whitespace-nowrap shadow-lg z-10">
-                        {deduction.utilized}
-                      </div>
-                    </div>
-                  </div>
-                </div>
 
-                {/* Section Label */}
-                <div className="text-center">
-                  <p className="text-xs xs:text-sm font-bold text-gray-800 group-hover:text-green-700 transition-colors mb-1">
-                    Section {deduction.section}
-                  </p>
-                  <p className="text-[10px] xs:text-xs font-medium text-gray-500">
-                    Limit: {deduction.limit}
-                  </p>
-                  <p className="text-xs xs:text-sm font-semibold text-green-600 mt-1">
-                    {deduction.utilized}
-                  </p>
-                </div>
+      {/* Tax Planning Services */}
+      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl shadow-lg p-6 border border-blue-100">
+        <h2 className="text-xl font-bold text-gray-800 mb-3">Tax Planning Services</h2>
+        <p className="text-gray-600 mb-6 text-sm">Get expert guidance for your tax planning needs</p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Personal Tax Planning Service */}
+          <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all p-6 border-2 border-transparent hover:border-blue-500">
+            <div className="flex items-start justify-between mb-4">
+              <div>
+                <h3 className="text-lg font-bold text-gray-800 mb-2">Personal Tax Planning</h3>
+                <p className="text-sm text-gray-600">Individual income tax optimization & planning</p>
               </div>
-            ))}
+              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </div>
+            </div>
+            <ul className="space-y-2 mb-4">
+              <li className="flex items-center text-sm text-gray-700">
+                <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+                Tax regime selection
+              </li>
+              <li className="flex items-center text-sm text-gray-700">
+                <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+                Maximize deductions (80C, 80D)
+              </li>
+              <li className="flex items-center text-sm text-gray-700">
+                <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+                ITR filing assistance
+              </li>
+            </ul>
+            <button
+              onClick={() => {
+                setSelectedTaxPlanningType('personal');
+                setShowTaxPlanningForm(true);
+                setShowTaxPlanningModal(false);
+              }}
+              className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-4 py-3 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all"
+            >
+              Apply for Personal Tax Planning Service
+            </button>
+          </div>
+
+          {/* Business Tax Planning Service */}
+          <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all p-6 border-2 border-transparent hover:border-indigo-500">
+            <div className="flex items-start justify-between mb-4">
+              <div>
+                <h3 className="text-lg font-bold text-gray-800 mb-2">Business Tax Strategy</h3>
+                <p className="text-sm text-gray-600">Business tax planning & compliance solutions</p>
+              </div>
+              <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                <svg className="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+              </div>
+            </div>
+            <ul className="space-y-2 mb-4">
+              <li className="flex items-center text-sm text-gray-700">
+                <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+                Corporate tax optimization
+              </li>
+              <li className="flex items-center text-sm text-gray-700">
+                <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+                GST & compliance support
+              </li>
+              <li className="flex items-center text-sm text-gray-700">
+                <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+                Tax audit & advisory
+              </li>
+            </ul>
+            <button
+              onClick={() => {
+                setSelectedTaxPlanningType('business');
+                setShowTaxPlanningForm(true);
+                setShowTaxPlanningModal(false);
+              }}
+              className="w-full bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white px-4 py-3 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all"
+            >
+              Apply for Business Tax Planning Service
+            </button>
           </div>
         </div>
       </div>
@@ -494,7 +589,6 @@ const TaxPlanning = () => {
           </table>
         </div>
       </div>
-
       {/* Tax Calculator - Redesigned with Frontend Layout */}
       <div className="bg-white rounded-xl shadow-lg p-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
@@ -534,640 +628,222 @@ const TaxPlanning = () => {
           </button>
         ) : (
           <div className="mt-6">
-            {/* Calculator Title Bar */}
-              <div className="bg-gradient-to-r from-green-600 to-blue-600 text-white px-6 py-4 rounded-xl mb-6 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div>
-                  <h3 className="text-xl font-bold">{calculatorTypes.find(c => c.id === selectedCalculator)?.name}</h3>
-                  <p className="text-sm text-green-100">Fill in the details below to calculate</p>
-                </div>
-              </div>
-              <button
-                onClick={() => setShowTaxCalculator(false)}
-                className="text-white hover:bg-white/20 p-2 rounded-lg transition-all"
-              >
-                <X className="w-6 h-6" />
-              </button>
-            </div>
-
-            {/* Render Calculator Based on Selection */}
-            {selectedCalculator === 'income-tax' && (
-              <>
-            {/* Tax Regime Selection */}
-            <div className="mb-6">
-              <h3 className="text-lg font-bold text-gray-800 mb-4">Select Tax Regime</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <button
-                  onClick={() => setTaxRegime('old')}
-                  className={`p-5 rounded-xl border-2 transition-all duration-300 ${
-                    taxRegime === 'old' 
-                      ? 'border-green-500 bg-gradient-to-br from-green-50 to-green-100 shadow-lg transform scale-105' 
-                      : 'border-gray-300 bg-white hover:border-green-300 hover:shadow-md'
-                  }`}
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <h4 className="text-lg font-bold text-gray-800">Old Tax Regime</h4>
-                    {taxRegime === 'old' && (
-                      <span className="w-6 h-6 bg-green-600 text-white rounded-full flex items-center justify-center">
-                        ✓
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-sm text-gray-600 text-left">With Deductions & Exemptions</p>
-                  <p className="text-xs text-green-600 font-semibold mt-2 text-left">Best for: Salaried with investments</p>
-                </button>
-                
-                <button
-                  onClick={() => setTaxRegime('new')}
-                  className={`p-5 rounded-xl border-2 transition-all duration-300 ${
-                    taxRegime === 'new' 
-                      ? 'border-blue-500 bg-gradient-to-br from-blue-50 to-blue-100 shadow-lg transform scale-105' 
-                      : 'border-gray-300 bg-white hover:border-blue-300 hover:shadow-md'
-                  }`}
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <h4 className="text-lg font-bold text-gray-800">New Tax Regime</h4>
-                    {taxRegime === 'new' && (
-                      <span className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center">
-                        ✓
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-sm text-gray-600 text-left">Lower Tax Rates, No Deductions</p>
-                  <p className="text-xs text-blue-600 font-semibold mt-2 text-left">Best for: No investments/deductions</p>
-                </button>
-              </div>
-            </div>
-
-            {/* Grid Layout - Left: Inputs, Right: Results */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Left Side - Input Form */}
-              <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-6 shadow-md border border-gray-200">
-                <h3 className="text-xl font-bold text-gray-800 mb-6">Enter Your Details</h3>
-                <div className="space-y-5">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Annual Gross Income (₹) *
-                    </label>
-                    <input
-                      type="number"
-                      value={grossIncome}
-                      onChange={(e) => setGrossIncome(Number(e.target.value))}
-                      placeholder="e.g., 1200000"
-                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-600 focus:ring-2 focus:ring-green-200 outline-none text-gray-800 font-semibold"
-                    />
-                  </div>
-
-                  {taxRegime === 'old' && (
-                    <>
-                      <div className="border-t pt-4">
-                        <p className="text-sm font-bold text-green-700 mb-3">📊 Available Deductions (Old Regime)</p>
-                      </div>
-
+            {/* Render External Calculator Component if available */}
+            {(() => {
+              const currentCalc = calculatorTypes.find(c => c.id === selectedCalculator);
+              
+              // If it's an external component calculator
+              if (currentCalc && currentCalc.component) {
+                const CalculatorComponent = currentCalc.component;
+                return (
+                  <div className="relative">
+                    {/* Close Button Bar */}
+                    <div className="bg-gradient-to-r from-green-600 to-blue-600 text-white px-6 py-4 rounded-xl mb-6 flex items-center justify-between">
                       <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                          Section 80C Investments (₹) - Max ₹1,50,000
-                        </label>
-                        <input
-                          type="number"
-                          value={deductions80C}
-                          onChange={(e) => setDeductions80C(Number(e.target.value))}
-                          placeholder="e.g., 150000"
-                          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-600 focus:ring-2 focus:ring-green-200 outline-none text-gray-800 font-semibold"
-                          max="150000"
-                        />
-                        <p className="text-xs text-gray-500 mt-1">PPF, ELSS, Life Insurance, NSC, etc.</p>
+                        <h3 className="text-xl font-bold">{currentCalc.name}</h3>
+                        <p className="text-sm text-green-100">View and calculate your requirements</p>
                       </div>
-
-                      <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                          Section 80D - Health Insurance (₹) - Max ₹50,000
-                        </label>
-                        <input
-                          type="number"
-                          value={deductions80D}
-                          onChange={(e) => setDeductions80D(Number(e.target.value))}
-                          placeholder="e.g., 25000"
-                          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-600 focus:ring-2 focus:ring-green-200 outline-none text-gray-800 font-semibold"
-                          max="50000"
-                        />
-                        <p className="text-xs text-gray-500 mt-1">Self, Family & Parents Insurance Premium</p>
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                          NPS - Section 80CCD(1B) (₹) - Max ₹50,000
-                        </label>
-                        <input
-                          type="number"
-                          value={deductionsNPS}
-                          onChange={(e) => setDeductionsNPS(Number(e.target.value))}
-                          placeholder="e.g., 50000"
-                          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-600 focus:ring-2 focus:ring-green-200 outline-none text-gray-800 font-semibold"
-                          max="50000"
-                        />
-                        <p className="text-xs text-gray-500 mt-1">Additional NPS Investment</p>
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                          Home Loan Interest - 24(b) (₹) - Max ₹2,00,000
-                        </label>
-                        <input
-                          type="number"
-                          value={homeLoanInterest}
-                          onChange={(e) => setHomeLoanInterest(Number(e.target.value))}
-                          placeholder="e.g., 200000"
-                          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-600 focus:ring-2 focus:ring-green-200 outline-none text-gray-800 font-semibold"
-                          max="200000"
-                        />
-                        <p className="text-xs text-gray-500 mt-1">Interest paid on Home Loan</p>
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                          HRA Exemption (₹)
-                        </label>
-                        <input
-                          type="number"
-                          value={hraExemption}
-                          onChange={(e) => setHraExemption(Number(e.target.value))}
-                          placeholder="e.g., 240000"
-                          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-600 focus:ring-2 focus:ring-green-200 outline-none text-gray-800 font-semibold"
-                        />
-                        <p className="text-xs text-gray-500 mt-1">House Rent Allowance Exemption</p>
-                      </div>
-                    </>
-                  )}
-
-                  {taxRegime === 'new' && (
-                    <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-4 mt-4">
-                      <p className="text-sm text-blue-800 font-semibold mb-2">ℹ️ New Tax Regime</p>
-                      <p className="text-xs text-blue-700">
-                        In the new tax regime, you cannot claim deductions under Section 80C, 80D, HRA, etc. 
-                        However, you benefit from lower tax rates.
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Right Side - Results Display */}
-              <div className="bg-gradient-to-br from-green-50 to-blue-50 rounded-xl p-6 shadow-xl border-2 border-green-300">
-                <h3 className="text-xl font-bold text-gray-800 mb-4">Your Tax Summary</h3>
-                <div className="mb-4 px-3 py-2 bg-white rounded-lg border-l-4 border-green-600">
-                  <p className="text-xs font-semibold text-gray-700">
-                    {taxRegime === 'old' ? '📊 Old Tax Regime (With Deductions)' : '📊 New Tax Regime (Lower Rates)'}
-                  </p>
-                </div>
-                
-                <div className="space-y-4 mb-6">
-                  <div className="bg-white rounded-lg p-4 shadow">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600">Gross Annual Income</span>
-                      <span className="text-lg font-bold text-gray-800">₹{taxResult.grossIncome.toLocaleString('en-IN')}</span>
-                    </div>
-                  </div>
-
-                  {taxRegime === 'old' && taxResult.totalDeductions > 0 && (
-                    <div className="bg-white rounded-lg p-4 shadow">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-600">Total Deductions</span>
-                        <span className="text-lg font-bold text-green-600">₹{taxResult.totalDeductions.toLocaleString('en-IN')}</span>
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="bg-white rounded-lg p-4 shadow">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600">Taxable Income</span>
-                      <span className="text-lg font-bold text-gray-800">₹{taxResult.taxableIncome.toLocaleString('en-IN')}</span>
-                    </div>
-                  </div>
-
-                  <div className="bg-gradient-to-r from-red-50 to-orange-50 rounded-lg p-4 shadow border-2 border-red-300">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm font-semibold text-gray-700">Tax Payable (with cess)</span>
-                      <span className="text-lg font-bold text-red-600">₹{taxResult.totalTax.toLocaleString('en-IN')}</span>
-                    </div>
-                  </div>
-
-                  <div className="bg-white rounded-lg p-4 shadow">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600">Effective Tax Rate</span>
-                      <span className="text-lg font-bold text-purple-700">{taxResult.effectiveRate}%</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Total Savings Highlight */}
-                {taxRegime === 'old' && taxResult.totalDeductions > 0 && (
-                  <div className="bg-gradient-to-r from-green-600 to-green-700 rounded-lg p-6 text-center text-white shadow-xl mb-6">
-                    <p className="text-sm mb-2 opacity-90">Your Tax Savings with Planning</p>
-                    <p className="text-4xl font-bold mb-2">₹{Math.round(taxResult.totalDeductions * 0.31).toLocaleString('en-IN')}</p>
-                    <p className="text-xs opacity-90">Save up to 30% with proper planning!</p>
-                  </div>
-                )}
-
-                {taxRegime === 'new' && (
-                  <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg p-6 text-center text-white shadow-xl mb-6">
-                    <p className="text-sm mb-2 opacity-90">New Tax Regime Benefits</p>
-                    <p className="text-2xl font-bold mb-2">Lower Tax Slabs</p>
-                    <p className="text-xs opacity-90">Simplified taxation without deduction claims!</p>
-                  </div>
-                )}
-
-                {/* Action Buttons */}
-                <div className="mt-6 flex flex-col gap-3">
-                  <button 
-                    onClick={() => window.print()}
-                    className="w-full bg-white text-green-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-all shadow-md flex items-center justify-center gap-2"
-                  >
-                    <Download className="w-4 h-4" />
-                    Download Report
-                  </button>
-                  <button 
-                    onClick={() => setShowConsultation(true)}
-                    className="w-full bg-gradient-to-r from-green-600 via-green-700 to-green-800 hover:from-green-700 hover:to-green-800 text-white px-6 py-3 rounded-lg font-semibold transition-all shadow-md"
-                  >
-                    Get Personalized Tax Plan
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Note */}
-            <div className="mt-6 bg-blue-50 p-4 rounded-lg border-l-4 border-blue-600">
-              <p className="text-xs text-gray-600">
-                <strong>Note:</strong> This is an indicative calculator. Actual tax savings may vary based on your complete financial profile, additional deductions, and applicable tax regime. Consult our tax experts for accurate personalized planning.
-              </p>
-            </div>
-            </>
-            )}
-
-            {/* EMI Calculator */}
-            {selectedCalculator === 'emi' && (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-6 shadow-md border border-gray-200">
-                  <h3 className="text-xl font-bold text-gray-800 mb-6">Loan Details</h3>
-                  <div className="space-y-5">
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Loan Amount (₹)
-                      </label>
-                      <input
-                        type="number"
-                        value={emiLoanAmount}
-                        onChange={(e) => setEmiLoanAmount(Number(e.target.value))}
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-600 focus:ring-2 focus:ring-green-200 outline-none"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Interest Rate (% per annum)
-                      </label>
-                      <input
-                        type="number"
-                        value={emiInterestRate}
-                        onChange={(e) => setEmiInterestRate(Number(e.target.value))}
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-600 focus:ring-2 focus:ring-green-200 outline-none"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Loan Tenure (Months)
-                      </label>
-                      <input
-                        type="number"
-                        value={emiTenure}
-                        onChange={(e) => setEmiTenure(Number(e.target.value))}
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-600 focus:ring-2 focus:ring-green-200 outline-none"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-gradient-to-br from-green-50 to-blue-50 rounded-xl p-6 shadow-xl border-2 border-green-300">
-                  <h3 className="text-xl font-bold text-gray-800 mb-6">EMI Summary</h3>
-                  <div className="space-y-4">
-                    <div className="bg-white rounded-lg p-4 shadow">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-600">Loan Amount</span>
-                        <span className="text-lg font-bold text-gray-800">₹{emiResult.principal.toLocaleString('en-IN')}</span>
-                      </div>
-                    </div>
-                    <div className="bg-gradient-to-r from-green-600 to-green-700 rounded-lg p-6 text-center text-white shadow-xl">
-                      <p className="text-sm mb-2 opacity-90">Monthly EMI</p>
-                      <p className="text-4xl font-bold mb-2">₹{emiResult.emi.toLocaleString('en-IN')}</p>
-                    </div>
-                    <div className="bg-white rounded-lg p-4 shadow">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-600">Total Interest</span>
-                        <span className="text-lg font-bold text-orange-600">₹{emiResult.totalInterest.toLocaleString('en-IN')}</span>
-                      </div>
-                    </div>
-                    <div className="bg-white rounded-lg p-4 shadow">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-600">Total Amount Payable</span>
-                        <span className="text-lg font-bold text-red-600">₹{emiResult.totalAmount.toLocaleString('en-IN')}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* SIP Calculator */}
-            {selectedCalculator === 'sip' && (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-6 shadow-md border border-gray-200">
-                  <h3 className="text-xl font-bold text-gray-800 mb-6">SIP Investment Details</h3>
-                  <div className="space-y-5">
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Monthly Investment (₹)
-                      </label>
-                      <input
-                        type="number"
-                        value={sipMonthlyInvestment}
-                        onChange={(e) => setSipMonthlyInvestment(Number(e.target.value))}
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-600 focus:ring-2 focus:ring-green-200 outline-none"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Expected Return Rate (% per annum)
-                      </label>
-                      <input
-                        type="number"
-                        value={sipExpectedReturn}
-                        onChange={(e) => setSipExpectedReturn(Number(e.target.value))}
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-600 focus:ring-2 focus:ring-green-200 outline-none"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Time Period (Years)
-                      </label>
-                      <input
-                        type="number"
-                        value={sipTimePeriod}
-                        onChange={(e) => setSipTimePeriod(Number(e.target.value))}
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-600 focus:ring-2 focus:ring-green-200 outline-none"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-gradient-to-br from-green-50 to-blue-50 rounded-xl p-6 shadow-xl border-2 border-green-300">
-                  <h3 className="text-xl font-bold text-gray-800 mb-6">SIP Returns Summary</h3>
-                  <div className="space-y-4">
-                    <div className="bg-white rounded-lg p-4 shadow">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-600">Total Invested</span>
-                        <span className="text-lg font-bold text-gray-800">₹{sipResult.invested.toLocaleString('en-IN')}</span>
-                      </div>
-                    </div>
-                    <div className="bg-white rounded-lg p-4 shadow">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-600">Estimated Returns</span>
-                        <span className="text-lg font-bold text-green-600">₹{sipResult.returns.toLocaleString('en-IN')}</span>
-                      </div>
-                    </div>
-                    <div className="bg-gradient-to-r from-green-600 to-green-700 rounded-lg p-6 text-center text-white shadow-xl">
-                      <p className="text-sm mb-2 opacity-90">Future Value</p>
-                      <p className="text-4xl font-bold mb-2">₹{sipResult.futureValue.toLocaleString('en-IN')}</p>
-                      <p className="text-xs opacity-90">Grow your wealth with SIP!</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Mutual Fund Calculator */}
-            {selectedCalculator === 'mutual-fund' && (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-6 shadow-md border border-gray-200">
-                  <h3 className="text-xl font-bold text-gray-800 mb-6">Investment Details</h3>
-                  <div className="space-y-5">
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-3">Investment Type</label>
-                      <div className="grid grid-cols-2 gap-4">
-                        <button
-                          onClick={() => setMfInvestmentType('lumpsum')}
-                          className={`p-4 rounded-xl border-2 transition-all ${mfInvestmentType === 'lumpsum' ? 'border-green-500 bg-green-50' : 'border-gray-300'}`}
-                        >
-                          <p className="text-sm font-semibold">Lumpsum</p>
-                        </button>
-                        <button
-                          onClick={() => setMfInvestmentType('sip')}
-                          className={`p-4 rounded-xl border-2 transition-all ${mfInvestmentType === 'sip' ? 'border-green-500 bg-green-50' : 'border-gray-300'}`}
-                        >
-                          <p className="text-sm font-semibold">SIP</p>
-                        </button>
-                      </div>
-                    </div>
-                    {mfInvestmentType === 'lumpsum' ? (
-                      <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                          Lumpsum Amount (₹)
-                        </label>
-                        <input
-                          type="number"
-                          value={mfLumpsumAmount}
-                          onChange={(e) => setMfLumpsumAmount(Number(e.target.value))}
-                          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-600 focus:ring-2 focus:ring-green-200 outline-none"
-                        />
-                      </div>
-                    ) : (
-                      <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                          Monthly SIP Amount (₹)
-                        </label>
-                        <input
-                          type="number"
-                          value={mfSipAmount}
-                          onChange={(e) => setMfSipAmount(Number(e.target.value))}
-                          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-600 focus:ring-2 focus:ring-green-200 outline-none"
-                        />
-                      </div>
-                    )}
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Expected Return Rate (% per annum)
-                      </label>
-                      <input
-                        type="number"
-                        value={mfReturnRate}
-                        onChange={(e) => setMfReturnRate(Number(e.target.value))}
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-600 focus:ring-2 focus:ring-green-200 outline-none"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Time Period (Years)
-                      </label>
-                      <input
-                        type="number"
-                        value={mfTimePeriod}
-                        onChange={(e) => setMfTimePeriod(Number(e.target.value))}
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-600 focus:ring-2 focus:ring-green-200 outline-none"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-gradient-to-br from-green-50 to-blue-50 rounded-xl p-6 shadow-xl border-2 border-green-300">
-                  <h3 className="text-xl font-bold text-gray-800 mb-6">Returns Summary</h3>
-                  <div className="space-y-4">
-                    <div className="bg-white rounded-lg p-4 shadow">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-600">Total Invested</span>
-                        <span className="text-lg font-bold text-gray-800">₹{mfResult.invested.toLocaleString('en-IN')}</span>
-                      </div>
-                    </div>
-                    <div className="bg-white rounded-lg p-4 shadow">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-600">Estimated Returns</span>
-                        <span className="text-lg font-bold text-green-600">₹{mfResult.returns.toLocaleString('en-IN')}</span>
-                      </div>
-                    </div>
-                    <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg p-6 text-center text-white shadow-xl">
-                      <p className="text-sm mb-2 opacity-90">Total Value</p>
-                      <p className="text-4xl font-bold mb-2">₹{mfResult.totalValue.toLocaleString('en-IN')}</p>
-                      <p className="text-xs opacity-90">Invest smart, grow wealth!</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Business Tax Calculator */}
-            {selectedCalculator === 'business-tax' && (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-6 shadow-md border border-gray-200">
-                  <h3 className="text-xl font-bold text-gray-800 mb-6">Business Details</h3>
-                  <div className="space-y-5">
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">Business Type</label>
-                      <select
-                        value={businessType}
-                        onChange={(e) => setBusinessType(e.target.value)}
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-600 focus:ring-2 focus:ring-green-200 outline-none"
+                      <button
+                        onClick={() => setShowTaxCalculator(false)}
+                        className="text-white hover:bg-white/20 p-2 rounded-lg transition-all"
                       >
-                        <option value="private">Private Limited (25%)</option>
-                        <option value="partnership">Partnership (30%)</option>
-                        <option value="llp">LLP (30%)</option>
-                      </select>
+                        <X className="w-6 h-6" />
+                      </button>
                     </div>
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Annual Turnover (₹)
-                      </label>
-                      <input
-                        type="number"
-                        value={annualTurnover}
-                        onChange={(e) => setAnnualTurnover(Number(e.target.value))}
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-600 focus:ring-2 focus:ring-green-200 outline-none"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Annual Profit (₹)
-                      </label>
-                      <input
-                        type="number"
-                        value={annualProfit}
-                        onChange={(e) => setAnnualProfit(Number(e.target.value))}
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-600 focus:ring-2 focus:ring-green-200 outline-none"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Depreciation (₹)
-                      </label>
-                      <input
-                        type="number"
-                        value={depreciation}
-                        onChange={(e) => setDepreciation(Number(e.target.value))}
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-600 focus:ring-2 focus:ring-green-200 outline-none"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Salary Expenses (₹)
-                      </label>
-                      <input
-                        type="number"
-                        value={salaryExpenses}
-                        onChange={(e) => setSalaryExpenses(Number(e.target.value))}
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-600 focus:ring-2 focus:ring-green-200 outline-none"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        R&D Expenses (₹)
-                      </label>
-                      <input
-                        type="number"
-                        value={rdExpenses}
-                        onChange={(e) => setRdExpenses(Number(e.target.value))}
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-600 focus:ring-2 focus:ring-green-200 outline-none"
-                      />
+                    
+                    {/* Render only the calculator section */}
+                    <div ref={calculatorContainerRef} className="calculator-only-view">
+                      <style>{`
+                        /* Hide everything except calculator section */
+                        .calculator-only-view > div > *:not(#calculator) {
+                          display: none !important;
+                        }
+                        
+                        .calculator-only-view nav,
+                        .calculator-only-view header:not(#calculator *),
+                        .calculator-only-view footer {
+                          display: none !important;
+                        }
+                        
+                        .calculator-only-view #calculator {
+                          display: block !important;
+                          margin: 0 !important;
+                          padding: 1rem 0 !important;
+                        }
+                        
+                        .calculator-only-view {
+                          max-height: 85vh;
+                          overflow-y: auto;
+                          overflow-x: hidden;
+                          background: transparent;
+                        }
+                      `}</style>
+                      <CalculatorComponent />
                     </div>
                   </div>
-                </div>
-
-                <div className="bg-gradient-to-br from-green-50 to-blue-50 rounded-xl p-6 shadow-xl border-2 border-green-300">
-                  <h3 className="text-xl font-bold text-gray-800 mb-6">Business Tax Summary</h3>
-                  <div className="space-y-4">
-                    <div className="bg-white rounded-lg p-4 shadow">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-600">Annual Turnover</span>
-                        <span className="text-lg font-bold text-gray-800">₹{businessTaxResult.turnover.toLocaleString('en-IN')}</span>
-                      </div>
-                    </div>
-                    <div className="bg-white rounded-lg p-4 shadow">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-600">Net Profit</span>
-                        <span className="text-lg font-bold text-gray-800">₹{businessTaxResult.netProfit.toLocaleString('en-IN')}</span>
-                      </div>
-                    </div>
-                    <div className="bg-white rounded-lg p-4 shadow">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-600">Total Deductions</span>
-                        <span className="text-lg font-bold text-green-600">₹{businessTaxResult.totalDeductions.toLocaleString('en-IN')}</span>
-                      </div>
-                    </div>
-                    <div className="bg-gradient-to-r from-red-50 to-orange-50 rounded-lg p-4 shadow border-2 border-red-300">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm font-semibold text-gray-700">Tax Without Planning</span>
-                        <span className="text-lg font-bold text-red-600">₹{businessTaxResult.taxWithoutPlanning.toLocaleString('en-IN')}</span>
-                      </div>
-                    </div>
-                    <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg p-4 shadow border-2 border-green-400">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm font-semibold text-gray-700">Tax After Planning</span>
-                        <span className="text-lg font-bold text-green-600">₹{businessTaxResult.taxAfterPlanning.toLocaleString('en-IN')}</span>
-                      </div>
-                    </div>
-                    <div className="bg-gradient-to-r from-green-600 to-green-700 rounded-lg p-6 text-center text-white shadow-xl">
-                      <p className="text-sm mb-2 opacity-90">Your Business Tax Savings</p>
-                      <p className="text-4xl font-bold mb-2">₹{businessTaxResult.totalSavings.toLocaleString('en-IN')}</p>
-                      <p className="text-xs opacity-90">Smart planning saves money!</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
+                );
+              }
+              
+              return null;
+            })()}
           </div>
         )}
       </div>
 
-      {/* Consultation Modal */}
+      {/* New Tax Planning Modal */}
+      {showTaxPlanningModal && !showTaxPlanningForm && (
+        <div className="fixed inset-0 bg-black/10 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-2xl w-full p-4 sm:p-6 relative animate-fadeInUp max-h-[90vh] overflow-y-auto">
+            <button
+              onClick={() => setShowTaxPlanningModal(false)}
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 text-gray-400 hover:text-gray-600 z-10"
+            >
+              <X className="w-5 h-5 sm:w-6 sm:h-6" />
+            </button>
+            
+            <h3 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2 pr-8">New Tax Planning</h3>
+            <p className="text-sm sm:text-base text-gray-600 mb-6">Choose the best tax planning strategy for you</p>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              {[
+                { 
+                  name: 'Personal Tax Planning', 
+                  component: 'personal', 
+                  desc: 'Individual income tax optimization'
+                },
+                { 
+                  name: 'Business Tax Strategy', 
+                  component: 'business', 
+                  desc: 'Business tax planning & compliance'
+                }
+              ].map((taxPlan) => (
+                <button
+                  key={taxPlan.name}
+                  onClick={() => {
+                    setSelectedTaxPlanningType(taxPlan.component);
+                    setShowTaxPlanningForm(true);
+                    setShowTaxPlanningModal(false);
+                  }}
+                  className="p-5 sm:p-6 bg-gradient-to-br from-gray-50 to-gray-100 hover:from-blue-50 hover:to-blue-100 border-2 border-gray-200 hover:border-blue-500 rounded-xl text-left transition-all group"
+                >
+                  <div className="flex flex-col">
+                    <div className="font-semibold text-base sm:text-lg text-gray-800 group-hover:text-blue-700 mb-1">
+                      {taxPlan.name}
+                    </div>
+                    <div className="text-xs sm:text-sm text-gray-500 group-hover:text-gray-600 mb-3">
+                      {taxPlan.desc}
+                    </div>
+                    <div className="flex justify-end">
+                      <svg className="w-5 h-5 text-gray-400 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Tax Planning Application Form - Inline */}
+      {showTaxPlanningForm && (
+        <div className="mt-6">
+          {/* Header */}
+          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 sm:px-6 py-4 rounded-xl mb-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg sm:text-xl font-bold">
+                  Apply for {selectedTaxPlanningType === 'personal' ? 'Personal Tax Planning' : 'Business Tax Strategy'}
+                </h3>
+                <p className="text-xs sm:text-sm text-blue-100 mt-1">
+                  Fill the form below to proceed with your application
+                </p>
+              </div>
+              <button
+                onClick={() => {
+                  setShowTaxPlanningForm(false);
+                  setSelectedTaxPlanningType('');
+                }}
+                className="text-white hover:bg-white/20 p-2 rounded-lg transition-all"
+              >
+                <X className="w-5 h-5 sm:w-6 sm:h-6" />
+              </button>
+            </div>
+          </div>
+
+          {/* Form Container */}
+          <div ref={taxPlanningFormRef} className="tax-planning-form-container">
+            <style>{`
+              /* HIDE EVERYTHING BY DEFAULT */
+              .tax-planning-form-container * {
+                display: none !important;
+              }
+              
+              /* Show only the form and its parent containers */
+              .tax-planning-form-container,
+              .tax-planning-form-container > div {
+                display: block !important;
+              }
+              
+              /* Show only #apply-form or #business-contact-form */
+              .tax-planning-form-container #apply-form,
+              .tax-planning-form-container #business-contact-form {
+                display: block !important;
+                max-width: 600px !important;
+                margin: 0 auto !important;
+                width: 100% !important;
+                background: white !important;
+                border-radius: 12px !important;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+                padding: 1.5rem !important;
+              }
+              
+              /* Show all children of the form */
+              .tax-planning-form-container #apply-form *,
+              .tax-planning-form-container #business-contact-form * {
+                display: revert !important;
+              }
+              
+              /* Reset form element displays */
+              .tax-planning-form-container #apply-form h3,
+              .tax-planning-form-container #business-contact-form h3 {
+                display: block !important;
+              }
+              
+              .tax-planning-form-container #apply-form form,
+              .tax-planning-form-container #business-contact-form form {
+                display: block !important;
+              }
+              
+              .tax-planning-form-container #apply-form input,
+              .tax-planning-form-container #apply-form select,
+              .tax-planning-form-container #apply-form textarea,
+              .tax-planning-form-container #apply-form button,
+              .tax-planning-form-container #business-contact-form input,
+              .tax-planning-form-container #business-contact-form select,
+              .tax-planning-form-container #business-contact-form textarea,
+              .tax-planning-form-container #business-contact-form button {
+                display: block !important;
+                width: 100% !important;
+              }
+              
+              .tax-planning-form-container #apply-form button[type="submit"],
+              .tax-planning-form-container #business-contact-form button[type="submit"] {
+                display: inline-block !important;
+                width: 100% !important;
+              }
+            `}</style>
+            {selectedTaxPlanningType === 'personal' && <Personal_tax_planning />}
+            {selectedTaxPlanningType === 'business' && <Business_Tax_planning />}
+          </div>
+        </div>
+      )}
+
+      {/* Consultation Modal - Moved outside */}
       {showConsultation && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 relative animate-fadeInUp">
+        <div className="fixed inset-0 bg-black/20 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 relative animate-fadeInUp shadow-2xl">
             <button
               onClick={() => setShowConsultation(false)}
               className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"

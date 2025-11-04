@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   Home, IndianRupee, Shield, TrendingUp, Calculator, 
-  Bell, FileText, CreditCard, HeadphonesIcon
+  Bell, FileText, HeadphonesIcon
 } from 'lucide-react';
 const DashboardSidebar = ({ isOpen, activeView, setActiveView, toggleSidebar }) => {
   const [notifications, setNotifications] = useState(3); // Unread notifications count
@@ -9,31 +9,37 @@ const DashboardSidebar = ({ isOpen, activeView, setActiveView, toggleSidebar }) 
   const menuItems = [
     {
       id: 'overview',
-      name: 'Overview',
+      name: 'Dashboard',
       icon: <Home className="w-5 h-5" />,
       badge: null
     },
     {
       id: 'loans',
-      name: 'Loan Management',
+      name: 'My Loans',
       icon: <IndianRupee className="w-5 h-5" />,
       badge: null
     },
     {
       id: 'insurance',
-      name: 'Insurance',
+      name: 'My Insurance',
       icon: <Shield className="w-5 h-5" />,
       badge: null
     },
     {
       id: 'investments',
-      name: 'Investments',
+      name: 'My Investments',
       icon: <TrendingUp className="w-5 h-5" />,
       badge: null
     },
     {
       id: 'tax',
       name: 'Tax Planning',
+      icon: <Calculator className="w-5 h-5" />,
+      badge: null
+    },
+    {
+      id: 'calculators',
+      name: 'Calculators',
       icon: <Calculator className="w-5 h-5" />,
       badge: null
     }
@@ -52,7 +58,7 @@ const DashboardSidebar = ({ isOpen, activeView, setActiveView, toggleSidebar }) 
     },
     {
       id: 'documents',
-      name: 'Documents',
+      name: 'My Documents',
       icon: <FileText className="w-5 h-5" />,
       badge: null,
       onClick: () => {
@@ -61,20 +67,6 @@ const DashboardSidebar = ({ isOpen, activeView, setActiveView, toggleSidebar }) 
       }
     },
     {
-      id: 'transactions',
-      name: 'Transactions',
-      icon: <CreditCard className="w-5 h-5" />,
-      badge: null,
-      onClick: () => {
-        setActiveView('transactions');
-        if (window.innerWidth < 1024) toggleSidebar();
-      }
-    }
-  ];
-
-  const supportItems = [
-  
-    {
       id: 'support',
       name: 'Contact Support',
       icon: <HeadphonesIcon className="w-5 h-5" />,
@@ -82,8 +74,7 @@ const DashboardSidebar = ({ isOpen, activeView, setActiveView, toggleSidebar }) 
         setActiveView('support');
         if (window.innerWidth < 1024) toggleSidebar();
       }
-    },
- 
+    }
   ];
 
   return (
@@ -111,8 +102,9 @@ const DashboardSidebar = ({ isOpen, activeView, setActiveView, toggleSidebar }) 
 
           {/* Navigation */}
           <nav className="flex-1 py-4 px-3 xs:px-4 overflow-y-auto">
-            {/* Main Menu */}
-            <div>
+            {/* Main Services */}
+            <div className="mb-6">
+              <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider px-3 mb-3">Services</h3>
               <ul className="space-y-1 xs:space-y-1.5">
                 {menuItems.map((item) => (
                   <li key={item.id}>
@@ -150,6 +142,7 @@ const DashboardSidebar = ({ isOpen, activeView, setActiveView, toggleSidebar }) 
 
             {/* Quick Access */}
             <div>
+              <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider px-3 mb-3">Quick Access</h3>
               <ul className="space-y-1 xs:space-y-1.5">
                 {quickAccessItems.map((item) => (
                   <li key={item.id}>
@@ -177,30 +170,6 @@ const DashboardSidebar = ({ isOpen, activeView, setActiveView, toggleSidebar }) 
                 ))}
               </ul>
             </div>
-
-            {/* Support & Help */}
-            <div>
-              <ul className="space-y-1 xs:space-y-1.5">
-                {supportItems.map((item) => (
-                  <li key={item.id}>
-                    <button
-                      onClick={item.onClick}
-                      className={`w-full flex items-center space-x-3 px-3 xs:px-4 py-2.5 xs:py-3 rounded-lg transition-all duration-200 group ${
-                        activeView === item.id
-                          ? 'bg-gradient-to-r from-green-600 to-green-700 text-white shadow-md'
-                          : 'text-gray-700 hover:bg-green-50 hover:text-green-700'
-                      }`}
-                    >
-                      <span className="transition-transform duration-200 group-hover:scale-110">
-                        {item.icon}
-                      </span>
-                      <span className="font-medium text-sm xs:text-base">{item.name}</span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
           </nav>
         </div>
       </aside>

@@ -101,6 +101,17 @@ const SIP = () => {
     }
   };
 
+  // Handle navigation to contact page with scroll to hero section
+  const handleContactNavigation = () => {
+    navigate('/contact');
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }, 100);
+  };
+
   const scrollToCalculator = () => {
     const element = document.getElementById('sip-calculator');
     if (element) {
@@ -360,7 +371,9 @@ const SIP = () => {
           style={{
             backgroundImage: "url('https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=1920&q=80')",
             backgroundSize: "cover",
-            backgroundPosition: "center",
+            backgroundPosition: "center center",
+            backgroundAttachment: "scroll",
+            backgroundRepeat: "no-repeat",
           }}
         >
           {/* Overlay */}
@@ -621,7 +634,7 @@ const SIP = () => {
         </section>
 
         {/* Enhanced SIP Calculator Section */}
-        <section className="py-8 md:py-12 lg:py-16 bg-gradient-to-br from-green-50 to-white">
+        <section id="calculator" className="py-8 md:py-12 lg:py-16 bg-gradient-to-br from-green-50 to-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-8 md:mb-12">
               <div className="inline-block p-3 bg-green-100 rounded-full mb-4">
@@ -1316,7 +1329,7 @@ const SIP = () => {
                 Start SIP Investment
               </button>
               <button 
-                onClick={() => navigate('/contact')}
+                onClick={handleContactNavigation}
                 className="border-2 border-white text-white px-6 sm:px-8 md:px-10 py-2.5 sm:py-3 md:py-4 rounded-full font-semibold hover:bg-white hover:text-green-700 transition-all duration-300 text-sm sm:text-base md:text-lg">
                 Talk to Expert
               </button>

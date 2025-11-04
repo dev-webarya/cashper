@@ -1,0 +1,31 @@
+/* Calculator wrapper styles to hide navbar and footer from nested components */
+.calculator-wrapper nav,
+.calculator-wrapper footer {
+  display: none !important;
+}
+
+/* Ensure calculator components take full width */
+.calculator-wrapper > div {
+  width: 100%;
+}
+
+/* Reset any conflicting styles */
+.calculator-wrapper {
+  background: transparent;
+}
+
+/* Smooth animations */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slideInRight {
+  animation: slideInRight 0.3s ease-out;
+}

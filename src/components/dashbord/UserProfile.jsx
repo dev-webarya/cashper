@@ -1,31 +1,70 @@
 import React, { useState, useEffect } from 'react';
-import { X, Upload, Check, AlertCircle, Lock, Shield, Trash2, Edit } from 'lucide-react';
+import { X, Upload, Check, AlertCircle, Lock, Shield, Trash2, Edit, Eye, EyeOff, FileText, Image as ImageIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-const UserProfile = ({ userData, setUserData }) => {
+const UserProfile = ({ userData, setUserData, showEditButton = false }) => {
   const navigate = useNavigate();
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(showEditButton);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [show2FAModal, setShow2FAModal] = useState(false);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [successMessage, setSuccessMessage] = useState('');
+  
+  // Password form state
+  const [passwordForm, setPasswordForm] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  });
+  const [passwordErrors, setPasswordErrors] = useState({});
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  
+  // Upload form state
+  const [uploadForm, setUploadForm] = useState({
+    documentType: '',
+    file: null,
+    fileName: ''
+  });
+  const [uploadErrors, setUploadErrors] = useState({});
+  const [profileImage, setProfileImage] = useState(null);
+  const [documents, setDocuments] = useState([
+    { id: 1, name: 'PAN Card', type: 'Identity', status: 'verified', uploadDate: 'Jan 10, 2024', fileData: null },
+    { id: 2, name: 'Aadhar Card', type: 'Identity', status: 'verified', uploadDate: 'Jan 10, 2024', fileData: null },
+    { id: 3, name: 'Income Proof', type: 'Financial', status: 'verified', uploadDate: 'Feb 15, 2024', fileData: null },
+    { id: 4, name: 'Bank Statement', type: 'Financial', status: 'pending', uploadDate: 'Dec 20, 2024', fileData: null }
+  ]);
   
   const [userInfo, setUserInfo] = useState({
     name: userData?.name || 'Sudha',
     email: userData?.email || 'john.doe@example.com',
-    phone: '+91 98765 43210',
+    phone: '9876543210',
     address: 'B-3011, Gaur Siddhartham, Ghaziabad, UP - 201009',
     panCard: 'ABCDE1234F',
     aadhar: 'XXXX-XXXX-5678',
-    dateOfBirth: '15-Jan-1990',
+    dateOfBirth: '1990-01-15',
     occupation: 'Software Engineer',
-    annualIncome: '₹12,00,000'
+    annualIncome: '1200000'
   });
 
   useEffect(() => {
     // Load user profile from localStorage or API
     const storedProfile = localStorage.getItem('userProfile');
     const storedUser = localStorage.getItem('user');
+    const storedImage = localStorage.getItem('userProfileImage');
+    const storedDocuments = localStorage.getItem('uploadedDocuments');
+    
+    if (storedImage) {
+      setProfileImage(storedImage);
+    }
+    
+    if (storedDocuments) {
+      setDocuments(JSON.parse(storedDocuments));
+    }
     
     if (storedProfile) {
       const profile = JSON.parse(storedProfile);
@@ -47,21 +86,108 @@ const UserProfile = ({ userData, setUserData }) => {
     }
   }, [userData]);
 
+  // Validation functions
+  const validatePhone = (phone) => {
+    const phoneRegex = /^[0-9]{10}$/;
+    return phoneRegex.test(phone.replace(/\s/g, ''));
+  };
+
+  const validatePAN = (pan) => {
+    const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+    return panRegex.test(pan);
+  };
+
+  const validateAadhar = (aadhar) => {
+    const cleanAadhar = aadhar.replace(/[^0-9X]/g, '');
+    return cleanAadhar.length === 12 || /^X{4}-X{4}-\d{4}$/.test(aadhar);
+  };
+
+  const validateName = (name) => {
+    return name.trim().length >= 2 && /^[a-zA-Z\s]+$/.test(name);
+  };
+
+  const validateAddress = (address) => {
+    return address.trim().length >= 10;
+  };
+
+  const validateOccupation = (occupation) => {
+    return occupation.trim().length >= 2;
+  };
+
+  const validateIncome = (income) => {
+    const numIncome = parseInt(income.replace(/[^0-9]/g, ''));
+    return !isNaN(numIncome) && numIncome >= 0;
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!validateName(userInfo.name)) {
+      newErrors.name = 'Name must be at least 2 characters and contain only letters';
+    }
+
+    if (!validatePhone(userInfo.phone)) {
+      newErrors.phone = 'Please enter a valid 10-digit phone number';
+    }
+
+    if (!validateAddress(userInfo.address)) {
+      newErrors.address = 'Address must be at least 10 characters';
+    }
+
+    if (!validatePAN(userInfo.panCard)) {
+      newErrors.panCard = 'Invalid PAN format (e.g., ABCDE1234F)';
+    }
+
+    if (!validateAadhar(userInfo.aadhar)) {
+      newErrors.aadhar = 'Invalid Aadhar format (12 digits)';
+    }
+
+    if (!validateOccupation(userInfo.occupation)) {
+      newErrors.occupation = 'Occupation is required';
+    }
+
+    if (!validateIncome(userInfo.annualIncome)) {
+      newErrors.annualIncome = 'Please enter a valid income amount';
+    }
+
+    if (!userInfo.dateOfBirth) {
+      newErrors.dateOfBirth = 'Date of birth is required';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSaveChanges = () => {
-    // Save to localStorage
-    localStorage.setItem('userProfile', JSON.stringify(userInfo));
+    if (!validateForm()) {
+      setSuccessMessage('');
+      return;
+    }
+
+    setLoading(true);
     
-    // Update parent userData
-    const updatedUser = {
-      name: userInfo.name,
-      email: userInfo.email,
-      initials: getInitials(userInfo.name)
-    };
-    localStorage.setItem('user', JSON.stringify(updatedUser));
-    setUserData(updatedUser);
-    
-    setIsEditing(false);
-    alert('✅ Profile updated successfully!');
+    // Simulate API call
+    setTimeout(() => {
+      // Save to localStorage
+      localStorage.setItem('userProfile', JSON.stringify(userInfo));
+      
+      // Update parent userData
+      const updatedUser = {
+        name: userInfo.name,
+        email: userInfo.email,
+        initials: getInitials(userInfo.name)
+      };
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      setUserData(updatedUser);
+      
+      setIsEditing(false);
+      setLoading(false);
+      setErrors({});
+      setSuccessMessage('✅ Profile updated successfully!');
+      
+      // Clear success message after 3 seconds
+      setTimeout(() => setSuccessMessage(''), 3000);
+    }, 800);
   };
 
   const getInitials = (name) => {
@@ -75,6 +201,249 @@ const UserProfile = ({ userData, setUserData }) => {
 
   const handleInputChange = (field, value) => {
     setUserInfo(prev => ({ ...prev, [field]: value }));
+    // Clear error for this field when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: '' }));
+    }
+  };
+
+  const formatCurrency = (value) => {
+    const numValue = value.replace(/[^0-9]/g, '');
+    return numValue ? `₹${parseInt(numValue).toLocaleString('en-IN')}` : '';
+  };
+
+  // Password validation
+  const validatePassword = (password) => {
+    const minLength = password.length >= 8;
+    const hasUpper = /[A-Z]/.test(password);
+    const hasLower = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    
+    return {
+      minLength,
+      hasUpper,
+      hasLower,
+      hasNumber,
+      hasSpecial,
+      isValid: minLength && hasUpper && hasLower && hasNumber && hasSpecial
+    };
+  };
+
+  const handlePasswordChange = () => {
+    const newErrors = {};
+
+    if (!passwordForm.currentPassword) {
+      newErrors.currentPassword = 'Current password is required';
+    }
+
+    if (!passwordForm.newPassword) {
+      newErrors.newPassword = 'New password is required';
+    } else {
+      const validation = validatePassword(passwordForm.newPassword);
+      if (!validation.isValid) {
+        newErrors.newPassword = 'Password does not meet requirements';
+      }
+    }
+
+    if (!passwordForm.confirmPassword) {
+      newErrors.confirmPassword = 'Please confirm your password';
+    } else if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+      newErrors.confirmPassword = 'Passwords do not match';
+    }
+
+    setPasswordErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      setLoading(true);
+      
+      // Simulate API call
+      setTimeout(() => {
+        setLoading(false);
+        setShowPasswordModal(false);
+        setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
+        setPasswordErrors({});
+        setSuccessMessage('✅ Password changed successfully!');
+        setTimeout(() => setSuccessMessage(''), 3000);
+      }, 1000);
+    }
+  };
+
+  // File upload validation
+  const handleFileSelect = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg'];
+
+    if (!allowedTypes.includes(file.type)) {
+      setUploadErrors({ file: 'Only PDF, JPG, and PNG files are allowed' });
+      return;
+    }
+
+    if (file.size > maxSize) {
+      setUploadErrors({ file: 'File size must be less than 5MB' });
+      return;
+    }
+
+    setUploadForm(prev => ({ ...prev, file, fileName: file.name }));
+    setUploadErrors({});
+  };
+
+  // Profile image upload - direct file picker
+  const handleProfileImageSelect = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const maxSize = 2 * 1024 * 1024; // 2MB
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+
+    if (!allowedTypes.includes(file.type)) {
+      alert('❌ Only JPG and PNG images are allowed');
+      return;
+    }
+
+    if (file.size > maxSize) {
+      alert('❌ Image size must be less than 2MB');
+      return;
+    }
+
+    // Create preview URL
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setProfileImage(reader.result);
+      localStorage.setItem('userProfileImage', reader.result);
+      setSuccessMessage('✅ Profile picture updated successfully!');
+      setTimeout(() => setSuccessMessage(''), 3000);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const triggerProfileImageUpload = () => {
+    if (isEditing) {
+      document.getElementById('profileImageInput')?.click();
+    }
+  };
+
+  const handleUploadDocument = () => {
+    const newErrors = {};
+
+    if (!uploadForm.documentType) {
+      newErrors.documentType = 'Please select a document type';
+    }
+
+    if (!uploadForm.file) {
+      newErrors.file = 'Please select a file to upload';
+    }
+
+    setUploadErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      setLoading(true);
+      
+      // Convert file to base64
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const newDoc = {
+          id: Date.now(),
+          name: uploadForm.documentType,
+          type: uploadForm.documentType.includes('PAN') || uploadForm.documentType.includes('Aadhar') ? 'Identity' : 'Financial',
+          status: 'pending',
+          uploadDate: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+          fileName: uploadForm.fileName,
+          fileData: reader.result,
+          fileType: uploadForm.file.type
+        };
+        
+        const updatedDocuments = [...documents, newDoc];
+        setDocuments(updatedDocuments);
+        localStorage.setItem('uploadedDocuments', JSON.stringify(updatedDocuments));
+        
+        setLoading(false);
+        setShowUploadModal(false);
+        setUploadForm({ documentType: '', file: null, fileName: '' });
+        setUploadErrors({});
+        setSuccessMessage('✅ Document uploaded successfully! It will be verified within 24-48 hours.');
+        setTimeout(() => setSuccessMessage(''), 4000);
+      };
+      
+      reader.readAsDataURL(uploadForm.file);
+    }
+  };
+
+  const handleViewDocument = (doc) => {
+    if (doc.fileData) {
+      // Open the document in a new tab
+      const newWindow = window.open();
+      if (newWindow) {
+        if (doc.fileType && doc.fileType.includes('pdf')) {
+          // For PDF files
+          newWindow.document.write(`
+            <html>
+              <head>
+                <title>${doc.name} - ${doc.fileName || 'Document'}</title>
+                <style>
+                  body { margin: 0; padding: 0; }
+                  iframe { width: 100%; height: 100vh; border: none; }
+                </style>
+              </head>
+              <body>
+                <iframe src="${doc.fileData}"></iframe>
+              </body>
+            </html>
+          `);
+        } else {
+          // For images and other files
+          newWindow.document.write(`
+            <html>
+              <head>
+                <title>${doc.name} - ${doc.fileName || 'Document'}</title>
+                <style>
+                  body { 
+                    margin: 0; 
+                    padding: 20px; 
+                    background: #f5f5f5;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    font-family: Arial, sans-serif;
+                  }
+                  h2 { color: #333; margin-bottom: 20px; }
+                  img { 
+                    max-width: 90%; 
+                    height: auto; 
+                    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                    background: white;
+                    padding: 10px;
+                  }
+                  .info { 
+                    background: white; 
+                    padding: 15px; 
+                    margin-top: 20px; 
+                    border-radius: 8px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                  }
+                </style>
+              </head>
+              <body>
+                <h2>${doc.name}</h2>
+                <img src="${doc.fileData}" alt="${doc.name}" />
+                <div class="info">
+                  <p><strong>File Name:</strong> ${doc.fileName || 'N/A'}</p>
+                  <p><strong>Type:</strong> ${doc.type}</p>
+                  <p><strong>Status:</strong> ${doc.status}</p>
+                  <p><strong>Upload Date:</strong> ${doc.uploadDate}</p>
+                </div>
+              </body>
+            </html>
+          `);
+        }
+        newWindow.document.close();
+      }
+    } else {
+      alert(`📄 ${doc.name}\n\nDocument Type: ${doc.type}\nStatus: ${doc.status}\nUploaded: ${doc.uploadDate}\n\nNote: This is a sample document. No file has been uploaded yet.`);
+    }
   };
 
   const handleDeleteProfile = () => {
@@ -83,18 +452,12 @@ const UserProfile = ({ userData, setUserData }) => {
       localStorage.removeItem('user');
       localStorage.removeItem('userProfile');
       localStorage.removeItem('authToken');
+      localStorage.removeItem('uploadedDocuments');
       
       alert('Your profile has been deleted. You will be redirected to the login page.');
       navigate('/login');
     }
   };
-
-  const documents = [
-    { id: 1, name: 'PAN Card', type: 'Identity', status: 'verified', uploadDate: 'Jan 10, 2024' },
-    { id: 2, name: 'Aadhar Card', type: 'Identity', status: 'verified', uploadDate: 'Jan 10, 2024' },
-    { id: 3, name: 'Income Proof', type: 'Financial', status: 'verified', uploadDate: 'Feb 15, 2024' },
-    { id: 4, name: 'Bank Statement', type: 'Financial', status: 'pending', uploadDate: 'Dec 20, 2024' }
-  ];
 
   const activities = [
     { id: 1, action: 'Applied for Personal Loan', date: 'Dec 28, 2024', time: '10:30 AM' },
@@ -104,180 +467,274 @@ const UserProfile = ({ userData, setUserData }) => {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6 pb-6">
+      {/* Success Message */}
+      {successMessage && (
+        <div className="fixed top-20 right-4 z-50 bg-green-600 text-white px-4 sm:px-6 py-3 sm:py-4 rounded-lg shadow-2xl flex items-center gap-2 sm:gap-3 animate-slideInRight">
+          <Check className="w-4 h-4 sm:w-5 sm:h-5" />
+          <span className="text-sm sm:text-base font-semibold">{successMessage}</span>
+        </div>
+      )}
+
       {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
         <div>
-          <h1 className="text-2xl lg:text-3xl font-bold text-gray-800">My Profile</h1>
-          <p className="text-gray-600 mt-1">Manage your personal information and documents</p>
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800">My Profile</h1>
+          <p className="text-sm sm:text-base text-gray-600 mt-1">Manage your personal information and documents</p>
         </div>
-        <div className="flex gap-2">
-          {isEditing ? (
-            <>
+        {showEditButton && (
+          <div className="flex gap-2 w-full sm:w-auto">
+            {isEditing ? (
+              <>
+                <button
+                  onClick={() => {
+                    setIsEditing(false);
+                    setErrors({});
+                    // Reset to original values
+                    const storedProfile = localStorage.getItem('userProfile');
+                    if (storedProfile) {
+                      setUserInfo(JSON.parse(storedProfile));
+                    }
+                  }}
+                  disabled={loading}
+                  className="flex-1 sm:flex-none px-4 sm:px-6 py-2.5 sm:py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg sm:rounded-xl font-semibold transition-all disabled:opacity-50 text-sm sm:text-base"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSaveChanges}
+                  disabled={loading}
+                  className="flex-1 sm:flex-none px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-lg sm:rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 flex items-center justify-center gap-2 text-sm sm:text-base"
+                >
+                  {loading ? (
+                    <>
+                      <svg className="animate-spin h-4 w-4 sm:h-5 sm:w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      <span className="hidden sm:inline">Saving...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Check className="w-4 h-4" />
+                      <span className="hidden sm:inline">Save Changes</span>
+                      <span className="sm:hidden">Save</span>
+                    </>
+                  )}
+                </button>
+              </>
+            ) : (
               <button
-                onClick={() => {
-                  setIsEditing(false);
-                  // Reset to original values
-                  const storedProfile = localStorage.getItem('userProfile');
-                  if (storedProfile) {
-                    setUserInfo(JSON.parse(storedProfile));
-                  }
-                }}
-                className="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-semibold transition-all"
+                onClick={() => setIsEditing(true)}
+                data-edit-profile
+                className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg sm:rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 text-sm sm:text-base"
               >
-                Cancel
+                <Edit className="w-4 h-4" />
+                Edit Profile
               </button>
-              <button
-                onClick={handleSaveChanges}
-                className="px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center gap-2"
-              >
-                <Check className="w-4 h-4" />
-                Save Changes
-              </button>
-            </>
-          ) : (
-            <button
-              onClick={() => setIsEditing(true)}
-              data-edit-profile
-              className="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center gap-2"
-            >
-              <Edit className="w-4 h-4" />
-              Edit Profile
-            </button>
-          )}
-        </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Profile Card */}
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-        {/* Cover Image */}
-        <div className="h-32 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 relative">
-          {isEditing && (
-            <button className="absolute bottom-4 right-4 px-3 py-1.5 bg-white/90 hover:bg-white text-gray-700 rounded-lg text-xs font-semibold flex items-center gap-2 transition-all">
-              <Upload className="w-3 h-3" />
-              Change Cover
-            </button>
-          )}
-        </div>
-        
+      <div className="bg-white rounded-lg sm:rounded-xl shadow-lg overflow-hidden">
         {/* Profile Info */}
-        <div className="px-6 pb-6">
-          <div className="flex flex-col sm:flex-row items-center sm:items-end gap-4 -mt-16 mb-6">
-            <div className="w-32 h-32 bg-gradient-to-br from-green-600 via-green-700 to-green-800 rounded-full flex items-center justify-center text-white text-4xl font-bold shadow-xl border-4 border-white relative group">
-              {getInitials(userInfo.name)}
+        <div className="px-4 sm:px-6 py-4 sm:py-6">
+          <div className="flex flex-col sm:flex-row items-center sm:items-end gap-3 sm:gap-4 mb-4 sm:mb-6">
+            <div 
+              className={`w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 bg-gradient-to-br from-green-600 via-green-700 to-green-800 rounded-full flex items-center justify-center text-white text-3xl sm:text-4xl font-bold shadow-xl border-4 border-white relative group overflow-hidden ${isEditing ? 'cursor-pointer' : ''}`}
+              onClick={triggerProfileImageUpload}
+            >
+              {profileImage ? (
+                <img src={profileImage} alt="Profile" className="w-full h-full object-cover" />
+              ) : (
+                getInitials(userInfo.name)
+              )}
               {isEditing && (
-                <div className="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-                  <Upload className="w-6 h-6 text-white" />
+                <div className="absolute inset-0 bg-black bg-opacity-50 rounded-full flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Upload className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                  <span className="text-xs text-white mt-1">Change</span>
                 </div>
               )}
             </div>
-            <div className="text-center sm:text-left flex-1">
-              <h2 className="text-2xl font-bold text-gray-800">{userInfo.name}</h2>
-              <p className="text-gray-600">{userInfo.occupation}</p>
+            {/* Hidden file input */}
+            <input
+              type="file"
+              id="profileImageInput"
+              accept="image/jpeg,image/png,image/jpg"
+              onChange={handleProfileImageSelect}
+              className="hidden"
+            />
+            <div className="text-center sm:text-left flex-1 w-full">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-800 break-words">{userInfo.name}</h2>
+              <p className="text-sm sm:text-base text-gray-600">{userInfo.occupation}</p>
               <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-2">
-                <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold flex items-center gap-1">
-                  <Check className="w-3 h-3" />
-                  Verified Account
-                </span>
-                <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-semibold">
-                  Premium Member
+                <span className="px-2.5 sm:px-3 py-1 bg-green-100 text-green-700 rounded-full text-[10px] sm:text-xs font-semibold flex items-center gap-1">
+                  <Check className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
+                  Verified
                 </span>
               </div>
             </div>
           </div>
 
           {/* Personal Information Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+            <div className="space-y-3 sm:space-y-4">
+              {/* Name */}
               <div>
-                <label className="text-sm text-gray-500 mb-1 block">Email Address</label>
+                <label className="text-xs sm:text-sm text-gray-700 font-semibold mb-1.5 sm:mb-2 block">Full Name *</label>
+                <input
+                  type="text"
+                  value={userInfo.name}
+                  onChange={(e) => handleInputChange('name', e.target.value)}
+                  disabled={!isEditing}
+                  className={`w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base rounded-lg border-2 ${
+                    errors.name ? 'border-red-500' : isEditing ? 'border-gray-300 focus:border-green-500' : 'border-gray-200 bg-gray-50'
+                  } focus:ring-2 focus:ring-green-200 transition-all disabled:bg-gray-50 disabled:cursor-not-allowed focus:outline-none`}
+                  placeholder="Enter your full name"
+                />
+                {errors.name && <p className="text-xs text-red-500 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{errors.name}</p>}
+              </div>
+
+              {/* Email */}
+              <div>
+                <label className="text-xs sm:text-sm text-gray-700 font-semibold mb-1.5 sm:mb-2 block">Email Address</label>
                 <input
                   type="email"
                   value={userInfo.email}
                   disabled
-                  className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 bg-gray-50 cursor-not-allowed"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base rounded-lg border-2 border-gray-200 bg-gray-50 cursor-not-allowed"
                 />
-                <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
-                  <Lock className="w-3 h-3" />
+                <p className="text-[10px] sm:text-xs text-gray-500 mt-1 flex items-center gap-1">
+                  <Lock className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
                   Email cannot be changed (Login Email)
                 </p>
               </div>
+
+              {/* Phone */}
               <div>
-                <label className="text-sm text-gray-500 mb-1 block">Phone Number</label>
+                <label className="text-xs sm:text-sm text-gray-700 font-semibold mb-1.5 sm:mb-2 block">Phone Number *</label>
                 <input
                   type="tel"
                   value={userInfo.phone}
-                  onChange={(e) => handleInputChange('phone', e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/[^0-9]/g, '');
+                    if (value.length <= 10) {
+                      handleInputChange('phone', value);
+                    }
+                  }}
                   disabled={!isEditing}
-                  className={`w-full px-4 py-3 rounded-lg border-2 ${isEditing ? 'border-gray-300 focus:border-green-500' : 'border-gray-200 bg-gray-50'} focus:ring-2 focus:ring-green-200 transition-all disabled:bg-gray-50`}
+                  maxLength={10}
+                  className={`w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base rounded-lg border-2 ${
+                    errors.phone ? 'border-red-500' : isEditing ? 'border-gray-300 focus:border-green-500' : 'border-gray-200 bg-gray-50'
+                  } focus:ring-2 focus:ring-green-200 transition-all disabled:bg-gray-50 disabled:cursor-not-allowed focus:outline-none`}
+                  placeholder="9876543210"
                 />
+                {errors.phone && <p className="text-xs text-red-500 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{errors.phone}</p>}
               </div>
+
+              {/* Date of Birth */}
               <div>
-                <label className="text-sm text-gray-500 mb-1 block">Date of Birth</label>
+                <label className="text-xs sm:text-sm text-gray-700 font-semibold mb-1.5 sm:mb-2 block">Date of Birth *</label>
                 <input
-                  type="text"
+                  type="date"
                   value={userInfo.dateOfBirth}
                   onChange={(e) => handleInputChange('dateOfBirth', e.target.value)}
                   disabled={!isEditing}
-                  className={`w-full px-4 py-3 rounded-lg border-2 ${isEditing ? 'border-gray-300 focus:border-green-500' : 'border-gray-200 bg-gray-50'} focus:ring-2 focus:ring-green-200 transition-all disabled:bg-gray-50`}
+                  max={new Date().toISOString().split('T')[0]}
+                  className={`w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base rounded-lg border-2 ${
+                    errors.dateOfBirth ? 'border-red-500' : isEditing ? 'border-gray-300 focus:border-green-500' : 'border-gray-200 bg-gray-50'
+                  } focus:ring-2 focus:ring-green-200 transition-all disabled:bg-gray-50 disabled:cursor-not-allowed focus:outline-none`}
                 />
+                {errors.dateOfBirth && <p className="text-xs text-red-500 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{errors.dateOfBirth}</p>}
               </div>
+
+              {/* Occupation */}
               <div>
-                <label className="text-sm text-gray-500 mb-1 block">Occupation</label>
+                <label className="text-xs sm:text-sm text-gray-700 font-semibold mb-1.5 sm:mb-2 block">Occupation *</label>
                 <input
                   type="text"
                   value={userInfo.occupation}
                   onChange={(e) => handleInputChange('occupation', e.target.value)}
                   disabled={!isEditing}
-                  className={`w-full px-4 py-3 rounded-lg border-2 ${isEditing ? 'border-gray-300 focus:border-green-500' : 'border-gray-200 bg-gray-50'} focus:ring-2 focus:ring-green-200 transition-all disabled:bg-gray-50`}
+                  className={`w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base rounded-lg border-2 ${
+                    errors.occupation ? 'border-red-500' : isEditing ? 'border-gray-300 focus:border-green-500' : 'border-gray-200 bg-gray-50'
+                  } focus:ring-2 focus:ring-green-200 transition-all disabled:bg-gray-50 disabled:cursor-not-allowed focus:outline-none`}
+                  placeholder="Enter your occupation"
                 />
+                {errors.occupation && <p className="text-xs text-red-500 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{errors.occupation}</p>}
               </div>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
+              {/* Address */}
               <div>
-                <label className="text-sm text-gray-500 mb-1 block">Address</label>
+                <label className="text-xs sm:text-sm text-gray-700 font-semibold mb-1.5 sm:mb-2 block">Address *</label>
                 <textarea
                   value={userInfo.address}
                   onChange={(e) => handleInputChange('address', e.target.value)}
                   disabled={!isEditing}
                   rows="3"
-                  className={`w-full px-4 py-3 rounded-lg border-2 ${isEditing ? 'border-gray-300 focus:border-green-500' : 'border-gray-200 bg-gray-50'} focus:ring-2 focus:ring-green-200 transition-all disabled:bg-gray-50`}
+                  className={`w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base rounded-lg border-2 ${
+                    errors.address ? 'border-red-500' : isEditing ? 'border-gray-300 focus:border-green-500' : 'border-gray-200 bg-gray-50'
+                  } focus:ring-2 focus:ring-green-200 transition-all disabled:bg-gray-50 disabled:cursor-not-allowed focus:outline-none resize-none`}
+                  placeholder="Enter your complete address"
                 />
+                {errors.address && <p className="text-xs text-red-500 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{errors.address}</p>}
               </div>
+
+              {/* PAN Card */}
               <div>
-                <label className="text-sm text-gray-500 mb-1 block">PAN Card</label>
+                <label className="text-xs sm:text-sm text-gray-700 font-semibold mb-1.5 sm:mb-2 block">PAN Card *</label>
                 <input
                   type="text"
                   value={userInfo.panCard}
-                  onChange={(e) => handleInputChange('panCard', e.target.value)}
+                  onChange={(e) => handleInputChange('panCard', e.target.value.toUpperCase())}
                   disabled={!isEditing}
-                  className={`w-full px-4 py-3 rounded-lg border-2 ${isEditing ? 'border-gray-300 focus:border-green-500' : 'border-gray-200 bg-gray-50'} focus:ring-2 focus:ring-green-200 transition-all disabled:bg-gray-50`}
+                  maxLength={10}
+                  className={`w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base rounded-lg border-2 uppercase ${
+                    errors.panCard ? 'border-red-500' : isEditing ? 'border-gray-300 focus:border-green-500' : 'border-gray-200 bg-gray-50'
+                  } focus:ring-2 focus:ring-green-200 transition-all disabled:bg-gray-50 disabled:cursor-not-allowed focus:outline-none`}
+                  placeholder="ABCDE1234F"
                 />
+                {errors.panCard && <p className="text-xs text-red-500 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{errors.panCard}</p>}
               </div>
+
+              {/* Aadhar */}
               <div>
-                <label className="text-sm text-gray-500 mb-1 block">Aadhar Number</label>
+                <label className="text-xs sm:text-sm text-gray-700 font-semibold mb-1.5 sm:mb-2 block">Aadhar Number *</label>
                 <input
                   type="text"
                   value={userInfo.aadhar}
-                  onChange={(e) => handleInputChange('aadhar', e.target.value)}
-                  disabled
-                  className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 bg-gray-50"
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/[^0-9X\-]/g, '');
+                    handleInputChange('aadhar', value);
+                  }}
+                  disabled={!isEditing}
+                  maxLength={17}
+                  className={`w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base rounded-lg border-2 ${
+                    errors.aadhar ? 'border-red-500' : isEditing ? 'border-gray-300 focus:border-green-500' : 'border-gray-200 bg-gray-50'
+                  } focus:ring-2 focus:ring-green-200 transition-all disabled:bg-gray-50 disabled:cursor-not-allowed focus:outline-none`}
+                  placeholder="XXXX-XXXX-XXXX"
                 />
-                <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
-                  <Lock className="w-3 h-3" />
-                  Aadhar cannot be changed for security reasons
-                </p>
+                {errors.aadhar && <p className="text-xs text-red-500 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{errors.aadhar}</p>}
               </div>
+
+              {/* Annual Income */}
               <div>
-                <label className="text-sm text-gray-500 mb-1 block">Annual Income</label>
+                <label className="text-xs sm:text-sm text-gray-700 font-semibold mb-1.5 sm:mb-2 block">Annual Income *</label>
                 <input
                   type="text"
-                  value={userInfo.annualIncome}
-                  onChange={(e) => handleInputChange('annualIncome', e.target.value)}
+                  value={isEditing ? userInfo.annualIncome : formatCurrency(userInfo.annualIncome)}
+                  onChange={(e) => handleInputChange('annualIncome', e.target.value.replace(/[^0-9]/g, ''))}
                   disabled={!isEditing}
-                  className={`w-full px-4 py-3 rounded-lg border-2 ${isEditing ? 'border-gray-300 focus:border-green-500' : 'border-gray-200 bg-gray-50'} focus:ring-2 focus:ring-green-200 transition-all disabled:bg-gray-50`}
+                  className={`w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base rounded-lg border-2 ${
+                    errors.annualIncome ? 'border-red-500' : isEditing ? 'border-gray-300 focus:border-green-500' : 'border-gray-200 bg-gray-50'
+                  } focus:ring-2 focus:ring-green-200 transition-all disabled:bg-gray-50 disabled:cursor-not-allowed focus:outline-none`}
+                  placeholder="1200000"
                 />
+                {errors.annualIncome && <p className="text-xs text-red-500 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{errors.annualIncome}</p>}
               </div>
             </div>
           </div>
@@ -285,36 +742,34 @@ const UserProfile = ({ userData, setUserData }) => {
       </div>
 
       {/* Documents Section */}
-      <div className="bg-white rounded-xl shadow-lg p-6">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-gray-800">Documents</h2>
+      <div className="bg-white rounded-lg sm:rounded-xl shadow-lg p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4 sm:mb-6">
+          <h2 className="text-lg sm:text-xl font-bold text-gray-800">My Documents</h2>
           <button 
             onClick={() => setShowUploadModal(true)}
-            className="bg-gradient-to-r from-green-600 via-green-700 to-green-800 hover:from-green-700 hover:to-green-800 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-md hover:shadow-lg transition-all flex items-center gap-2"
+            className="w-full sm:w-auto bg-gradient-to-r from-green-600 via-green-700 to-green-800 hover:from-green-700 hover:to-green-800 text-white px-4 py-2.5 rounded-lg text-sm font-semibold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
           >
             <Upload className="w-4 h-4" />
             Upload New
           </button>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
           {documents.map((doc) => (
             <div
               key={doc.id}
-              className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:shadow-md transition-all group"
+              className="flex flex-col xs:flex-row items-start xs:items-center justify-between p-3 sm:p-4 border border-gray-200 rounded-lg hover:shadow-md transition-all group gap-3 xs:gap-0"
             >
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center text-white">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
+              <div className="flex items-center space-x-3 sm:space-x-4 flex-1">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center text-white flex-shrink-0">
+                  <FileText className="w-5 h-5 sm:w-6 sm:h-6" />
                 </div>
-                <div>
-                  <p className="text-sm font-semibold text-gray-800">{doc.name}</p>
-                  <p className="text-xs text-gray-500">{doc.type} • {doc.uploadDate}</p>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs sm:text-sm font-semibold text-gray-800 truncate">{doc.name}</p>
+                  <p className="text-[10px] sm:text-xs text-gray-500">{doc.type} • {doc.uploadDate}</p>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
-                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+              <div className="flex items-center gap-2 w-full xs:w-auto">
+                <span className={`px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold flex-shrink-0 ${
                   doc.status === 'verified' 
                     ? 'bg-green-100 text-green-700' 
                     : 'bg-yellow-100 text-yellow-700'
@@ -322,8 +777,8 @@ const UserProfile = ({ userData, setUserData }) => {
                   {doc.status === 'verified' ? 'Verified' : 'Pending'}
                 </span>
                 <button 
-                  onClick={() => alert(`Viewing ${doc.name}\n\nDocument Type: ${doc.type}\nStatus: ${doc.status}\nUploaded: ${doc.uploadDate}`)}
-                  className="opacity-0 group-hover:opacity-100 px-3 py-1 bg-blue-100 text-blue-700 rounded-lg text-xs font-semibold hover:bg-blue-200 transition-all"
+                  onClick={() => handleViewDocument(doc)}
+                  className="xs:opacity-0 xs:group-hover:opacity-100 px-3 py-1 bg-blue-100 text-blue-700 rounded-lg text-[10px] sm:text-xs font-semibold hover:bg-blue-200 transition-all"
                 >
                   View
                 </button>
@@ -333,82 +788,25 @@ const UserProfile = ({ userData, setUserData }) => {
         </div>
       </div>
 
-      {/* Recent Activity */}
-      <div className="bg-white rounded-xl shadow-lg p-6">
-        <h2 className="text-xl font-bold text-gray-800 mb-6">Recent Activity</h2>
-        <div className="space-y-4">
-          {activities.map((activity) => (
-            <div key={activity.id} className="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center text-white flex-shrink-0">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <div className="flex-1">
-                <p className="text-sm font-semibold text-gray-800">{activity.action}</p>
-                <p className="text-xs text-gray-500 mt-1">{activity.date} at {activity.time}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Security Settings */}
-      <div className="bg-white rounded-xl shadow-lg p-6">
-        <h2 className="text-xl font-bold text-gray-800 mb-6">Security Settings</h2>
-        <div className="space-y-4">
-          <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-all">
-            <div>
-              <p className="text-sm font-semibold text-gray-800 flex items-center gap-2">
-                <Lock className="w-4 h-4" />
-                Change Password
-              </p>
-              <p className="text-xs text-gray-500 mt-1">Last changed 3 months ago</p>
-            </div>
-            <button 
-              onClick={() => setShowPasswordModal(true)}
-              className="px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg text-sm font-semibold hover:from-blue-700 hover:to-blue-800 transition-all shadow-md"
-            >
-              Update
-            </button>
-          </div>
-          <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-all">
-            <div>
-              <p className="text-sm font-semibold text-gray-800 flex items-center gap-2">
-                <Shield className="w-4 h-4" />
-                Two-Factor Authentication
-              </p>
-              <p className="text-xs text-gray-500 mt-1">Add an extra layer of security</p>
-            </div>
-            <button
-              onClick={() => setShow2FAModal(true)}
-              className="px-4 py-2 bg-gradient-to-r from-green-600 via-green-700 to-green-800 text-white rounded-lg text-sm font-semibold hover:from-green-700 hover:to-green-800 transition-all shadow-md"
-            >
-              Enable
-            </button>
-          </div>
-        </div>
-      </div>
-
       {/* Delete Profile Section */}
-      <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-red-200">
-        <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-          <Trash2 className="w-5 h-5 text-red-600" />
+      <div className="bg-white rounded-lg sm:rounded-xl shadow-lg p-4 sm:p-6 border-2 border-red-200">
+        <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-3 sm:mb-4 flex items-center gap-2">
+          <Trash2 className="w-4 h-4 sm:w-5 sm:h-5 text-red-600" />
           Danger Zone
         </h2>
-        <div className="bg-red-50 rounded-lg p-4 border border-red-200">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="bg-red-50 rounded-lg p-3 sm:p-4 border border-red-200">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
             <div className="flex-1">
-              <p className="text-sm font-semibold text-gray-800 mb-1">Delete Your Profile</p>
-              <p className="text-xs text-gray-600">
+              <p className="text-xs sm:text-sm font-semibold text-gray-800 mb-1">Delete Your Profile</p>
+              <p className="text-[10px] sm:text-xs text-gray-600">
                 Once you delete your profile, there is no going back. All your data, documents, and history will be permanently deleted.
               </p>
             </div>
             <button 
               onClick={() => setShowDeleteModal(true)}
-              className="px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white rounded-lg text-sm font-semibold transition-all shadow-md hover:shadow-lg flex items-center gap-2 whitespace-nowrap"
+              className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white rounded-lg text-xs sm:text-sm font-semibold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 whitespace-nowrap"
             >
-              <Trash2 className="w-4 h-4" />
+              <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
               Delete Profile
             </button>
           </div>
@@ -417,63 +815,182 @@ const UserProfile = ({ userData, setUserData }) => {
 
       {/* Change Password Modal */}
       {showPasswordModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 relative animate-fadeInUp">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 backdrop-blur-sm">
+          <div className="bg-white rounded-xl sm:rounded-2xl max-w-md w-full p-4 sm:p-6 relative max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-200">
             <button
-              onClick={() => setShowPasswordModal(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+              onClick={() => {
+                setShowPasswordModal(false);
+                setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
+                setPasswordErrors({});
+              }}
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 text-gray-400 hover:text-gray-600 transition-colors"
             >
-              <X className="w-6 h-6" />
+              <X className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
             
-            <h3 className="text-2xl font-bold text-gray-800 mb-6">Change Password</h3>
-            
-            <div className="space-y-4">
-              <div>
-                <label className="text-sm font-semibold text-gray-700 mb-2 block">Current Password</label>
-                <input
-                  type="password"
-                  placeholder="Enter current password"
-                  className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:outline-none"
-                />
+            <div className="flex items-center gap-3 mb-4 sm:mb-6">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center flex-shrink-0">
+                <Lock className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </div>
-              
               <div>
-                <label className="text-sm font-semibold text-gray-700 mb-2 block">New Password</label>
-                <input
-                  type="password"
-                  placeholder="Enter new password"
-                  className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:outline-none"
-                />
-              </div>
-              
-              <div>
-                <label className="text-sm font-semibold text-gray-700 mb-2 block">Confirm New Password</label>
-                <input
-                  type="password"
-                  placeholder="Confirm new password"
-                  className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:outline-none"
-                />
+                <h3 className="text-lg sm:text-2xl font-bold text-gray-800">Change Password</h3>
+                <p className="text-xs sm:text-sm text-gray-500">Update your account password</p>
               </div>
             </div>
             
-            <button 
-              onClick={() => {
-                alert('Password changed successfully!');
-                setShowPasswordModal(false);
-              }}
-              className="w-full mt-6 bg-gradient-to-r from-green-600 via-green-700 to-green-800 hover:from-green-700 hover:to-green-800 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
-            >
-              Update Password
-            </button>
+            <div className="space-y-3 sm:space-y-4">
+              {/* Current Password */}
+              <div>
+                <label className="text-xs sm:text-sm font-semibold text-gray-700 mb-1.5 sm:mb-2 block">Current Password *</label>
+                <div className="relative">
+                  <input
+                    type={showCurrentPassword ? "text" : "password"}
+                    value={passwordForm.currentPassword}
+                    onChange={(e) => {
+                      setPasswordForm(prev => ({ ...prev, currentPassword: e.target.value }));
+                      setPasswordErrors(prev => ({ ...prev, currentPassword: '' }));
+                    }}
+                    className={`w-full px-3 sm:px-4 py-2 sm:py-3 pr-10 text-sm sm:text-base rounded-lg border-2 ${
+                      passwordErrors.currentPassword ? 'border-red-500' : 'border-gray-300'
+                    } focus:border-green-500 focus:outline-none transition-all`}
+                    placeholder="Enter current password"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  >
+                    {showCurrentPassword ? <EyeOff className="w-4 h-4 sm:w-5 sm:h-5" /> : <Eye className="w-4 h-4 sm:w-5 sm:h-5" />}
+                  </button>
+                </div>
+                {passwordErrors.currentPassword && (
+                  <p className="text-xs text-red-500 mt-1 flex items-center gap-1">
+                    <AlertCircle className="w-3 h-3" />{passwordErrors.currentPassword}
+                  </p>
+                )}
+              </div>
+              
+              {/* New Password */}
+              <div>
+                <label className="text-xs sm:text-sm font-semibold text-gray-700 mb-1.5 sm:mb-2 block">New Password *</label>
+                <div className="relative">
+                  <input
+                    type={showNewPassword ? "text" : "password"}
+                    value={passwordForm.newPassword}
+                    onChange={(e) => {
+                      setPasswordForm(prev => ({ ...prev, newPassword: e.target.value }));
+                      setPasswordErrors(prev => ({ ...prev, newPassword: '' }));
+                    }}
+                    className={`w-full px-3 sm:px-4 py-2 sm:py-3 pr-10 text-sm sm:text-base rounded-lg border-2 ${
+                      passwordErrors.newPassword ? 'border-red-500' : 'border-gray-300'
+                    } focus:border-green-500 focus:outline-none transition-all`}
+                    placeholder="Enter new password"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowNewPassword(!showNewPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  >
+                    {showNewPassword ? <EyeOff className="w-4 h-4 sm:w-5 sm:h-5" /> : <Eye className="w-4 h-4 sm:w-5 sm:h-5" />}
+                  </button>
+                </div>
+                {passwordErrors.newPassword && (
+                  <p className="text-xs text-red-500 mt-1 flex items-center gap-1">
+                    <AlertCircle className="w-3 h-3" />{passwordErrors.newPassword}
+                  </p>
+                )}
+                {passwordForm.newPassword && (
+                  <div className="mt-2 p-2 sm:p-3 bg-blue-50 rounded-lg border border-blue-200">
+                    <p className="text-[10px] sm:text-xs text-blue-900 font-semibold mb-1.5">Password Requirements:</p>
+                    <div className="space-y-1">
+                      {[
+                        { test: passwordForm.newPassword.length >= 8, label: 'At least 8 characters' },
+                        { test: /[A-Z]/.test(passwordForm.newPassword), label: 'One uppercase letter' },
+                        { test: /[a-z]/.test(passwordForm.newPassword), label: 'One lowercase letter' },
+                        { test: /[0-9]/.test(passwordForm.newPassword), label: 'One number' },
+                        { test: /[!@#$%^&*(),.?":{}|<>]/.test(passwordForm.newPassword), label: 'One special character' }
+                      ].map((req, idx) => (
+                        <div key={idx} className="flex items-center gap-1.5 text-[10px] sm:text-xs">
+                          <div className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full flex items-center justify-center ${
+                            req.test ? 'bg-green-500' : 'bg-gray-300'
+                          }`}>
+                            {req.test && <Check className="w-2 h-2 sm:w-2.5 sm:h-2.5 text-white" />}
+                          </div>
+                          <span className={req.test ? 'text-green-700' : 'text-gray-600'}>{req.label}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+              
+              {/* Confirm Password */}
+              <div>
+                <label className="text-xs sm:text-sm font-semibold text-gray-700 mb-1.5 sm:mb-2 block">Confirm New Password *</label>
+                <div className="relative">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    value={passwordForm.confirmPassword}
+                    onChange={(e) => {
+                      setPasswordForm(prev => ({ ...prev, confirmPassword: e.target.value }));
+                      setPasswordErrors(prev => ({ ...prev, confirmPassword: '' }));
+                    }}
+                    className={`w-full px-3 sm:px-4 py-2 sm:py-3 pr-10 text-sm sm:text-base rounded-lg border-2 ${
+                      passwordErrors.confirmPassword ? 'border-red-500' : 'border-gray-300'
+                    } focus:border-green-500 focus:outline-none transition-all`}
+                    placeholder="Confirm new password"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  >
+                    {showConfirmPassword ? <EyeOff className="w-4 h-4 sm:w-5 sm:h-5" /> : <Eye className="w-4 h-4 sm:w-5 sm:h-5" />}
+                  </button>
+                </div>
+                {passwordErrors.confirmPassword && (
+                  <p className="text-xs text-red-500 mt-1 flex items-center gap-1">
+                    <AlertCircle className="w-3 h-3" />{passwordErrors.confirmPassword}
+                  </p>
+                )}
+              </div>
+            </div>
+            
+            <div className="flex gap-2 sm:gap-3 mt-4 sm:mt-6">
+              <button 
+                onClick={() => {
+                  setShowPasswordModal(false);
+                  setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
+                  setPasswordErrors({});
+                }}
+                className="flex-1 px-4 sm:px-6 py-2.5 sm:py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg sm:rounded-xl font-semibold transition-all text-sm sm:text-base"
+                disabled={loading}
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={handlePasswordChange}
+                disabled={loading}
+                className="flex-1 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-lg sm:rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all disabled:opacity-50 flex items-center justify-center gap-2 text-sm sm:text-base"
+              >
+                {loading ? (
+                  <svg className="animate-spin h-4 w-4 sm:h-5 sm:w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                ) : (
+                  <>Update</>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       )}
 
       {/* 2FA Modal */}
       {show2FAModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 relative animate-fadeInUp">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 relative shadow-2xl border border-gray-200">
             <button
               onClick={() => setShow2FAModal(false)}
               className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
@@ -529,76 +1046,159 @@ const UserProfile = ({ userData, setUserData }) => {
 
       {/* Upload Document Modal */}
       {showUploadModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 relative animate-fadeInUp">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/20">
+          <div className="bg-white rounded-xl sm:rounded-2xl max-w-md w-full p-4 sm:p-6 relative max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-200">
             <button
-              onClick={() => setShowUploadModal(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+              onClick={() => {
+                setShowUploadModal(false);
+                setUploadForm({ documentType: '', file: null, fileName: '' });
+                setUploadErrors({});
+              }}
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 text-gray-400 hover:text-gray-600 transition-colors"
             >
-              <X className="w-6 h-6" />
+              <X className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
             
-            <h3 className="text-2xl font-bold text-gray-800 mb-6">Upload Document</h3>
-            
-            <div className="space-y-4">
-              <div>
-                <label className="text-sm font-semibold text-gray-700 mb-2 block">Document Type</label>
-                <select className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-green-500 focus:outline-none">
-                  <option>Select document type</option>
-                  <option>PAN Card</option>
-                  <option>Aadhar Card</option>
-                  <option>Income Proof</option>
-                  <option>Bank Statement</option>
-                  <option>Address Proof</option>
-                </select>
+            <div className="flex items-center gap-3 mb-4 sm:mb-6">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center flex-shrink-0">
+                <Upload className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </div>
-              
               <div>
-                <label className="text-sm font-semibold text-gray-700 mb-2 block">Upload File</label>
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-green-500 transition-all cursor-pointer">
-                  <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                  <p className="text-sm text-gray-600">Click to upload or drag and drop</p>
-                  <p className="text-xs text-gray-500 mt-1">PDF, JPG, PNG (Max 5MB)</p>
-                </div>
+                <h3 className="text-lg sm:text-2xl font-bold text-gray-800">Upload Document</h3>
+                <p className="text-xs sm:text-sm text-gray-500">Add a new document</p>
               </div>
             </div>
             
-            <button 
-              onClick={() => {
-                alert('Document uploaded successfully!\n\nYour document will be verified within 24-48 hours.');
-                setShowUploadModal(false);
-              }}
-              className="w-full mt-6 bg-gradient-to-r from-green-600 via-green-700 to-green-800 hover:from-green-700 hover:to-green-800 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
-            >
-              Upload Document
-            </button>
+            <div className="space-y-3 sm:space-y-4">
+              {/* Document Type */}
+              <div>
+                <label className="text-xs sm:text-sm font-semibold text-gray-700 mb-1.5 sm:mb-2 block">Document Type *</label>
+                <select 
+                  value={uploadForm.documentType}
+                  onChange={(e) => {
+                    setUploadForm(prev => ({ ...prev, documentType: e.target.value }));
+                    setUploadErrors(prev => ({ ...prev, documentType: '' }));
+                  }}
+                  className={`w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base rounded-lg border-2 ${
+                    uploadErrors.documentType ? 'border-red-500' : 'border-gray-300'
+                  } focus:border-green-500 focus:outline-none transition-all`}
+                >
+                  <option value="">Select document type</option>
+                  <option value="pan">PAN Card</option>
+                  <option value="aadhar">Aadhar Card</option>
+                  <option value="income">Income Proof</option>
+                  <option value="bank">Bank Statement</option>
+                  <option value="address">Address Proof</option>
+                  <option value="other">Other</option>
+                </select>
+                {uploadErrors.documentType && (
+                  <p className="text-xs text-red-500 mt-1 flex items-center gap-1">
+                    <AlertCircle className="w-3 h-3" />{uploadErrors.documentType}
+                  </p>
+                )}
+              </div>
+              
+              {/* File Upload */}
+              <div>
+                <label className="text-xs sm:text-sm font-semibold text-gray-700 mb-1.5 sm:mb-2 block">Upload File *</label>
+                <input
+                  type="file"
+                  id="fileUpload"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  onChange={handleFileSelect}
+                  className="hidden"
+                />
+                <label
+                  htmlFor="fileUpload"
+                  className={`block border-2 border-dashed ${
+                    uploadErrors.file ? 'border-red-500' : 'border-gray-300 hover:border-green-500'
+                  } rounded-lg p-6 sm:p-8 text-center transition-all cursor-pointer ${
+                    uploadForm.fileName ? 'bg-green-50 border-green-500' : 'bg-gray-50'
+                  }`}
+                >
+                  {uploadForm.fileName ? (
+                    <>
+                      <FileText className="w-8 h-8 sm:w-10 sm:h-10 text-green-600 mx-auto mb-2" />
+                      <p className="text-sm sm:text-base text-green-700 font-semibold break-all px-2">{uploadForm.fileName}</p>
+                      <p className="text-xs text-gray-500 mt-1">Click to change file</p>
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400 mx-auto mb-2" />
+                      <p className="text-xs sm:text-sm text-gray-600">Click to upload or drag and drop</p>
+                      <p className="text-[10px] sm:text-xs text-gray-500 mt-1">PDF, JPG, PNG (Max 5MB)</p>
+                    </>
+                  )}
+                </label>
+                {uploadErrors.file && (
+                  <p className="text-xs text-red-500 mt-1 flex items-center gap-1">
+                    <AlertCircle className="w-3 h-3" />{uploadErrors.file}
+                  </p>
+                )}
+              </div>
+
+              {/* Info Box */}
+              <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
+                <p className="text-[10px] sm:text-xs text-blue-900">
+                  <strong>Note:</strong> Documents will be verified within 24-48 hours. Ensure the document is clear and all details are visible.
+                </p>
+              </div>
+            </div>
+            
+            <div className="flex gap-2 sm:gap-3 mt-4 sm:mt-6">
+              <button 
+                onClick={() => {
+                  setShowUploadModal(false);
+                  setUploadForm({ documentType: '', file: null, fileName: '' });
+                  setUploadErrors({});
+                }}
+                className="flex-1 px-4 sm:px-6 py-2.5 sm:py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg sm:rounded-xl font-semibold transition-all text-sm sm:text-base"
+                disabled={loading}
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={handleUploadDocument}
+                disabled={loading}
+                className="flex-1 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-lg sm:rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all disabled:opacity-50 flex items-center justify-center gap-2 text-sm sm:text-base"
+              >
+                {loading ? (
+                  <svg className="animate-spin h-4 w-4 sm:h-5 sm:w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                ) : (
+                  <>Upload</>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       )}
 
       {/* Delete Profile Modal */}
       {showDeleteModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 relative animate-fadeInUp">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 backdrop-blur-sm">
+          <div className="bg-white rounded-xl sm:rounded-2xl max-w-md w-full p-4 sm:p-6 relative max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-200">
             <button
               onClick={() => setShowDeleteModal(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 text-gray-400 hover:text-gray-600 transition-colors"
             >
-              <X className="w-6 h-6" />
+              <X className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
             
-            <div className="text-center mb-6">
-              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Trash2 className="w-8 h-8 text-red-600" />
+            <div className="text-center mb-4 sm:mb-6">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <Trash2 className="w-7 h-7 sm:w-8 sm:h-8 text-red-600" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-800 mb-2">Delete Profile?</h3>
-              <p className="text-gray-600">This action cannot be undone</p>
+              <h3 className="text-xl sm:text-2xl font-bold text-gray-800 mb-1 sm:mb-2">Delete Profile?</h3>
+              <p className="text-sm sm:text-base text-gray-600">This action cannot be undone</p>
             </div>
             
-            <div className="space-y-4">
-              <div className="p-4 bg-red-50 rounded-lg border border-red-200">
-                <p className="text-sm text-red-900 mb-2 font-semibold">⚠️ Warning: This will permanently delete:</p>
-                <ul className="text-xs text-red-700 space-y-1 list-disc list-inside">
+            <div className="space-y-3 sm:space-y-4">
+              <div className="p-3 sm:p-4 bg-red-50 rounded-lg border border-red-200">
+                <p className="text-xs sm:text-sm text-red-900 mb-1.5 sm:mb-2 font-semibold">⚠️ Warning: This will permanently delete:</p>
+                <ul className="text-[10px] sm:text-xs text-red-700 space-y-0.5 sm:space-y-1 list-disc list-inside">
                   <li>Your profile and all personal information</li>
                   <li>All loan and insurance applications</li>
                   <li>Investment and transaction history</li>
@@ -608,22 +1208,28 @@ const UserProfile = ({ userData, setUserData }) => {
               </div>
               
               <div>
-                <label className="text-sm font-semibold text-gray-700 mb-2 block">
-                  Type <span className="text-red-600 font-bold">DELETE</span> to confirm
+                <label className="text-xs sm:text-sm font-semibold text-gray-700 mb-1.5 sm:mb-2 block">
+                  Type <span className="text-red-600 font-bold">DELETE</span> to confirm *
                 </label>
                 <input
                   type="text"
                   id="deleteConfirmation"
                   placeholder="Type DELETE in capital letters"
-                  className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-red-500 focus:outline-none font-semibold"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base rounded-lg border-2 border-gray-300 focus:border-red-500 focus:outline-none font-semibold transition-all"
                 />
+              </div>
+
+              <div className="p-2 sm:p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+                <p className="text-[10px] sm:text-xs text-yellow-900">
+                  <strong>⚡ Tip:</strong> Consider downloading your data before deletion. This action is irreversible and all your data will be lost forever.
+                </p>
               </div>
             </div>
             
-            <div className="flex gap-3 mt-6">
+            <div className="flex gap-2 sm:gap-3 mt-4 sm:mt-6">
               <button 
                 onClick={() => setShowDeleteModal(false)}
-                className="flex-1 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-semibold transition-all"
+                className="flex-1 px-4 sm:px-6 py-2.5 sm:py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg sm:rounded-xl font-semibold transition-all text-sm sm:text-base"
               >
                 Cancel
               </button>
@@ -637,7 +1243,7 @@ const UserProfile = ({ userData, setUserData }) => {
                     alert('❌ Please type DELETE (in capital letters) to confirm.');
                   }
                 }}
-                className="flex-1 px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
+                className="flex-1 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white rounded-lg sm:rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all text-sm sm:text-base"
               >
                 Delete Forever
               </button>

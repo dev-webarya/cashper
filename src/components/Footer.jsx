@@ -1,7 +1,33 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const navigate = useNavigate();
+
+  const handleLogoClick = () => {
+    // Scroll to top smoothly
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+    // Navigate to home after a small delay to allow scroll
+    setTimeout(() => {
+      navigate('/');
+    }, 100);
+  };
+
+  // Handle all footer link clicks to scroll to hero section
+  const handleLinkClick = (path) => {
+    // Navigate to the page
+    navigate(path);
+    // Scroll to top (hero section) after navigation
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }, 100);
+  };
   const footerLinks = {
     company: [
       { name: "About Us", path: "/about" },
@@ -81,54 +107,59 @@ const Footer = () => {
     }
   ];
   return (
-   <div className='bg-gray-900 text-white'>
-     <footer className="max-w-7xl py-10 mx-auto">
+   <div className='bg-gray-900 text-white w-full overflow-hidden'>
+     <footer className="w-full max-w-7xl py-8 sm:py-10 mx-auto">
       {/* Main Footer Content */}
-      <div className="container px-3 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-8 md:py-10 lg:py-12">
+      <div className="w-full px-3 xs:px-4 sm:px-5 md:px-6 lg:px-8 py-6 xs:py-7 sm:py-8 md:py-10 lg:py-12">
         {/* Mobile-first responsive grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-4 sm:gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-6 xs:gap-7 sm:gap-6 md:gap-7 lg:gap-8">
           {/* Company Info - Full width on mobile, spans 2 columns on larger screens */}
-          <div className="col-span-1 sm:col-span-2 lg:col-span-2 xl:col-span-2 mb-6 sm:mb-0 text-center sm:text-left">
-            <div className="mb-4 sm:mb-6">
+          <div className="col-span-1 xs:col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-2 xl:col-span-2 mb-6 xs:mb-7 sm:mb-0 text-center sm:text-left">
+            <div className="mb-4 xs:mb-5 sm:mb-6">
               <img 
                 src="/logo_company.png" 
                 alt="Cashper" 
-                className='h-10 sm:h-12 md:h-14 w-auto mb-3 sm:mb-4 mx-auto sm:mx-0' 
+                onClick={handleLogoClick}
+                className='h-9 xs:h-10 sm:h-12 md:h-14 lg:h-16 w-auto mb-3 xs:mb-3.5 sm:mb-4 mx-auto sm:mx-0 cursor-pointer hover:scale-105 transition-all duration-300' 
               />
-              <p className="text-gray-300 text-xs sm:text-sm md:text-base leading-relaxed mb-4 sm:mb-6">
+              <p className="text-gray-300 text-xs xs:text-sm sm:text-sm md:text-base lg:text-base leading-relaxed mb-4 xs:mb-5 sm:mb-6 max-w-xs sm:max-w-sm md:max-w-md mx-auto sm:mx-0">
                 Your trusted partner for comprehensive financial solutions. 
                 We provide loans, insurance, investments, and tax planning services to help you achieve your financial goals.
               </p>
             </div>
             {/* Contact Info - Responsive layout */}
-            <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-6">
-              <div className="flex items-start sm:items-center justify-center sm:justify-start space-x-2 sm:space-x-3">
-                <span className="text-green-700 text-base sm:text-lg flex-shrink-0 mt-0.5 sm:mt-0">📞</span>
-                <span className="text-gray-300 text-xs sm:text-sm md:text-base break-words">6200755759<br/>7393080847</span>
+            <div className="space-y-2 xs:space-y-2.5 sm:space-y-3 mb-4 xs:mb-5 sm:mb-6">
+              <div className="flex items-start sm:items-center justify-center sm:justify-start space-x-2 xs:space-x-2.5 sm:space-x-3">
+                <span className="text-green-700 text-base xs:text-lg sm:text-lg md:text-xl flex-shrink-0 mt-0.5 sm:mt-0">📞</span>
+                <span className="text-gray-300 text-xs xs:text-sm sm:text-sm md:text-base break-words">
+                  <a href="tel:6200755759" className="hover:text-green-500 transition-colors">6200755759</a>
+                  <br/>
+                  <a href="tel:7393080847" className="hover:text-green-500 transition-colors">7393080847</a>
+                </span>
               </div>
-              <div className="flex items-start sm:items-center justify-center sm:justify-start space-x-2 sm:space-x-3">
-                <span className="text-green-700 text-base sm:text-lg flex-shrink-0 mt-0.5 sm:mt-0">✉️</span>
-                <span className="text-gray-300 text-xs sm:text-sm md:text-base break-all">info@cashper.ai</span>
+              <div className="flex items-start sm:items-center justify-center sm:justify-start space-x-2 xs:space-x-2.5 sm:space-x-3">
+                <span className="text-green-700 text-base xs:text-lg sm:text-lg md:text-xl flex-shrink-0 mt-0.5 sm:mt-0">✉️</span>
+                <a href="mailto:info@cashper.ai" className="text-gray-300 hover:text-green-500 transition-colors text-xs xs:text-sm sm:text-sm md:text-base break-all">info@cashper.ai</a>
               </div>
-              <div className="flex items-start sm:items-center justify-center sm:justify-start space-x-2 sm:space-x-3">
-                <svg className="text-green-700 w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 mt-0.5 sm:mt-0" fill="currentColor" viewBox="0 0 24 24">
+              <div className="flex items-start sm:items-center justify-center sm:justify-start space-x-2 xs:space-x-2.5 sm:space-x-3">
+                <svg className="text-green-700 w-4 h-4 xs:w-4.5 xs:h-4.5 sm:w-5 sm:h-5 md:w-5 md:h-5 flex-shrink-0 mt-1 sm:mt-0.5 md:mt-0" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                 </svg>
-                <span className="text-gray-300 text-xs sm:text-sm md:text-base break-words">B - 3011, Gaur Siddhartham, Siddhartha Vihar, Ghaziabad, Uttar Pradesh - 201009</span>
+                <span className="text-gray-300 text-xs xs:text-sm sm:text-sm md:text-base break-words leading-relaxed">B - 3011, Gaur Siddhartham, Siddhartha Vihar, Ghaziabad, Uttar Pradesh - 201009</span>
               </div>
             </div>
             
             {/* Social Media - Responsive grid */}
-            <div className="mt-4 sm:mt-6">
-              <h4 className="text-sm sm:text-base md:text-lg font-semibold mb-3 sm:mb-4 text-green-700 text-center sm:text-left">Follow Us</h4>
-              <div className="flex justify-center sm:justify-start flex-wrap gap-2 sm:gap-3">
+            <div className="mt-4 xs:mt-5 sm:mt-6">
+              <h4 className="text-sm xs:text-base sm:text-base md:text-lg font-semibold mb-3 xs:mb-3.5 sm:mb-4 text-green-700 text-center sm:text-left">Follow Us</h4>
+              <div className="flex justify-center sm:justify-start flex-wrap gap-2 xs:gap-2.5 sm:gap-3 md:gap-3.5">
                 {socialLinks.map((social, index) => (
                   <a
                     key={index}
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-green-800 hover:bg-green-700 hover:text-white rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110"
+                    className="w-9 h-9 xs:w-10 xs:h-10 sm:w-10 sm:h-10 md:w-11 md:h-11 lg:w-12 lg:h-12 bg-green-800 hover:bg-green-700 hover:text-white rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110 active:scale-95"
                     title={social.name}
                     aria-label={`Follow us on ${social.name}`}
                   >
@@ -140,104 +171,104 @@ const Footer = () => {
           </div>
 
           {/* Links Sections - Flex row layout */}
-          <div className="flex flex-col sm:flex-row flex-wrap col-span-1 sm:col-span-2 md:col-span-1 lg:col-span-2 xl:col-span-5 gap-4 sm:gap-6 lg:gap-8 justify-center sm:justify-start">
+          <div className="flex flex-col xs:flex-col sm:flex-row flex-wrap col-span-1 xs:col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-2 xl:col-span-5 gap-5 xs:gap-6 sm:gap-5 md:gap-6 lg:gap-7 xl:gap-8 justify-center sm:justify-start">
             {/* Company Links */}
-            <div className="flex-1 min-w-[100px] text-center sm:text-left">
-              <h4 className="text-sm sm:text-base md:text-lg font-semibold mb-2 sm:mb-3 md:mb-4 text-green-700">Company</h4>
-              <ul className="space-y-1 sm:space-y-2">
+            <div className="flex-1 min-w-[120px] xs:min-w-[140px] sm:min-w-[110px] text-center sm:text-left">
+              <h4 className="text-sm xs:text-base sm:text-base md:text-lg font-semibold mb-2 xs:mb-2.5 sm:mb-3 md:mb-4 text-green-700">Company</h4>
+              <ul className="space-y-1 xs:space-y-1.5 sm:space-y-2">
                 {footerLinks.company.map((link, index) => (
                   <li key={index}>
-                    <Link
-                      to={link.path}
-                      className="text-gray-300 hover:text-green-700 transition-colors duration-300 text-xs sm:text-sm md:text-base block py-1"
+                    <button
+                      onClick={() => handleLinkClick(link.path)}
+                      className="text-gray-300 hover:text-green-500 transition-colors duration-300 text-xs xs:text-sm sm:text-sm md:text-base block py-1 cursor-pointer bg-transparent border-0 w-full text-center sm:text-left"
                     >
                       {link.name}
-                    </Link>
+                    </button>
                   </li>
                 ))}
               </ul>
             </div>
 
             {/* Investments Links */}
-            <div className="flex-1 min-w-[100px] text-center sm:text-left">
-              <h4 className="text-sm sm:text-base md:text-lg font-semibold mb-2 sm:mb-3 md:mb-4 text-green-700">Investments</h4>
-              <ul className="space-y-1 sm:space-y-2">
+            <div className="flex-1 min-w-[120px] xs:min-w-[140px] sm:min-w-[110px] text-center sm:text-left">
+              <h4 className="text-sm xs:text-base sm:text-base md:text-lg font-semibold mb-2 xs:mb-2.5 sm:mb-3 md:mb-4 text-green-700">Investments</h4>
+              <ul className="space-y-1 xs:space-y-1.5 sm:space-y-2">
                 {footerLinks.investments.map((link, index) => (
                   <li key={index}>
-                    <Link
-                      to={link.path}
-                      className="text-gray-300 hover:text-green-700 transition-colors duration-300 text-xs sm:text-sm md:text-base block py-1"
+                    <button
+                      onClick={() => handleLinkClick(link.path)}
+                      className="text-gray-300 hover:text-green-500 transition-colors duration-300 text-xs xs:text-sm sm:text-sm md:text-base block py-1 cursor-pointer bg-transparent border-0 w-full text-center sm:text-left"
                     >
                       {link.name}
-                    </Link>
+                    </button>
                   </li>
                 ))}
               </ul>
             </div>
 
             {/* Loans Links */}
-            <div className="flex-1 min-w-[100px] text-center sm:text-left">
-              <h4 className="text-sm sm:text-base md:text-lg font-semibold mb-2 sm:mb-3 md:mb-4 text-green-700">Loans</h4>
-              <ul className="space-y-1 sm:space-y-2">
+            <div className="flex-1 min-w-[120px] xs:min-w-[140px] sm:min-w-[110px] text-center sm:text-left">
+              <h4 className="text-sm xs:text-base sm:text-base md:text-lg font-semibold mb-2 xs:mb-2.5 sm:mb-3 md:mb-4 text-green-700">Loans</h4>
+              <ul className="space-y-1 xs:space-y-1.5 sm:space-y-2">
                 {footerLinks.loans.map((link, index) => (
                   <li key={index}>
-                    <Link
-                      to={link.path}
-                      className="text-gray-300 hover:text-green-700 transition-colors duration-300 text-xs sm:text-sm md:text-base block py-1"
+                    <button
+                      onClick={() => handleLinkClick(link.path)}
+                      className="text-gray-300 hover:text-green-500 transition-colors duration-300 text-xs xs:text-sm sm:text-sm md:text-base block py-1 cursor-pointer bg-transparent border-0 w-full text-center sm:text-left"
                     >
                       {link.name}
-                    </Link>
+                    </button>
                   </li>
                 ))}
               </ul>
             </div>
 
             {/* Insurance Links */}
-            <div className="flex-1 min-w-[100px] text-center sm:text-left">
-              <h4 className="text-sm sm:text-base md:text-lg font-semibold mb-2 sm:mb-3 md:mb-4 text-green-700">Insurance</h4>
-              <ul className="space-y-1 sm:space-y-2">
+            <div className="flex-1 min-w-[120px] xs:min-w-[140px] sm:min-w-[110px] text-center sm:text-left">
+              <h4 className="text-sm xs:text-base sm:text-base md:text-lg font-semibold mb-2 xs:mb-2.5 sm:mb-3 md:mb-4 text-green-700">Insurance</h4>
+              <ul className="space-y-1 xs:space-y-1.5 sm:space-y-2">
                 {footerLinks.insurance.map((link, index) => (
                   <li key={index}>
-                    <Link
-                      to={link.path}
-                      className="text-gray-300 hover:text-green-700 transition-colors duration-300 text-xs sm:text-sm md:text-base block py-1"
+                    <button
+                      onClick={() => handleLinkClick(link.path)}
+                      className="text-gray-300 hover:text-green-500 transition-colors duration-300 text-xs xs:text-sm sm:text-sm md:text-base block py-1 cursor-pointer bg-transparent border-0 w-full text-center sm:text-left"
                     >
                       {link.name}
-                    </Link>
+                    </button>
                   </li>
                 ))}
               </ul>
             </div>
 
             {/* Tax Planning Links */}
-            <div className="flex-1 min-w-[100px] text-center sm:text-left">
-              <h4 className="text-sm sm:text-base md:text-lg font-semibold mb-2 sm:mb-3 md:mb-4 text-green-700">Tax Planning</h4>
-              <ul className="space-y-1 sm:space-y-2">
+            <div className="flex-1 min-w-[120px] xs:min-w-[140px] sm:min-w-[110px] text-center sm:text-left">
+              <h4 className="text-sm xs:text-base sm:text-base md:text-lg font-semibold mb-2 xs:mb-2.5 sm:mb-3 md:mb-4 text-green-700">Tax Planning</h4>
+              <ul className="space-y-1 xs:space-y-1.5 sm:space-y-2">
                 {footerLinks.taxPlanning.map((link, index) => (
                   <li key={index}>
-                    <Link
-                      to={link.path}
-                      className="text-gray-300 hover:text-green-700 transition-colors duration-300 text-xs sm:text-sm md:text-base block py-1"
+                    <button
+                      onClick={() => handleLinkClick(link.path)}
+                      className="text-gray-300 hover:text-green-500 transition-colors duration-300 text-xs xs:text-sm sm:text-sm md:text-base block py-1 cursor-pointer bg-transparent border-0 w-full text-center sm:text-left"
                     >
                       {link.name}
-                    </Link>
+                    </button>
                   </li>
                 ))}
               </ul>
             </div>
 
             {/* Legal Links */}
-            <div className="flex-1 min-w-[100px] text-center sm:text-left">
-              <h4 className="text-sm sm:text-base md:text-lg font-semibold mb-2 sm:mb-3 md:mb-4 text-green-700">Legal</h4>
-              <ul className="space-y-1 sm:space-y-2">
+            <div className="flex-1 min-w-[120px] xs:min-w-[140px] sm:min-w-[110px] text-center sm:text-left">
+              <h4 className="text-sm xs:text-base sm:text-base md:text-lg font-semibold mb-2 xs:mb-2.5 sm:mb-3 md:mb-4 text-green-700">Legal</h4>
+              <ul className="space-y-1 xs:space-y-1.5 sm:space-y-2">
                 {footerLinks.legal.map((link, index) => (
                   <li key={index}>
-                    <Link
-                      to={link.path}
-                      className="text-gray-300 hover:text-green-700 transition-colors duration-300 text-xs sm:text-sm md:text-base block py-1"
+                    <button
+                      onClick={() => handleLinkClick(link.path)}
+                      className="text-gray-300 hover:text-green-500 transition-colors duration-300 text-xs xs:text-sm sm:text-sm md:text-base block py-1 cursor-pointer bg-transparent border-0 w-full text-center sm:text-left"
                     >
                       {link.name}
-                    </Link>
+                    </button>
                   </li>
                 ))}
               </ul>
@@ -248,10 +279,10 @@ const Footer = () => {
 
     </footer>     
       {/* Bottom Bar - Enhanced mobile responsiveness */}
-      <div className="bg-gray-800 border-t border-gray-700">
-        <div className="container mx-auto max-w-7xl px-3 sm:px-4 md:px-6 lg:px-8 py-3 sm:py-4">
+      <div className="w-full bg-gray-800 border-t border-gray-700">
+        <div className="w-full max-w-7xl mx-auto px-3 xs:px-4 sm:px-5 md:px-6 lg:px-8 py-3 xs:py-3.5 sm:py-4">
           <div className="text-center">
-            <div className="text-gray-400 text-xs sm:text-sm md:text-base">
+            <div className="text-gray-400 text-xs xs:text-sm sm:text-sm md:text-base">
               © {currentYear} Cashper. All rights reserved.
             </div>
           </div>

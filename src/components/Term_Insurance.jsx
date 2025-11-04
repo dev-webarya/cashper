@@ -28,6 +28,17 @@ import Footer from './Footer';
 const Term_Insurance = () => {
   const navigate = useNavigate();
   
+  // Handle navigation to contact page with scroll to hero section
+  const handleContactNavigation = () => {
+    navigate('/contact');
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }, 100);
+  };
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -294,7 +305,9 @@ const Term_Insurance = () => {
         style={{
           backgroundImage: "url('https://images.unsplash.com/photo-1576267423445-b2e0074d68a4?w=1600&q=80')",
           backgroundSize: 'cover',
-          backgroundPosition: 'center'
+          backgroundPosition: 'center center',
+          backgroundAttachment: 'scroll',
+          backgroundRepeat: 'no-repeat'
         }}>
         <div className="absolute inset-0 bg-gradient-to-r from-green-700/60 to-blue-800/50"></div>
         <div className="relative z-10 max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 w-full">
@@ -308,7 +321,7 @@ const Term_Insurance = () => {
               </p>
               <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-3 justify-center md:justify-start pt-2">
                 <button 
-                  onClick={() => navigate('/contact')}
+                  onClick={handleContactNavigation}
                   className="bg-white text-green-700 px-4 sm:px-5 md:px-6 lg:px-7 py-2 sm:py-2.5 md:py-3 rounded-xl font-semibold hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 text-xs sm:text-sm md:text-base">
                   Get Expert Advice Now
                 </button>
@@ -484,7 +497,7 @@ const Term_Insurance = () => {
 
           <div className="text-center mt-8 sm:mt-10 md:mt-12">
             <button 
-              onClick={() => navigate('/contact')}
+              onClick={handleContactNavigation}
               className="bg-gradient-to-r from-green-600 to-green-700 text-white px-6 sm:px-8 md:px-10 py-3 sm:py-3.5 md:py-4 rounded-xl font-semibold hover:from-green-700 hover:to-green-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 text-sm sm:text-base md:text-lg">
               Get Expert Advice Now
             </button>
@@ -1431,7 +1444,7 @@ const Term_Insurance = () => {
               Get Started Now
             </button>
             <button 
-              onClick={() => navigate('/contact')}
+              onClick={handleContactNavigation}
               className="border-2 border-white text-white px-6 sm:px-8 md:px-10 py-3 sm:py-3.5 md:py-4 rounded-xl font-semibold hover:bg-white hover:text-green-700 transition-all duration-300 text-sm sm:text-base md:text-lg">
               Talk to Expert
             </button>

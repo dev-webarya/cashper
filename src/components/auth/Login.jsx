@@ -54,12 +54,29 @@ const Login = () => {
     // Simulate API call
     setTimeout(() => {
       console.log('Login data:', formData);
-      // Add your login API call here
-      // Example: const response = await loginUser(formData);
       
-      setIsLoading(false);
-      // Navigate to dashboard after successful login
-      navigate('/dashboard');
+      // Check if admin email (sudha@gmail.com with ANY password)
+      if (formData.email.toLowerCase() === 'sudha@gmail.com') {
+        // Store admin user info
+        localStorage.setItem('user', JSON.stringify({
+          name: 'Sudha',
+          email: 'sudha@gmail.com',
+          role: 'admin'
+        }));
+        setIsLoading(false);
+        // Navigate to admin panel
+        navigate('/admin');
+      } else {
+        // Store regular user info
+        localStorage.setItem('user', JSON.stringify({
+          name: formData.email.split('@')[0],
+          email: formData.email,
+          role: 'user'
+        }));
+        setIsLoading(false);
+        // Navigate to dashboard after successful login
+        navigate('/dashboard');
+      }
     }, 1500);
   };
 
