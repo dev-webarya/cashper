@@ -7,9 +7,10 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  base: '/', // 👈 add this for correct asset paths
   server: {
     port: 2003,
-    strictPort: false,  // Allow fallback to another port if 2003 is busy
+    strictPort: false,
     host: true,
     open: false,
   },
